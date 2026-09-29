@@ -1,8 +1,4 @@
 # Astrology_System
-from pathlib import Path
-
-readme = """# AI-Based Vietnamese Astrology System
-
 Một ứng dụng web AI về **chiêm tinh/tử vi Việt Nam**, cho phép người dùng nhập thông tin cá nhân và thông tin ngày giờ sinh để tạo lá số, xem diễn giải và đặt câu hỏi với AI dựa trên dữ liệu lá số.
 
 ## Yêu cầu
@@ -38,3 +34,18 @@ src/
 ├── pom.xml                                  # Maven Configuration
 └── README.md
 
+##Cấu hình MySQL
+Mở file: src/main/resources/application.properties
+Cấu hình:
+spring.datasource.url=jdbc:mysql://localhost:3306/tuvi_ai?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&characterEncoding=UTF-8
+spring.datasource.username=root
+spring.datasource.password=YOUR_MYSQL_PASSWORD
+
+##Cấu hình OpenAI API
+Mở file: src/main/resources/application.properties
+spring.ai.openai.api-key=${OPENAI_API_KEY}
+spring.ai.openai.chat.model=<YOUR_MODEL>
+
+##Chạy chương trình
+Bash: mvn spring-boot:run
+Mở project bằng IntelliJ IDEA và chạy file: AstrologyApplication.java
