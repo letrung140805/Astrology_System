@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lịch sử lá số &amp; hành trình cuộc đời | Tử Vi AI</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <script th:src="@{/js/site.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header('history')}"></div>
+<main class="page-main history-main">
+    <section class="page-intro"><span class="status-pill"><i></i> Đồng bộ thời vận: Giờ Canh Thân</span><p class="eyebrow">TẶNG KINH CÁC CÁ NHÂN　<span class="gold-text">✦</span>　Lưu trữ bảo mật AES-256</p><h1>Kho tàng Lá Số &amp; Hành Trình<br>Cuộc Đời</h1><p>Quản lý các bản đồ vận mệnh đã lập, theo dõi dòng thời gian đại vận mười năm và tiếp nhận xung lực khí trường thiên tình mỗi ngày.</p></section>
+    <section class="daily-card card">
+        <div class="daily-date"><span class="eyebrow">◉ NHẬT VẬN CHIÊM TINH <span class="gold-tag">Trực Khai • Thanh Long</span></span><h2>Thứ Tư, 15/10/2025</h2><p>Ngày Kỷ Hợi • Tháng Ất Dậu • Năm Ất Tỵ.</p><div class="daily-fact"><span>◷</span><div><b>Giờ Hoàng Đạo Cát Lành</b><small>Thìn (07h-09h) • Thân (15h-17h) • Tuất (19h-21h)</small></div></div><div class="daily-fact"><span>✪</span><div><b>Cát Thần Hội Trị</b><small>Thiên Đức, Nguyệt Đức, Tam Hợp, Thiên Quý</small></div></div><div class="daily-meta"><span>Trực tinh: Ngũ Phú</span><b>Tiết khí: Hàn Lộ</b></div></div>
+        <div class="daily-reading"><h2><span>♙</span> Khởi thông tâm trí, chủ động giao kết và khởi thảo kế hoạch</h2><p>Hôm nay từ trường Thiên Tinh tương sinh với bản mệnh Tuyền Trung Thủy. Tâm trí sáng suốt, tư duy chiến lược hanh thông, thích hợp cho việc giải quyết các mối bận tâm tồn đọng, thương lượng hợp đồng hoặc đối thoại chân thành cùng đồng nghiệp. Tránh phân tâm vì những lời đàm tiếu ngoài hành lang.</p><div class="progress-row"><div><span>♧ Minh Triết &amp; Trí Tuệ <b>88%</b></span><i><em style="width:88%"></em></i></div><div><span>◉ Tài Vận &amp; Khởi Sắc <b>75%</b></span><i><em class="orange-bar" style="width:75%"></em></i></div><div><span>♡ Tình Cảm &amp; Gắn Kết <b>92%</b></span><i><em class="pink-bar" style="width:92%"></em></i></div></div><div class="daily-tips"><span>✓ Nên làm: Đàm phán trực diện, lưu tâm sổ sách, ghi chép ý tưởng sáng tạo.</span><span>⚠ Nên tránh: Chi tiêu bốc đồng sau 18h, tranh biện gay gắt vấn đề nhỏ.</span></div><div class="daily-actions"><a th:href="@{/chat}" class="button button-soft">▣ Hỏi AI về việc cần làm hôm nay</a><button class="button button-light" type="button" data-toast="Đang mở lịch vận trình 24 giờ.">Xem phân bổ 24h</button><small>↺ Tự động làm mới lúc 23:00 (Giờ Tý)</small></div></div>
+    </section>
+    <section class="timeline-section">
+        <div class="section-heading"><span class="eyebrow">⌁ ĐẠI VẬN &amp; DẤU ẤN CUỘC ĐỜI</span><h2>Dòng Thời Gian Vận Mệnh &amp; Bước Ngoặt</h2></div>
+        <div class="timeline-card card">
+            <div class="timeline-profile"><span class="avatar-initial">Lan</span><div><b>Nguyễn Thị Lan <span class="age-pill">Đang ở Đại vận 3 (22 – 31 tuổi)</span></b><small>Tuyền Trung Thủy • Cục Dương Nữ • Thân cư Quan Lộc tại Thân • Mệnh đóng tại Dần</small></div><div class="timeline-legend"><span>Quá khứ</span><span>Đại vận hiện tại</span><span>Vận hội tương lai</span></div></div>
+            <div class="timeline-cards">
+                <article><small>0 – 11 TUỔI</small><h3>Tiền Vận • Cung Phụ Mẫu</h3><p>Ấm êm, nền móng gia phong vững chãi. Được cha mẹ tạo điều kiện.</p><span>Thiên Đồng • Hóa Khoa</span><b>Chỉ số: 8.5/10　✓</b></article>
+                <article><small>12 – 21 TUỔI</small><h3>Cung Huynh Đệ</h3><p>Định hình bản ngã, mở mang quan hệ bạn hữu. Vượt qua thi cử thuận lợi.</p><span>Văn Xương • Tả Phù</span><b>Chỉ số: 8.0/10　✓</b></article>
+                <article class="current"><span class="now-label">● HIỆN TẠI</span><small>22 – 31 TUỔI</small><h3>Cung Phu Thê &amp; Tam Hợp Mệnh</h3><p>Thời vận chuyển mình theo chớp khởi nghiệp, đón quý nhân tương trợ.</p><span>Tử Vi • Thiên Phủ • Triệt Viên</span><b>Thuận lợi: 9.2/10　→</b></article>
+                <article><small>32 – 41 TUỔI</small><h3>Cung Tử Tức &amp; Quan Lộc</h3><p>Đỉnh cao chuyên môn và quyền lực quản lý. Tích lũy tài sản thực.</p><span>Vũ Khúc • Hóa Lộc</span><b>Chỉ số: 9.0/10　⌛</b></article>
+                <article><small>42 – 51 TUỔI</small><h3>Cung Tài Bạch</h3><p>Tài lộc vững bền, đầu tư đa nguồn. Tạo dựng di sản dòng họ.</p><span>Thái Âm Miếu Địa • Lộc Tồn</span><b>Chỉ số: 8.8/10　♙</b></article>
+                <article><small>52+ TUỔI</small><h3>Hậu Vận • Thiên Di</h3><p>Tâm trí thanh nhàn, viên mãn tinh thần. Hướng về thiện nguyện.</p><span>Thiên Lương • Thiên Thọ</span><b>Chỉ số: 9.5/10　♙</b></article>
+            </div>
+            <div class="timeline-summary"><span>♧ <b>Đại vận hiện tại (22–31t):</b> Sao Tử Vi - Thiên Phủ đang hội tụ mang đến nguồn sinh lực lớn. Đặt trạng thái tốt nhất vào các năm Thìn và Thân.</span><a th:href="@{/result}" class="button button-light">Đọc toàn bộ luận giải 10 năm</a></div>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

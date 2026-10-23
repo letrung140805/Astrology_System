@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lá số Tử Vi | Tử Vi AI</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <script th:src="@{/js/site.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header('result')}"></div>
+<main class="page-main result-main">
+    <div class="result-titlebar">
+        <div><span class="eyebrow">✦ Lá số Tử Vi Đẩu Số đã lập xong　•　Bản quyền AI Chiêm Tinh v4.2</span><h1>Lá số Tử Vi của <em th:text="${name}">Nguyễn Thị Lan</em></h1></div>
+        <div class="title-actions"><button class="button button-light" type="button" data-print>▣ Xuất PDF lá số</button><button class="button button-light" type="button" data-toast="Đã lưu lá số vào bộ sưu tập của bạn.">♧ Lưu lá số</button><button class="button button-primary" type="button" data-share>⌯ Chia sẻ</button></div>
+    </div>
+    <section class="birth-summary card">
+        <div><small>♙ Dương lịch</small><strong th:text="${birthDate}">12/06/2005</strong><small>Chủ Nhật</small></div>
+        <div><small>☾ Âm lịch</small><strong>06/05 Ất Dậu</strong><small th:text="${'Giờ Tỵ (' + birthTime + ')'}">Giờ Tỵ (10:30)</small></div>
+        <div><small>◉ Bản Mệnh</small><strong>Tuyền Trung Thủy</strong><small>Nước trong giếng</small></div>
+        <div><small>☼ Cung Phi &amp; Cục</small><strong>Khôn Thổ · Thủy Nhị</strong><small>Âm Nữ - Tuổi 20</small></div>
+        <div><small>♧ Nguyên quán</small><strong th:text="${birthplace}">Hà Nội, VN</strong><small>Múi giờ GMT +7</small></div>
+        <div><small>✧ Chủ Thân &amp; Mệnh</small><strong>Lộc Tồn · Tham Lang</strong><small>Thân Cư Quan Lộc</small></div>
+    </section>
+    <div class="result-layout">
+        <section class="chart-column">
+            <div class="subsection-title"><div><span class="eyebrow">✣</span><h2>Bàn Thiên Địa 12 Cung Số</h2></div><small>Nhấp vào từng cung để xem luận giải tinh tú</small></div>
+            <div class="palace-grid card">
+                <button class="palace-card p1 selected" type="button" data-palace="Mệnh"><small>THÌN · MỆNH <i>2 - 11</i></small><strong>Tử Vi • Thiên Phủ</strong><span>Tả Phù · Hữu Bật · Quốc Ấn</span><small>Tiểu hạn: Mão</small></button>
+                <button class="palace-card p2" type="button" data-palace="Phụ Mẫu"><small>TỴ · Phụ Mẫu <i>114 - 123</i></small><strong>Thái Âm (V)</strong><span>Văn Xương · Thiên Khôi · Đà La</span><small>Tiểu hạn: Thìn</small></button>
+                <button class="palace-card p3" type="button" data-palace="Phúc Đức"><small>NGỌ · Phúc Đức <i>104 - 113</i></small><strong>Tham Lang (Đ)</strong><span>Hóa Quyền · Linh Tinh · Phong Cáo</span><small>Tiểu hạn: Tỵ</small></button>
+                <button class="palace-card p4" type="button" data-palace="Điền Trạch"><small>MÙI · Điền Trạch <i>94 - 103</i></small><strong>Cự Môn (M)</strong><span>Hóa Khoa · Bát Tọa · Tam Thai</span><small>Tiểu hạn: Ngọ</small></button>
+                <button class="palace-card p5" type="button" data-palace="Quan Lộc"><small>THÂN · Quan Lộc <i>84 - 93</i></small><strong>Thiên Đồng (V)</strong><span>Hóa Lộc · Tả Phù · Thiên Khốc</span><small>Tiểu hạn: Mùi</small></button>
+                <button class="palace-card p6" type="button" data-palace="Nô Bộc"><small>DẬU · Nô Bộc <i>74 - 83</i></small><strong>Vũ Khúc • Phá Quân</strong><span>Văn Khúc · Thiên Việt · Hóa Tinh</span><small>Tiểu hạn: Thân</small></button>
+                <button class="palace-card p7" type="button" data-palace="Thiên Di"><small>TUẤT · Thiên Di <i>64 - 73</i></small><strong>Thất Sát (Miếu)</strong><span>Thiên Mã · Long Trì · Phượng Các</span><small>Tiểu hạn: Dậu</small></button>
+                <button class="palace-card p8" type="button" data-palace="Tật Ách"><small>HỢI · Tật Ách <i>52 - 61</i></small><strong>Thiên Tướng (Đ)</strong><span>Hỏa Kỵ · Bạch Hổ · Kình Dương</span><small>Tiểu hạn: Tuất</small></button>
+                <div class="chart-center"><span class="eyebrow">THIÊN BÀN BẢN ĐỒ CƯƠNG VỊ</span><h3>TỬ VI ĐẨU SỐ</h3><p>Khôn nguyên niên Can Chi · Mệnh Thủy Ngũ Hành</p><div class="yin-yang">☯</div><div class="chart-pills"><span th:text="${gender} + ' · Thủy Nhị Cục'">Thủy Nhị Cục</span><span>Âm Nữ</span></div><p>Cung Thân đồng cư Cung Quan Lộc</p><div class="chart-date"><span>Lai Nhân Cung<br><b>Cung Phúc Đức</b></span><span>Lưu Niên 2025<br><b>Ất Tỵ (Cung Dậu)</b></span></div></div>
+                <button class="palace-card p9" type="button" data-palace="Tài Bạch"><small>TÝ · Tài Bạch <i>42 - 51</i></small><strong>Vô Chính Diệu</strong><span>Lộc Tồn · Thiên Khôi · Thái Tuế</span><small>Tiểu hạn: Hợi</small></button>
+                <button class="palace-card p10" type="button" data-palace="Tử Tức"><small>SỬU · Tử Tức <i>32 - 41</i></small><strong>Liêm Trinh (V)</strong><span>Thiên Đức · Phúc Đức · Địa Kiếp</span><small>Tiểu hạn: Tý</small></button>
+                <button class="palace-card p11" type="button" data-palace="Phu Thê"><small>DẦN · Phu Thê <i>22 - 31</i></small><strong>Thiên Cơ • Thiên Lương</strong><span>Hóa Khoa · Ân Quang</span><small>Tiểu hạn: Sửu</small></button>
+                <button class="palace-card p12" type="button" data-palace="Huynh Đệ"><small>MÃO · Huynh Đệ <i>12 - 21</i></small><strong>Thái Dương (Đ)</strong><span>Thiên Việt · Đào Hoa · Địa Không</span><small>Tiểu hạn: Dần</small></button>
+            </div>
+            <div class="selected-palace card"><span class="icon-tile lavender">⊙</span><div><strong>Đang chọn: Cung <span data-palace-name>Mệnh</span> (Thìn)</strong><p data-palace-description>Tử Vi và Thiên Phủ hội tụ tại đây, cho thấy tư duy độc lập, khả năng lãnh đạo và thiên hướng tổ chức vững vàng.</p></div><a href="#readings">Xem phân tích chi tiết ↓</a></div>
+        </section>
+        <aside class="insight-column">
+            <article class="card insight-card"><span class="icon-tile gold">♧</span><h2>Tổng quan cuộc đời</h2><small>Khái quát vận số &amp; bản sắc</small><p>Bạn là người sở hữu tư duy chiến lược sâu sắc, nội tâm điềm đạm nhưng giàu tham vọng. Bộ sao Hoàng Gia giúp bạn luôn được quý nhân soi đường, có sức ảnh hưởng tự nhiên đến tập thể và khả năng tự tái tạo sau thử thách rất bền bỉ.</p><div class="insight-line"><span>● Đặc trưng khí chất</span><b>Điềm tĩnh • Trọng nghĩa</b></div><div class="insight-line"><span>● Bước ngoặt đại vận</span><b>Giai đoạn 22 - 28 tuổi</b></div></article>
+            <article class="card radar-card"><h2>Thước đo Ngũ Khí Vận Mệnh</h2><small>Phân bố căn bản theo trường năng lượng can chi</small><svg viewBox="0 0 260 220" role="img" aria-label="Biểu đồ ngũ hành"><polygon points="130,27 218,89 184,188 76,188 42,89" fill="none" stroke="#ddd9e5"/><polygon points="130,50 196,97 170,166 91,166 64,97" fill="none" stroke="#ddd9e5"/><polygon points="130,73 174,105 157,145 105,145 87,105" fill="none" stroke="#ddd9e5"/><path d="M130 49 L194 95 L169 166 L91 162 L72 96 Z" fill="rgba(94,84,167,.22)" stroke="#6057a8" stroke-width="2"/><circle cx="130" cy="49" r="4" fill="#171746"/><circle cx="194" cy="95" r="4" fill="#171746"/><circle cx="169" cy="166" r="4" fill="#171746"/><circle cx="91" cy="162" r="4" fill="#171746"/><circle cx="72" cy="96" r="4" fill="#171746"/><text x="130" y="17" text-anchor="middle">Thiên Thời (85%)</text><text x="225" y="95">Trí Tuệ</text><text x="181" y="205">Tài Lộc</text><text x="39" y="205">Địa Lợi</text><text x="2" y="95">Nhân Hòa</text></svg><p class="radar-note">Khí vận đạt đỉnh ở trục <b>Trí Tuệ &amp; Thiên thời</b>. Nên tận dụng các kế hoạch học thuật, sáng tạo và mở rộng quan hệ đối ngoại.</p></article>
+        </aside>
+    </div>
+    <section id="readings" class="readings-section">
+        <div class="subsection-title"><div><span class="eyebrow">LUẬN GIẢI CHUYÊN SÂU</span><h2>Luận giải 4 Trụ Vận Mệnh Cốt Lõi</h2><p>Phân tích chuyên sâu từ sự phối chiếu của các Chính Diệu và Tuần Triệt</p></div><button class="text-button" type="button" data-expand-all>☷ Mở rộng toàn bộ</button></div>
+        <div class="reading-grid">
+            <details class="reading-card" open><summary><span class="icon-tile neutral">▣</span><span><b>Sự nghiệp &amp; Công danh</b><small>Cung Thân đồng Quan Lộc • Thiên Đồng (V)</small></span></summary><p>Cung Quan Lộc tọa tại Thân mang sao Thiên Đồng đắc địa hội tụ Hóa Lộc và Tả Phù biểu thị một con đường nghề nghiệp mở rộng bằng sáng tạo, giao tiếp và kết nối cộng đồng.</p><div class="reading-note"><b>▣ Lĩnh vực vượng phát nhất:</b><p>Công nghệ - Truyền thông số, nghiên cứu dữ liệu, thiết kế giải pháp chiến lược, giáo dục đào tạo hoặc cố vấn độc lập.</p></div></details>
+            <details class="reading-card"><summary><span class="icon-tile lavender">♡</span><span><b>Tình duyên &amp; Gia đạo</b><small>Cung Phu Thê tại Dần • Cơ Lương Đồng Hành</small></span></summary><p>Đề cao sự đồng điệu trí tuệ và cùng chia sẻ những giá trị sống bền vững. Giao tiếp chân thành là chìa khóa giúp tình cảm thêm gắn kết.</p></details>
+            <details class="reading-card"><summary><span class="icon-tile gold">▣</span><span><b>Tài lộc &amp; Năng lực tài chính</b><small>Cung Tài Bạch tại Tý • Vô Chính Diệu đắc Lộc Tồn</small></span></summary><p>Tài chính thuận từ sự tích lũy có kế hoạch, kỹ năng chuyên môn và các cơ hội cộng tác dài hạn.</p></details>
+            <details class="reading-card"><summary><span class="icon-tile neutral">⌛</span><span><b>Vận hạn theo giai đoạn (Đại vận)</b><small>Đại vận 22 - 31 tuổi (Cung Dần) &amp; Lưu niên 2025</small></span></summary><p>Thời kỳ thích hợp để học hỏi, mở rộng quan hệ và xây dựng nền tảng nghề nghiệp ổn định.</p></details>
+        </div>
+    </section>
+    <div class="disclaimer result-disclaimer"><span>⚠</span><p><b>Lưu ý quan trọng</b><br>Thông tin trên được cung cấp với mục đích tham khảo, chiêm nghiệm văn hóa và khám phá bản thân; không phải cơ sở để đưa ra các quyết định quan trọng về y tế, tài chính hoặc pháp lý.</p></div>
+</main>
+<a class="chat-fab" th:href="@{/chat}">✦ Hỏi AI Tử Vi</a>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

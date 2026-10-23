@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trợ lý AI Đàm Đạo Lá Số | Tử Vi AI</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <script th:src="@{/js/site.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header('chat')}"></div>
+<main class="chat-page">
+    <section class="chat-window">
+        <header class="chat-header"><span class="icon-tile gold">⊙</span><div><h1>Trợ lý AI Đàm Đạo Lá Số <span class="live-pill">● Trực tuyến 24/7</span></h1><p>Đang đối chiếu 12 cung số theo thời gian thực — <b>Nguyễn Thị Lan</b> (Ất Dậu • Mạng Thủy • Thân Cư Quan Lộc)</p></div><div class="chat-header-actions"><button type="button" data-toast="Cuộc trò chuyện mới đã sẵn sàng.">◴ Làm mới</button><button type="button" data-print>⇩ Tải lịch sử</button></div></header>
+        <div class="chat-messages" data-chat-messages>
+            <article class="message assistant"><span class="chat-avatar">AI</span><div><div class="message-bubble">Chào Lan! Tôi đã nạp toàn bộ cấu trúc 12 cung thiên bàn, tam phương tứ chính và chu kỳ ngũ hành vận khí của bạn (<em>Cung Mệnh ngự Tử Vi - Thiên Phủ tại Thìn</em>, cung Thân đồng cư Quan Lộc đắc Thiên Đồng).<p>Bạn đang muốn đào sâu về định hướng công danh sự nghiệp, đường tình duyên gia đạo hay vận trình tiểu hạn năm nay?</p></div><small>Tử Vi AI • Vừa xong</small></div></article>
+            <article class="message user-message"><div><div class="message-bubble">Năm 2025 này tôi có dự định mở rộng kinh doanh hoặc học thêm kỹ năng mới thì góc độ sao chiếu như thế nào? Cần lưu ý điều gì?</div><small>Bạn • 2 phút trước</small></div><span class="chat-avatar">Lan</span></article>
+            <article class="message assistant"><span class="chat-avatar">AI</span><div><div class="message-bubble"><div class="message-tags"><span>♧ Cung Quan Lộc • Thiên Đồng (V)</span><span>▦ Đại Vận 22 – 31 tuổi (Cơ Lương)</span><span>Lưu Niên Ất Tỵ, 2025</span></div><p>Trong năm Ất Tỵ 2025, trực vận của bạn chuyển động qua cung Dậu (Nô Bộc), tam chiếu hội tụ với Quan Lộc và Phu Thê. Bộ sao <b>Thiên Đồng đắc địa ngộ Hóa Lộc</b> báo hiệu đây là một năm hanh thông cho trao đổi tri thức, tiếp cận công nghệ mới và mở rộng mạng lưới tri thức.</p><div class="answer-tip">♧ Kim chỉ nam hành động từ lá số: chia nhỏ kế hoạch, thử nghiệm có kiểm soát và duy trì quỹ dự phòng trước khi mở rộng.</div></div><small>Tử Vi AI • Vừa xong</small></div></article>
+        </div>
+        <div class="quick-prompts"><small>✧ GỢI Ý CÂU HỎI NHANH DÀNH RIÊNG CHO BẢN MỆNH CỦA BẠN:</small><div><button type="button" data-prompt="Cung Phu Thê có đào hoa hay trắc trở không?">🎯 Cung Phu Thê có đào hoa hay trắc trở không?</button><button type="button" data-prompt="Nên làm độc lập hay hợp tác chung?">▣ Nên làm độc lập hay hợp tác chung?</button><button type="button" data-prompt="Tháng nào cần cẩn trọng tài chính năm 2025?">◉ Tháng nào cần cẩn trọng tài chính năm 2025?</button><button type="button" data-prompt="Cách phát huy thế cục Đế Tọa Triều Cương?">✦ Cách phát huy thế cục Đế Tọa Triều Cương?</button></div></div>
+        <form class="chat-form" data-chat-form><input aria-label="Tin nhắn" placeholder="Hỏi bất kỳ điều gì về cung mệnh, đại vận, công danh, tài bạch của bạn..."><button class="pin-button" type="button" data-toast="Cung Mệnh • Tử Vi - Thiên Phủ đã được ghim.">♧ Ghim Cung</button><button class="button chat-send" type="submit">Đàm đạo ➤</button></form>
+        <div class="chat-footnote"><span>♙ Tử Vi AI phân tích dựa trên dịch lý và dữ liệu chiêm tinh cá nhân hóa của bạn. Không lưu trữ thông tin nhạy cảm.</span><span>Mô hình giải đoán AI Chiêm Tinh v4.2</span></div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
