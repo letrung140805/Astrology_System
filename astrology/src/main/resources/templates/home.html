@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lá số Tử Vi cá nhân hóa bởi AI | Tử Vi AI</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <script th:src="@{/js/site.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header('home')}"></div>
+<main>
+    <section class="hero home-hero">
+        <div class="hero-copy">
+            <span class="eyebrow">✦ Chiêm tinh học phương Đông &amp; Trí tuệ AI 4.0</span>
+            <h1>Lá số Tử Vi<br><em>Cá nhân hóa bởi AI</em></h1>
+            <p>Chỉ với vài thông tin cơ bản, bạn có thể khám phá toàn diện bản đồ số mệnh và đón nhận phân tích chuẩn xác về bản mệnh, cung sự nghiệp, duyên nợ hôn phối và vận hạn từng thời kỳ.</p>
+            <div class="hero-spark">✦</div>
+            <p class="handwritten">Khám phá bản thân từ những vì sao ✨</p>
+            <div class="trust-row"><span>♧ 100% Bảo mật dữ liệu</span><span>✣ Thuật toán 108 Tinh Đẩu</span><span>◉ Bình giải tức thì</span></div>
+        </div>
+        <form class="chart-form card" th:action="@{/result}" method="get">
+            <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Điền đầy đủ thông tin để khởi tạo lá số và giải đoán vận trình chuẩn xác nhất.</p></div></div>
+            <label for="fullName">Họ và tên</label>
+            <div class="input-with-icon"><span>♙</span><input id="fullName" name="name" required value="Nguyễn Thị Lan" placeholder="Ví dụ: Nguyễn Thị Lan"></div>
+            <label>Giới tính sinh học (Âm Dương)</label>
+            <div class="gender-options"><label class="gender-choice selected"><input type="radio" name="gender" value="Nữ" checked><span>♀</span> Nữ (Âm Nữ)</label><label class="gender-choice"><input type="radio" name="gender" value="Nam"><span>♂</span> Nam (Dương Nam)</label></div>
+            <div class="form-two">
+                <div><label for="birthDate">Ngày sinh (Dương lịch)</label><div class="input-with-icon"><span>▦</span><input id="birthDate" name="birthDate" type="date" value="2005-06-12" required></div></div>
+                <div><label for="birthTime">Giờ sinh</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time" value="10:30" required></div></div>
+            </div>
+            <label for="birthplace">Nơi ở hoặc sinh quán (Kinh độ)</label>
+            <div class="input-with-icon"><span>♧</span><input id="birthplace" name="birthplace" value="Hà Nội, Việt Nam" required placeholder="Tỉnh / thành phố"><span class="input-end">⌕</span></div>
+            <button class="button button-primary button-wide" type="submit"><span class="button-spark">✦</span> Xem lá số tử vi　→</button>
+            <p class="privacy-note">♙ Thông tin của bạn được mã hóa và bảo mật tuyệt đối</p>
+        </form>
+    </section>
+    <section class="section section-muted">
+        <div class="section-heading centered"><span class="eyebrow">✦ HÀNH TRÌNH CHIÊM NGHIỆM ✦</span><h2>Khám phá lá số của bạn trong 3 bước</h2><p>Quy trình tinh gọn, nhanh chóng nhờ sự kết hợp giữa mô hình tri thức cổ học và thuật toán AI tiên tiến.</p></div>
+        <div class="steps-grid">
+            <article class="step-card"><span class="icon-tile lilac">▣</span><small>Bước 01</small><h3>Nhập thông tin</h3><p>Cung cấp họ tên, ngày tháng năm sinh, khung giờ và địa điểm để hệ thống xác lập tọa độ Can Chi chuẩn.</p></article>
+            <article class="step-card"><span class="icon-tile gold">♧</span><small>Bước 02</small><h3>AI đối chiếu &amp; Luận giải</h3><p>Mô hình học máy tổng hợp 14 Chính Tinh, hàng trăm bảng tinh và các cách cục phức tạp để giải đoán đa chiều.</p></article>
+            <article class="step-card"><span class="icon-tile lavender">⊙</span><small>Bước 03</small><h3>Khám phá bản thân</h3><p>Nhận báo cáo trực quan về tính cách, bước ngoặt sự nghiệp, vận hội tài chính và hướng hóa giải vận hạn.</p></article>
+        </div>
+    </section>
+    <section class="section benefits-section">
+        <div class="section-heading centered"><span class="eyebrow">✦ ƯU THẾ VƯỢT TRỘI ✦</span><h2>Tại sao nên chọn Tử Vi AI?</h2><p>Công nghệ AI hiện đại kết hợp cùng kho tàng cổ thư Đông Á, mang đến cho bạn góc nhìn thấu suốt, thoát khỏi mê tín dị đoan.</p></div>
+        <div class="benefit-grid">
+            <article class="benefit-card"><span class="benefit-icon purple">ϟ</span><h3>Nhanh chóng</h3><p>Chỉ mất vài giây để khởi tạo toàn bộ thiên bàn và địa bàn chi tiết.</p></article>
+            <article class="benefit-card"><span class="benefit-icon green">◉</span><h3>Chính xác</h3><p>Dựa trên thuật toán giải hạn chuẩn xác theo sách Tử Vi Áo Bí &amp; Toàn Thư.</p></article>
+            <article class="benefit-card"><span class="benefit-icon blue">✪</span><h3>Dễ hiểu</h3><p>Ngôn ngữ hiện đại, giải nghĩa thuật ngữ dễ tiếp cận, loại bỏ rào cản từ Hán Việt.</p></article>
+            <article class="benefit-card"><span class="benefit-icon orange">♥</span><h3>Toàn diện</h3><p>Bao quát trọn đời: sự nghiệp, quan lộc, hôn nhân, tiền tài và đại vận 10 năm.</p></article>
+            <article class="benefit-card"><span class="benefit-icon pink">♙</span><h3>Bảo mật</h3><p>Tuyệt đối không lưu trữ trái phép hay chia sẻ ngày giờ sinh cho bên thứ ba.</p></article>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

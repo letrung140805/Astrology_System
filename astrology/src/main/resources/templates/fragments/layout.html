@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="site-header" th:fragment="header(activePage)">
+    <a class="brand" th:href="@{/}" aria-label="Tử Vi AI - Trang chủ">
+        <span class="brand-mark" aria-hidden="true">✥</span>
+        <span class="brand-copy"><strong>Tử Vi AI</strong><small>Hiểu mình · Đón vận · Kiến tạo tương lai</small></span>
+    </a>
+    <button class="mobile-menu" type="button" aria-label="Mở menu" aria-expanded="false">☰</button>
+    <nav class="main-nav" aria-label="Điều hướng chính">
+        <a th:href="@{/}" th:classappend="${activePage == 'home'} ? 'active' : ''">Trang chủ</a>
+        <a th:href="@{/about}" th:classappend="${activePage == 'about'} ? 'active' : ''">Giới thiệu</a>
+        <a th:href="@{/history}" th:classappend="${activePage == 'history'} ? 'active' : ''">Lịch sử lá số</a>
+    </nav>
+    <div class="header-actions">
+        <button class="icon-button theme-toggle" type="button" aria-label="Đổi giao diện">☾</button>
+        <div class="language-switch" aria-label="Chọn ngôn ngữ"><button class="selected" type="button">VN</button><button type="button">EN</button></div>
+        <div class="profile-wrap">
+            <button class="profile-button" type="button" aria-label="Tài khoản" aria-expanded="false">♙</button>
+            <div class="profile-menu">
+                <a th:href="@{/account}">⚙ Quản lý tài khoản</a>
+                <a th:href="@{/login}">↪ Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<footer class="site-footer" th:fragment="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a class="brand" th:href="@{/}"><span class="brand-mark" aria-hidden="true">✥</span><span class="brand-copy"><strong>Tử Vi AI</strong></span></a>
+            <p>Nền tảng luận giải Tử Vi Đẩu Số thông minh kết hợp tri thức cổ nhân Đông Phương và mô hình AI tiên tiến, mang lại sự thấu hiểu nội tâm và định hướng tương lai chuẩn xác.</p>
+            <div class="social-links"><a th:href="@{/chat}" aria-label="Trò chuyện">▣</a><a th:href="@{/about}" aria-label="Khám phá">⊙</a><a th:href="@{/history}" aria-label="Thông báo">♧</a><a th:href="@{/account}" aria-label="Liên hệ">✉</a></div>
+        </div>
+        <div><h3>Tra cứu Tử Vi</h3><a th:href="@{/}">Lập lá số Tử Vi trọn đời</a><a th:href="@{/history}">Luận giải đại vận 10 năm</a><a th:href="@{/history}">Bình giải lưu niên tiểu hạn</a><a th:href="@{/result}">Tương hợp duyên số hôn nhân</a></div>
+        <div><h3>Học thuật &amp; Tài nguyên</h3><a th:href="@{/about}">14 Chính Tinh &amp; Phụ Tinh</a><a th:href="@{/about}">Cơ chế tính Âm Dương - Can Chi</a><a th:href="@{/about}">Câu hỏi thường gặp</a><a th:href="@{/chat}">Cẩm nang giải đoán AI</a></div>
+        <div><h3>Pháp lý &amp; Cam kết</h3><a th:href="@{/account}">Chính sách quyền riêng tư</a><a th:href="@{/account}">Điều khoản sử dụng dịch vụ</a><a th:href="@{/account}">Bảo mật dữ liệu ngày giờ sinh</a><a th:href="@{/about}">Miễn trừ trách nhiệm</a></div>
+    </div>
+    <div class="disclaimer"><span>ⓘ</span><p><strong>Khuyến cáo minh triết:</strong> Các luận giải và phân tích lá số trên nền tảng Tử Vi AI mang ý nghĩa tham vấn chiêm tinh và định hướng tự hiểu bản thân, không thể thay thế cho các quyết định pháp lý, y tế, hoặc đầu tư tài chính chuyên môn.</p></div>
+    <div class="footer-bottom"><span>© 2025 Tử Vi AI. Bản quyền thuộc về Viện Nghiên cứu Chiêm Tinh Học Số.</span><span>◉ Đồng bộ lịch Vạn Niên 1900 - 2100　 ·　♙ Bảo mật AES-256</span></div>
+</footer>
+</body>
+</html>

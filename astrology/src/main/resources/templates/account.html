@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý tài khoản | Tử Vi AI</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <script th:src="@{/js/site.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header('account')}"></div>
+<main class="page-main account-main">
+    <section class="page-intro account-intro"><span class="eyebrow">✣ HỆ THỐNG ĐỊNH DANH BẢN MỆNH AI</span><h1>Trung Tâm Quản Lý Tài Khoản &amp; Bản Mệnh</h1><p>Quản lý hồ sơ định danh, gói hội viên luận giải AI, bảo mật dữ liệu sinh thân và tùy biến thông báo thiên thời theo chuẩn thuật toán Tử Vi Đẩu Số.</p></section>
+    <div class="account-layout">
+        <aside class="account-sidebar"><div class="sidebar-menu"><button class="active" type="button" data-account-tab="profile">♙　Hồ sơ &amp; Bản mệnh　›</button><button type="button" data-account-tab="charts">♟　Lá số gia đạo <span>4/10</span></button></div><a class="button button-light button-wide" th:href="@{/login}">↪ Đăng xuất an toàn</a></aside>
+        <div class="account-content">
+            <section class="card account-profile" data-account-panel="profile">
+                <div class="account-user"><span class="portrait">NL</span><div><h2>Nguyễn Thị Lan <span class="gold-tag">◉ Bản Mệnh Plus</span></h2><p>✉ nguyen.lan@example.com　 ☎ +84 987 ••• 321　▦ Gia nhập: Tháng 03/2024</p></div><button class="button button-light" type="button" data-toast="Vui lòng chọn ảnh đại diện từ trang hồ sơ.">▣ Đổi ảnh</button></div>
+                <div class="chart-count"><small>▣ Lá số đã lập</small><strong>04</strong><small>Hạn mức tối đa 10</small></div>
+            </section>
+            <section class="card personal-card" data-account-panel="profile">
+                <div class="card-heading"><div><h2>◉ Thông Tin Cá Nhân &amp; Giờ Sinh Gốc</h2><p>Dữ liệu sinh thân quyết định 108 vị tinh tú, can chi năm tháng ngày giờ và các vòng vận hạn.</p></div><span class="status-label">Đã khóa tham chiếu</span></div>
+                <form class="account-form">
+                    <label>Họ và tên dương số<input value="Nguyễn Thị Lan"></label><label>Giới tính sinh học &amp; Âm Dương<select><option>Nữ giới (Âm Nữ)</option><option>Nam giới (Dương Nam)</option></select></label>
+                    <label>Ngày sinh Dương lịch<input type="date" value="2005-06-12"></label><label>Âm lịch quy đổi (Tự động)<input value="06/05 Ất Dậu (Năm Ất Dậu)" disabled></label>
+                    <label>Giờ sinh chuẩn xác<input type="time" value="10:30"></label><label>Nơi sinh (Hiệu chỉnh kinh độ)<input value="Hà Nội, Việt Nam (GMT+7)"></label>
+                    <div class="account-notice">♧　<b>Lưu ý bảo chứng tinh tú:</b> Giờ sinh gốc của bạn đã được mã hóa bất khả biến và dùng làm tham chiếu chuẩn cho toàn bộ chu kỳ an sao Thiên Bàn, 12 Cung chức, Lưu Thái Tuế và gợi ý khai vận Daily Insight mỗi sớm mai.</div>
+                    <div class="form-actions"><button class="button button-light" type="reset">Hủy thao tác</button><button class="button button-primary" type="submit">▣ Lưu thay đổi</button></div>
+                </form>
+            </section>
+            <section class="card family-panel hidden" data-account-panel="charts"><div class="card-heading"><div><h2>♟ Lá số gia đạo</h2><p>Quản lý những hồ sơ đã được bạn tạo gần đây.</p></div></div><div class="family-list"><a th:href="@{/result}"><span class="avatar-initial">Lan</span><span><b>Nguyễn Thị Lan</b><small>Bản mệnh cá nhân · 12/06/2005</small></span><span>Đang xem →</span></a><a href="#" data-toast="Đây là hồ sơ mẫu trong giao diện minh họa."><span class="avatar-initial">Minh</span><span><b>Trần Minh Anh</b><small>Thành viên gia đình · 04/11/1999</small></span><span>Mở lá số →</span></a></div><button class="button button-primary" type="button" data-toast="Tạo hồ sơ mới bằng biểu mẫu ở trang chủ.">＋ Thêm lá số gia đình</button></section>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
