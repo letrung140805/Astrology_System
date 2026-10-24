@@ -26,6 +26,12 @@ class BirthInputNormalizationServiceTests {
 	}
 
 	@Test
+	void keepsHourBranchDistinctFromTheEarthlyBranchPositionType() {
+		assertEquals(EarthlyBranch.TY, HourBranch.ZI.earthlyBranch());
+		assertEquals("Tý", HourBranch.ZI.vietnameseName());
+	}
+
+	@Test
 	void recordsUnspecifiedZiHourDateBoundaryInsteadOfGuessing() {
 		var normalized = service.normalizeSolar(
 				LocalDate.of(2000, 1, 1), LocalTime.of(23, 0),
