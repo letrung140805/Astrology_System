@@ -2,9 +2,10 @@ package com.example.astrology.calculation;
 
 public enum CalculationGap {
 
-	LUNAR_CALENDAR("Chưa chọn thuật toán và nguồn lịch âm, gồm quy tắc tháng nhuận."),
-	CAN_CHI_YEAR_BOUNDARY("Chưa xác định năm Can Chi đổi tại Tết âm lịch hay tiết Lập Xuân."),
-	CAN_CHI_RULES("Chưa có thuật toán Can Chi ngày, tháng, năm, giờ kèm nguồn đối chiếu."),
+	LUNAR_CALENDAR("Ngày dương chưa đổi được sang âm lịch trong phạm vi nguồn lịch hiện hỗ trợ."),
+	CAN_CHI_YEAR_BOUNDARY("Chưa xác định được năm Can Chi theo quy ước đổi năm đã chọn."),
+	CAN_CHI_RULES("Can Chi tháng, ngày và giờ chưa được tính từ quy tắc có nguồn đối chiếu."),
+	NATAL_ELEMENT("Chưa xác định được ngũ hành Nạp Âm năm theo bảng đã chọn."),
 	MENH_AND_CUC("Chưa có quy tắc an Mệnh, an Thân và xác định Cục được chọn, kèm nguồn."),
 	TWELVE_PALACES("Chưa có quy tắc an 12 cung, cung khởi và chiều an cung."),
 	STAR_PLACEMENT("Chưa có bảng/quy tắc an sao, miếu vượng hãm và tứ hóa có nguồn kiểm chứng."),

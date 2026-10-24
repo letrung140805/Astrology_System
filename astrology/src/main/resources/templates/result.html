@@ -12,16 +12,19 @@
         <div><span class="eyebrow">✦ Dữ liệu tính toán được</span><h1>Thông tin sinh của <em th:text="${name}">Người dùng</em></h1></div>
     </div>
     <section class="birth-summary card">
-        <div><small>Ngày dương lịch nhập</small><strong th:text="${birthDate}">12/06/2005</strong><small>Chưa tự quy đổi sang âm lịch</small></div>
+        <div><small>Ngày dương lịch nhập</small><strong th:text="${birthDate}">12/06/2005</strong><small>Lịch Việt Nam UTC+7</small></div>
+        <div><small>Ngày âm lịch tự quy đổi</small><strong th:if="${lunarDate != null}" th:text="${lunarDate.day + '/' + lunarDate.month + '/' + lunarDate.year + (lunarDate.leapMonth ? ' (nhuận)' : '')}">Ngày âm</strong><strong th:if="${lunarDate == null}">Chưa xác định</strong><small th:if="${lunarDate != null}" th:text="${lunarCalendarName}">Nguồn lịch</small><small th:if="${lunarDate == null}">Ngày nằm ngoài phạm vi hiện hỗ trợ</small></div>
         <div><small>Giờ địa phương nhập</small><strong th:text="${birthTime != null ? birthTime : 'Không rõ'}">10:30</strong><small>Chưa hiệu chỉnh giờ mặt trời</small></div>
         <div><small>Địa chi giờ tính được</small><strong th:text="${hourBranch != null ? hourBranch.earthlyBranch.vietnameseName : 'Chưa xác định'}">Tỵ</strong><small>Chỉ phân loại theo giờ địa phương nhập</small></div>
         <div><small>Giới tính đã nhập</small><strong th:text="${gender}">Chưa rõ</strong><small>Áp dụng quy ước giới tính nếu có chart</small></div>
         <div><small>Nơi sinh đã nhập</small><strong th:text="${birthplace != null ? birthplace : 'Chưa cung cấp'}">Hà Nội, Việt Nam</strong><small>Chưa tra tọa độ hoặc múi giờ lịch sử</small></div>
+        <div th:if="${yearCanChi != null}"><small>Can Chi năm âm lịch</small><strong th:text="${yearCanChi}">Ất Dậu</strong><small>Tính theo năm âm lịch</small></div>
+        <div th:if="${yearNayinElement != null}"><small>Ngũ hành Nạp Âm năm</small><strong th:text="${yearNayinElement}">Thủy</strong><small><a th:href="${yearNayinSource}" target="_blank" rel="noreferrer">Bảng tham khảo CEStu</a></small></div>
     </section>
 
     <section class="card result-notice" role="status">
-        <h2>Phần chưa tính được từ ngày dương lịch</h2>
-        <p>Ứng dụng chưa có bộ chuyển lịch âm, Can Chi và Nạp Âm đã kiểm chứng; vì vậy không tự tạo các dữ liệu này.</p>
+        <h2>Giới hạn của phép tính</h2>
+        <p>Ngày âm được chuyển tự động theo lịch Việt Nam GMT+7. Lá số và các quy tắc còn lại vẫn là profile ứng viên, chưa được xác minh độc lập bằng tập lá số tham chiếu.</p>
         <ul><li th:each="gap : ${remainingGaps}" th:text="${gap.description}">Quy tắc cần xác định</li></ul>
         <ul th:if="${chart != null}"><li th:each="limitation : ${chartLimitations}" th:text="${limitation}">Giới hạn chart ứng viên</li></ul>
     </section>
@@ -30,36 +33,69 @@
         <p th:text="${chartInputMessage}">Thông tin âm lịch chưa đầy đủ.</p>
     </section>
 
-    <section class="chart-result" th:if="${chart != null}">
+    <section class="chart-result">
         <div class="chart-heading">
-            <span class="eyebrow">✣ KẾT QUẢ CÓ CẤU TRÚC</span>
-            <h2>Lá số theo ruleset ứng viên</h2>
-            <p>Profile: <code th:text="${chart.ruleSetVersion}">ruleset-version</code></p>
-            <p class="unverified-warning">Các phép an này được ghi nhận từ nguồn đã nêu nhưng chưa được xác minh bằng fixture lá số thực. Không dùng như kết quả chính thức.</p>
+            <span class="eyebrow">✣ KHUNG LÁ SỐ TỬ VI</span>
+            <h2 th:if="${chart != null}">Lá số theo ruleset ứng viên</h2>
+            <h2 th:if="${chart == null}">12 cung chức của lá số</h2>
+            <p th:if="${chart != null}">Profile: <code th:text="${chart.ruleSetVersion}">ruleset-version</code></p>
+            <p th:if="${chart != null}" th:text="${lunarCalendarName + ' · ' + lunarCalendarVersion}">Nguồn lịch · phiên bản</p>
+            <p class="unverified-warning" th:if="${chart != null}">Các phép an này chưa được xác minh bằng fixture lá số thực. Không dùng như kết quả chính thức.</p>
+            <div class="chart-input-needed" th:if="${chart == null}">
+                <p th:text="${chartInputMessage != null ? chartInputMessage : 'Chưa thể tính vị trí cung và sao từ thông tin hiện có.'}">Chưa đủ dữ liệu để tính.</p>
+                <a class="button button-primary" th:if="${birthTime == null}" th:href="@{/#birthTime}">Bổ sung giờ sinh</a>
+            </div>
         </div>
-        <section class="birth-summary card calculated-summary">
-            <div><small>Ngày âm đã nhập</small><strong th:text="${chart.input.lunarDay + '/' + chart.input.lunarMonth + '/' + chart.input.lunarYear}">15/5/1999</strong><small th:text="${chart.input.leapMonth ? 'Tháng nhuận' : 'Tháng thường'}">Tháng thường</small></div>
-            <div><small>Can Chi năm đã nhập</small><strong th:text="${chart.input.yearStem.vietnameseName + ' ' + chart.input.yearBranch.vietnameseName}">Kỷ Mão</strong><small>Do người dùng cung cấp, chưa tự tính</small></div>
-            <div><small>Địa chi giờ</small><strong th:text="${chart.input.birthHour.earthlyBranch.vietnameseName}">Mão</strong><small>Phân loại từ giờ địa phương</small></div>
-            <div><small>Cung Mệnh</small><strong th:text="${chart.positions.mingPalace.vietnameseName}">Dần</strong><small>Địa chi cung</small></div>
-            <div><small>Cung Thân</small><strong th:text="${chart.positions.thanPalace.vietnameseName}">Thân</strong><small>Địa chi cung</small></div>
-            <div><small>Ngũ hành Cục</small><strong th:text="${chart.positions.bureau.vietnameseName}">Thủy Nhị Cục</strong><small>Bảng Tra Cứu Tử Vi</small></div>
-        </section>
-        <div class="palace-results">
-            <article class="card palace-result" th:each="palace : ${chartPalaces}">
+        <div class="chart-scroll-frame" th:if="${chart != null}">
+            <div class="astrology-chart-grid">
+            <article class="chart-palace" th:each="palace : ${chartPalaces}"
+                     th:classappend="${'palace-' + palace.function.name().toLowerCase()}">
                 <div class="palace-result-heading">
                     <h3 th:text="${palace.function.vietnameseName}">Mệnh</h3>
                     <span th:text="${palace.branch.vietnameseName}">Dần</span>
                 </div>
-                <ul th:if="${!palace.stars.isEmpty()}">
+                <ul class="chart-star-list" th:if="${!palace.stars.isEmpty()}">
                     <li th:each="star : ${palace.stars}" th:text="${star}">Tử Vi</li>
                 </ul>
-                <p class="empty-palace" th:if="${palace.stars.isEmpty()}">Chưa có sao trong các nhóm đã tính.</p>
+                <p class="empty-palace" th:if="${palace.stars.isEmpty()}">Chưa có sao thuộc các nhóm đã tính.</p>
+            </article>
+            <section class="astrology-chart-center">
+                <div class="chart-center-brand">
+                    <span class="chart-center-mark">✦</span>
+                    <div><strong>TỬ VI VIỆT</strong><small>LÁ SỐ CÁ NHÂN</small></div>
+                </div>
+                <p class="chart-center-name" th:text="${name}">Tên người xem</p>
+                <dl class="chart-center-details">
+                    <div><dt>Ngày sinh</dt><dd th:text="${birthDate}">01/01/2000</dd></div>
+                    <div><dt>Giờ sinh</dt><dd th:text="${birthTime != null ? birthTime : 'Chưa rõ'}">12:00</dd></div>
+                    <div><dt>Giới tính</dt><dd th:text="${gender}">Chưa rõ</dd></div>
+                    <div><dt>Âm lịch</dt><dd th:text="${chart.input.lunarDay + '/' + chart.input.lunarMonth + '/' + chart.input.lunarYear + (chart.input.leapMonth ? ' nhuận' : '')}">Ngày âm</dd></div>
+                    <div><dt>Năm Can Chi</dt><dd th:text="${yearCanChi}">Can Chi</dd></div>
+                    <div><dt>Ngũ hành năm</dt><dd th:text="${yearNayinElement}">Ngũ hành</dd></div>
+                    <div><dt>Cung Mệnh</dt><dd th:text="${chart.positions.mingPalace.vietnameseName}">Dần</dd></div>
+                    <div><dt>Cung Thân</dt><dd th:text="${chart.positions.thanPalace.vietnameseName}">Thân</dd></div>
+                    <div><dt>Bản Cục</dt><dd th:text="${chart.positions.bureau.vietnameseName}">Cục</dd></div>
+                </dl>
+                <p class="chart-center-disclaimer">Chart theo bộ quy tắc ứng viên · chưa xác minh độc lập đầy đủ</p>
+            </section>
+            </div>
+        </div>
+        <div class="palace-results palace-placeholders" th:if="${chart == null}">
+            <article class="card palace-result" th:each="function : ${{
+                    'Mệnh', 'Phụ Mẫu', 'Phúc Đức', 'Điền Trạch',
+                    'Quan Lộc', 'Nô Bộc', 'Thiên Di', 'Tật Ách',
+                    'Tài Bạch', 'Tử Tức', 'Phu Thê', 'Huynh Đệ'
+                }}">
+                <div class="palace-result-heading">
+                    <h3 th:text="${function}">Mệnh</h3>
+                    <span>Chưa an</span>
+                </div>
+                <p class="empty-palace" th:text="${chartInputMessage != null ? chartInputMessage : 'Chưa đủ dữ liệu để tính vị trí cung.'}">Chưa đủ dữ liệu để tính.</p>
             </article>
         </div>
     </section>
 
-    <div class="disclaimer result-disclaimer"><span>⚠</span><p><b>Giới hạn kết quả</b><br>Engine chỉ hiển thị dữ liệu được tính từ input và ruleset nêu trên. Các nhóm chưa triển khai hoặc chưa có căn cứ không được suy diễn; kết quả hiện tại không phải lá số đã xác minh đầy đủ hay nội dung luận giải.</p></div>
+    <div class="disclaimer result-disclaimer"><span>⚠</span><p><b>Giới hạn kết quả</b><br>Ngày âm và Can Chi năm được tính tự động theo quy ước lịch Việt Nam GMT+7. Cung và sao dùng ruleset ứng viên chưa được đối chiếu độc lập; phần chưa triển khai không được suy diễn và kết quả không phải lá số đã xác minh đầy đủ.</p></div>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>
 </body>

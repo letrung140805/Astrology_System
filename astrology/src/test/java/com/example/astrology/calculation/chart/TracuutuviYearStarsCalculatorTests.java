@@ -55,6 +55,44 @@ class TracuutuviYearStarsCalculatorTests {
 	}
 
 	@Test
+	void placesTianKuiAndTianVietFromTheYearStemTable() {
+		EarthlyBranch[][] expected = {
+				{ EarthlyBranch.SUU, EarthlyBranch.MUI },
+				{ EarthlyBranch.TY, EarthlyBranch.THAN },
+				{ EarthlyBranch.HOI, EarthlyBranch.DAU },
+				{ EarthlyBranch.HOI, EarthlyBranch.DAU },
+				{ EarthlyBranch.SUU, EarthlyBranch.MUI },
+				{ EarthlyBranch.TY, EarthlyBranch.THAN },
+				{ EarthlyBranch.SUU, EarthlyBranch.MUI },
+				{ EarthlyBranch.NGO, EarthlyBranch.DAN },
+				{ EarthlyBranch.MAO, EarthlyBranch.TI },
+				{ EarthlyBranch.MAO, EarthlyBranch.TI }
+		};
+
+		for (int index = 0; index < HeavenlyStem.values().length; index++) {
+			var chart = calculator.calculate(StarChart.empty(),
+					input(HeavenlyStem.values()[index], EarthlyBranch.TY, BirthSex.MALE));
+			assertEquals(expected[index][0], chart.branchOf(StarId.THIEN_KHOI).orElseThrow());
+			assertEquals(expected[index][1], chart.branchOf(StarId.THIEN_VIET).orElseThrow());
+		}
+	}
+
+	@Test
+	void placesTianMaFromTheYearBranchTable() {
+		EarthlyBranch[] expected = {
+				EarthlyBranch.DAN, EarthlyBranch.HOI, EarthlyBranch.THAN, EarthlyBranch.TI,
+				EarthlyBranch.DAN, EarthlyBranch.HOI, EarthlyBranch.THAN, EarthlyBranch.TI,
+				EarthlyBranch.DAN, EarthlyBranch.HOI, EarthlyBranch.THAN, EarthlyBranch.TI
+		};
+
+		for (int index = 0; index < EarthlyBranch.values().length; index++) {
+			var chart = calculator.calculate(StarChart.empty(),
+					input(HeavenlyStem.JIA, EarthlyBranch.values()[index], BirthSex.MALE));
+			assertEquals(expected[index], chart.branchOf(StarId.THIEN_MA).orElseThrow());
+		}
+	}
+
+	@Test
 	void emitsAllTwelveThaisTueStarsWithNoMissingPlacements() {
 		var chart = calculator.calculate(
 				StarChart.empty(), input(HeavenlyStem.JIA, EarthlyBranch.TY, BirthSex.MALE));

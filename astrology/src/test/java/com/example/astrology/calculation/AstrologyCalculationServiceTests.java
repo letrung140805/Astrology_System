@@ -28,7 +28,7 @@ class AstrologyCalculationServiceTests {
 
 		assertEquals(input, assessment.input());
 		assertEquals(HourBranch.ZI, assessment.normalizedBirthInput().hourBranch());
-		assertEquals(CycleDateAdjustment.UNRESOLVED, assessment.normalizedBirthInput().cycleDateAdjustment());
+		assertEquals(CycleDateAdjustment.NONE, assessment.normalizedBirthInput().cycleDateAdjustment());
 		assertFalse(assessment.isComplete());
 		assertTrue(assessment.gaps().contains(CalculationGap.TIMEZONE_AND_LOCATION));
 		assertFalse(assessment.gaps().contains(CalculationGap.UNKNOWN_BIRTH_TIME));
@@ -49,6 +49,14 @@ class AstrologyCalculationServiceTests {
 
 		assertTrue(assessment.gaps().contains(CalculationGap.UNKNOWN_BIRTH_TIME));
 		assertFalse(assessment.isComplete());
+	}
+
+	@Test
+	void usesMidnightAsTheSelectedZiHourDayBoundary() {
+		var assessment = service.assess(validInput(LocalTime.of(23, 30)));
+
+		assertEquals(HourBranch.ZI, assessment.normalizedBirthInput().hourBranch());
+		assertEquals(CycleDateAdjustment.NONE, assessment.normalizedBirthInput().cycleDateAdjustment());
 	}
 
 	@Test
@@ -84,6 +92,7 @@ class AstrologyCalculationServiceTests {
 				CalculationGap.LUNAR_CALENDAR,
 				CalculationGap.CAN_CHI_YEAR_BOUNDARY,
 				CalculationGap.CAN_CHI_RULES,
+				CalculationGap.NATAL_ELEMENT,
 				CalculationGap.MENH_AND_CUC,
 				CalculationGap.TWELVE_PALACES,
 				CalculationGap.STAR_PLACEMENT,

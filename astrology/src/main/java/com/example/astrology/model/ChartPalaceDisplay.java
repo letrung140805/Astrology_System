@@ -1,9 +1,10 @@
-package com.example.astrology.calculation.chart;
+package com.example.astrology.model;
 
 import java.util.List;
 import java.util.Objects;
 
 import com.example.astrology.calculation.calendar.EarthlyBranch;
+import com.example.astrology.calculation.chart.PalaceFunction;
 
 public record ChartPalaceDisplay(
 		PalaceFunction function,

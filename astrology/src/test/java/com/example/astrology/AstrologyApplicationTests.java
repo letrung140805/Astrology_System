@@ -23,7 +23,7 @@ class AstrologyApplicationTests {
 	}
 
 	@Test
-	void resultPageRendersCalculatedHourBranchWithoutInventingChartData() throws Exception {
+	void resultPageCalculatesLunarDateAndChartFromBasicBirthInput() throws Exception {
 		mockMvc.perform(get("/result")
 				.param("name", "Lan")
 				.param("gender", "Nữ")
@@ -31,27 +31,25 @@ class AstrologyApplicationTests {
 				.param("birthTime", "10:30"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Địa chi giờ tính được")))
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Chưa tự quy đổi sang âm lịch")))
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Phần chưa tính được từ ngày dương lịch")));
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Ngày âm lịch tự quy đổi")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Lá số theo ruleset ứng viên")));
 	}
 
 	@Test
-	void resultPageRendersCalculatedPalacesForCompleteManualLunarInputs() throws Exception {
+	void resultPageRendersCalculatedPalacesWithoutManualLunarInput() throws Exception {
 		mockMvc.perform(get("/result")
 				.param("name", "Lan")
 				.param("gender", "Nữ")
 				.param("birthDate", "1999-06-12")
-				.param("birthTime", "05:30")
-				.param("lunarYear", "1999")
-				.param("lunarMonth", "5")
-				.param("lunarDay", "15")
-				.param("leapMonth", "false")
-				.param("yearStem", "JI")
-				.param("yearBranch", "MAO"))
+				.param("birthTime", "05:30"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Lá số theo ruleset ứng viên")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Cung Mệnh")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Tử Vi")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("astrology-chart-grid")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("palace-thien_di")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("astrology-chart-center")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("LÁ SỐ CÁ NHÂN")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString(
 						"chưa được xác minh bằng fixture lá số thực")));
 	}
