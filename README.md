@@ -174,4 +174,36 @@ File `application.properties` chứa các cấu hình chính:
       ↓
     Conversation History
 
+## Mô hình dữ liệu JPA
+
+Các Entity JPA nằm trong `astrology/src/main/java/com/example/astrology/entity/`
+và ánh xạ vào các bảng đã có trong `tuvi_AI.sql`: `AppUser` → `users`,
+`BirthProfile` → `birth_profiles`, `BirthChart` → `astrology_charts`,
+`AstrologyPalace` → `astrology_palaces`, `Star` → `stars`,
+`ChartPalaceStar` → `chart_palace_stars`, `AstrologyKnowledge` →
+`knowledge_documents`, `KnowledgeChunk` → `knowledge_chunks`,
+`Conversation` → `conversations` và `ChatMessage` → `messages`.
+
+Repository cho hồ sơ, lá số, hội thoại và tin nhắn có truy vấn giới hạn theo
+user ID; khi triển khai service, luôn dùng các truy vấn này thay vì tải dữ liệu
+theo ID đơn lẻ. Migration bổ sung khóa ngoại composite bảo đảm lá số thuộc cùng
+user với hồ sơ sinh được đặt tại
+`database/migrations/V1__enforce_chart_profile_ownership.sql`. Migration cần
+được rà soát, sao lưu và chạy thủ công sau khi truy vấn kiểm tra dữ liệu không
+trả về hàng nào. Không chạy migration lặp lại; migration không xóa bảng hoặc
+dữ liệu. Liên kết chart tùy chọn của hội thoại tiếp tục giữ hành vi
+`ON DELETE SET NULL` hiện có, nên service cũng phải xác minh chart thuộc user
+sở hữu hội thoại.
+
+Các trường Can Chi, lịch âm và ngũ hành trong `BirthChart` là kết quả tính toán
+được lưu cùng phiên bản thuật toán để giữ nguyên lịch sử lá số; thông tin đầu
+vào chuẩn vẫn nằm trong `BirthProfile`. Cột `raw_calculation_data` cũ được giữ
+nguyên trong database nhưng không ánh xạ vào Entity để tránh ghi lặp dữ liệu
+kết quả. Chỉ xem xét loại bỏ cột đó trong một migration riêng sau khi xác nhận
+không còn dữ liệu cần bảo toàn.
+
+Không lưu API key trong Entity hoặc database. Nội dung `embedding_reference`
+chỉ là định danh tham chiếu tới vector store bên ngoài, không phải embedding
+hay bí mật xác thực.
+
 Phần **Astrology Engine** chịu trách nhiệm tính toán dữ liệu lá số. AI được sử dụng để diễn giải và trả lời dựa trên dữ liệu lá số và ngữ cảnh liên quan.

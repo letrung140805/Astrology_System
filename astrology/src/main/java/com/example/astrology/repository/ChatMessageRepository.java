@@ -1,0 +1,13 @@
+package com.example.astrology.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.astrology.entity.ChatMessage;
+
+public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
+
+	List<ChatMessage> findAllByConversation_IdAndConversation_User_IdOrderByCreatedAtAsc(
+			Long conversationId, Long userId);
+}
