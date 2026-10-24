@@ -75,6 +75,20 @@ class StarPlacementServiceTests {
 				assertEquals(RuleStatus.PENDING_CONFIRMATION, evidence.status()));
 	}
 
+	@Test
+	void publicArticleProfileRemainsDocumentedButNotIndependentlyVerified() {
+		var ruleSet = StarRuleSet.tracuutuviPublicCandidate();
+		var evidence = ruleSet.evidence().get(StarRuleGroup.FOURTEEN_MAJOR_STARS);
+
+		assertEquals(RuleStatus.DOCUMENTED_UNVERIFIED, evidence.status());
+		assertFalse(ruleSet.isFullyVerified());
+		assertThrows(IllegalStateException.class, () -> service.addVerifiedPlacement(
+				StarChart.empty(), StarId.TU_VI, EarthlyBranch.TY, evidence));
+		assertEquals(EarthlyBranch.TY,
+				service.addDocumentedPlacement(StarChart.empty(), StarId.TU_VI, EarthlyBranch.TY, evidence)
+						.branchOf(StarId.TU_VI).orElseThrow());
+	}
+
 	private StarRuleEvidence verifiedEvidence(StarRuleGroup group) {
 		return new StarRuleEvidence(
 				group,

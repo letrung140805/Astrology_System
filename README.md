@@ -244,39 +244,42 @@ Nếu giờ sinh bị bỏ trống, dữ liệu được chấp nhận nhưng đ
 phần lá số cần giờ sinh. Địa điểm hiện chỉ là văn bản, chưa được tra thành tọa
 độ hay múi giờ; nếu địa điểm để trống, hệ thống báo riêng dữ liệu còn thiếu.
 
-Trước khi triển khai các phép tính còn thiếu, cần chọn nguồn/phiên bản lịch âm;
-mốc chuyển năm/tháng/ngày Can Chi; bảng nạp âm đủ 60 tổ hợp và fixtures độc
-lập; quy tắc an Mệnh/Thân/Cục, 12 cung, sao và độ sáng. Unit tests của
-`BirthInputNormalizationServiceTests` kiểm tra ranh giờ, DST và policy đổi
-ngày; chúng không được xem là xác nhận Can Chi hay lịch âm.
+`BirthInputNormalizationServiceTests` chỉ kiểm tra ranh giờ, DST và policy
+đổi ngày; chúng không xác nhận Can Chi hay lịch âm. Để tránh biến quy tắc
+chưa kiểm chứng thành kết quả production, `AstrologyCalculationService` vẫn
+báo các gap của luồng ngày dương lịch tới khi có provider lịch/Can Chi/Nạp Âm
+và fixture đối chiếu.
 
 ### Cung chức, Mệnh/Thân và Ngũ hành Cục
 
-Trang [Lập lá số Tử Vi của Tra Cứu Tử Vi](https://tracuutuvi.com/lap-la-so-tu-vi)
-nêu tên 12 cung chức và mô tả cung Thân cùng vị trí với một số cung chức.
-Nghiên cứu tiếp bài [An sao tử vi](https://tracuutuvi.com/an-sao-tu-vi.html)
-(các mục 2.2–3.4, 4.1–4.3; truy cập 2026-10-24) tìm thấy cách an Mệnh theo
-tháng/giờ âm lịch và bảng Cục theo Can năm với địa chi cung Mệnh. Đây là mô tả
-của chính website mục tiêu, phù hợp làm profile tham chiếu để đối chiếu với
-website, nhưng chưa phải xác minh độc lập về độ đúng của một trường phái Tử Vi.
+Profile đang triển khai là `tracuutuvi-public-rules-2026-10-24+quanshu-supplement-1`.
+Nguồn chính là bài [An sao tử vi của Tra Cứu Tử Vi](https://tracuutuvi.com/an-sao-tu-vi.html)
+(các mục 2.2–3.4, 4.1; truy cập 2026-10-24). Nguồn này nêu cách an Mệnh theo
+tháng/giờ âm, bảng Cục theo Can năm và địa chi cung Mệnh, phép an Tử Vi theo
+ngày âm/Cục, các sao chính tinh, Lộc Tồn, Tứ Hóa, Tràng Sinh và một số phụ tinh.
+Đây là tài liệu của website mục tiêu, không phải xác nhận độc lập thuật toán
+nội bộ của website hay chuẩn duy nhất của mọi trường phái.
 
-Nguồn nói: lấy Dần làm tháng 1, đếm thuận đến tháng sinh để định cung giờ Tý,
-rồi đếm nghịch đến giờ sinh để an Mệnh. Nguồn có ví dụ tháng 5, giờ Mão, nhưng
-không đưa kết quả cuối cùng thành dữ liệu máy đọc được. Bảng Cục được lập từ
-Can năm sinh và địa chi cung Mệnh. Cách an 12 cung sau đó trong cùng bài lại
-nói “theo chiều thuận hoặc nghịch tùy từng người, theo chiều nào cũng được”;
-điều này không đủ xác định một phép xếp 12 cung duy nhất nhất quán với yêu
-cầu của engine. Vì vậy phép an Mệnh/Cục có thể được đặc tả theo profile này,
-nhưng chưa được tích hợp vào kết quả production; chiều xếp 12 cung vẫn
-`PENDING_CONFIRMATION`.
+Hai chỗ còn thiếu được bổ sung riêng từ bản điện tử
+[《紫微斗數全書》 quyển 2 trên Wikisource](https://zh.wikisource.org/wiki/%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E5%85%A8%E6%9B%B8/%E5%8D%B7%E4%BA%8C)
+(các mục 安身命例, 安十二宮例, 安南北斗諸星訣; truy cập 2026-10-24):
+công thức cung Thân/tháng nhuận và chiều an 12 cung nghịch. Đây là nguồn bổ
+sung cho các quy tắc mà bài Tra Cứu không xác định; không được gán các quy tắc
+này cho Tra Cứu Tử Vi. Bản Wikisource là bản phiên âm điện tử, không nêu số
+trang/ấn bản in đã đối chiếu.
 
-Nguồn được kiểm tra không công bố đủ thuật toán cung Thân, cách suy Can Chi
-cung Mệnh, Chủ Mệnh hay Chủ Thân. Các phần này vẫn `PENDING_CONFIRMATION`.
+`TracuutuviPositionsCalculator` dùng Dần làm mốc tháng 1; tính tháng nhuận như
+tháng kế tiếp theo quy tắc bổ sung; đếm ngược giờ từ vị trí tháng để an Mệnh,
+đếm thuận để an Thân. Bố cục cung dùng danh sách cung chức của bài Tra Cứu,
+nhưng đếm nghịch theo bổ sung 《紫微斗數全書》. `FiveElementsBureauCalculator`
+tra bảng Can-năm × nhóm địa chi cung Mệnh được công bố trong bài Tra Cứu.
+Các phép tính này nhận trực tiếp ngày âm, Can/Chi năm và giờ chi; chúng chưa
+được nối với chuyển lịch dương hoặc tính Can Chi năm.
 
-`EarthlyBranch` và `PalaceFunction` là hai kiểu miền riêng; `PalaceLayout`
-chỉ chấp nhận ánh xạ một-một đủ 12 cung với 12 địa chi. Nó kiểm tra tính toàn
-vẹn cấu trúc, không quyết định thứ tự hay chiều an. `HourBranch` tham chiếu
-`EarthlyBranch` để tránh coi nhãn giờ là tên cung chức.
+`EarthlyBranch` và `PalaceFunction` là kiểu miền riêng, còn `PalaceLayout`
+kiểm tra ánh xạ một-một đủ 12 cung/12 địa chi. `HourBranch` giữ phân loại giờ
+riêng. Input tính chart đòi hỏi giới tính theo quy ước nam/nữ của nguồn; không
+tự suy từ tên người dùng.
 
 Fixture đối chiếu chưa có (`PENDING_FIXTURE`). Mẫu rỗng ở
 `astrology/src/test/resources/calculation/reference-chart-fixture-template.json`
@@ -287,32 +290,44 @@ ghi nhận.
 ### Mô hình vị trí sao
 
 `StarChart` là dữ liệu có cấu trúc theo `EarthlyBranch`, cho phép nhiều sao
-cùng một địa chi. Việc thêm lại cùng một sao tại địa chi cũ là idempotent;
-thêm sao đó tại địa chi khác bị từ chối thay vì ghi đè. `StarPlacementService`
-chỉ chấp nhận vị trí khi bằng chứng nhóm quy tắc có trạng thái `VERIFIED`;
-nguồn phải có URL HTTPS, phiên bản/ấn bản và mục tham chiếu.
+cùng một địa chi; xung đột vị trí của một sao bị từ chối. `StarPlacementService`
+phân biệt quy tắc đã xác minh với `DOCUMENTED_UNVERIFIED`; profile dưới đây
+chạy theo nguồn đã ghi nhưng không được tính là đã đối chiếu đúng với website.
 
-`StarRuleSet.pendingInitial()` hiện giữ an toàn trạng thái pending cho mọi
-nhóm, cho đến khi profile quy tắc được chọn và test đối chiếu được cung cấp.
-Bài [An sao tử vi](https://tracuutuvi.com/an-sao-tu-vi.html) mô tả các quy tắc
-cụ thể sau:
+| Nhóm đã triển khai | Phép tính có trong profile |
+| --- | --- |
+| 14 chính tinh | An Tử Vi theo ngày âm/Cục; an Thiên Phủ theo đối xứng quanh Dần; hai nhóm chính tinh theo thứ tự và chiều từ bài Tra Cứu cùng 《紫微斗數全書》 |
+| Lộc Tồn/vòng Bác Sĩ | Tra Can năm → Lộc Tồn; an đủ 12 sao theo chiều Âm Dương năm × giới tính |
+| Vòng Thái Tuế | An theo Chi năm; Thiên Không cùng địa chi với Thiếu Dương |
+| Sao tháng/giờ | Văn Xương, Văn Khúc, Tả Phù, Hữu Bật |
+| Tứ Hóa | Bảng Can năm → Hóa Lộc/Quyền/Khoa/Kỵ theo bảng Nam phái của trang [Tứ Hóa](https://tracuutuvi.com/tu-hoa.html) |
+| Tràng Sinh | Điểm Trường Sinh theo Cục; 12 sao theo chiều được nêu trong bài Tra Cứu |
+| Độ sáng, Chủ Mệnh/Chủ Thân | Chưa tính; trạng thái `PENDING_CONFIRMATION` |
 
-| Nhóm | Quy tắc được nguồn mục tiêu công bố | Tình trạng |
-| --- | --- | --- |
-| 14 chính tinh | Tử Vi lấy ngày âm và số Cục; các sao còn lại an tương đối theo vị trí Tử Vi/Thiên Phủ và thứ tự nêu trong mục 3.1 | Có mô tả, chưa đối chiếu độc lập |
-| Lộc Tồn | Bảng 10 Thiên Can → địa chi Lộc Tồn; vòng Bác Sĩ 12 sao đi thuận với Dương Nam/Âm Nữ, nghịch với Âm Nam/Dương Nữ | Có bảng và chiều, cần fixture |
-| Tràng Sinh | Bảng Cục → vị trí Trường Sinh; 12 sao tiếp theo đi thuận/nghịch theo Âm Dương năm và giới tính | Có bảng và chiều, cần fixture |
-| Tứ Hóa | Bảng đủ 10 Thiên Can × 4 Hóa → sao tương ứng, áp vào vị trí sao đó | Có bảng, cần fixture |
-| Sao theo tháng/giờ | Mục 4.3 và các trang [Văn Xương](https://tracuutuvi.com/sao-van-xuong.html), [Văn Khúc](https://tracuutuvi.com/sao-van-khuc.html), [Tả Phù](https://tracuutuvi.com/sao-ta-phu.html), [Hữu Bật](https://tracuutuvi.com/sao-huu-bat.html) mô tả các điểm khởi đầu và chiều đếm | Có mô tả một số sao, cần kiểm tra toàn bảng và fixture |
-| Độ sáng sao | Chưa xác lập bảng đầy đủ, cùng cách diễn giải đồng nhất cho toàn bộ sao/địa chi | `PENDING_CONFIRMATION` |
+`TracuutuviChartCalculator` trả dữ liệu có cấu trúc cho các nhóm trên và giữ
+phiên bản ruleset. Kết quả hiện **không phải lá số hoàn chỉnh**: chưa tính các
+nhóm phụ tinh khác được liệt kê ở mục 4.1–4.3, độ sáng, Chủ Mệnh/Chủ Thân,
+bản mệnh Nạp Âm, Can Chi và chuyển lịch. `AstrologyCalculationService` và
+`result.html` chưa dùng calculator này để xuất kết quả; giao diện tiếp tục báo
+gap thay vì hiển thị dữ liệu nửa vời như lá số hoàn chỉnh.
 
-Đây là căn cứ đủ để xây một ruleset được gắn nhãn rõ `TRACUUTUVI_PUBLIC_ARTICLE`,
-không phải bằng chứng rằng ruleset đúng cho mọi trường phái hay tái tạo chính
-xác thuật toán nội bộ của website. Không được đổi `RuleStatus` sang
-`VERIFIED` trước khi có fixture chart độc lập hoặc đối chiếu thủ công với
-nhiều lá số website, ghi đủ input, quy ước giờ Tý và kết quả có cấu trúc.
-Nguồn [Hồ Ngọc Đức](https://xemamlich.uhm.vn/calrules.html) là tài liệu lịch
-âm Việt Nam, không phải tài liệu an sao Tử Vi.
+MIT cross-check candidates checked on 2026-10-24 include
+[ziweiknows/ziwei-chart](https://github.com/ziweiknows/ziwei-chart) (GPL-3.0,
+not integrated), [baronguyen001/ziwei-cli](https://github.com/baronguyen001/ziwei-cli)
+(MIT wrapper around `iztro`) and [ying-rushi/cdestiny](https://github.com/ying-rushi/cdestiny)
+(MIT). They are implementation comparisons for general Zi Wei Dou Shu, not
+independent validation of the selected Vietnamese website profile. No code
+from these repositories is included in the engine.
+
+For the Vietnamese lunar calendar, [Hồ Ngọc Đức's calendar rules](https://xemamlich.uhm.vn/calrules.html)
+describe the new-moon/major-solar-term method and UTC+7, but explicitly note
+their simplified examples are less accurate than the author's online program.
+The Apache-2.0 [tinhtinh1908/Amlich](https://github.com/tinhtinh1908/Amlich)
+repository inspected is an Android app, not a verified plain-Java calendar
+library with independent fixtures; it is not integrated. The MIT
+[LunarCalendar4J](https://github.com/nhatanh2996/LunarCalendar4J) implementation
+was also rejected after the inspected revision returned `null` from its solar
+to lunar conversion method.
 
 Một dự án Java công khai
 [minhthytran/tuvi-dauso-tanbien](https://github.com/minhthytran/tuvi-dauso-tanbien)

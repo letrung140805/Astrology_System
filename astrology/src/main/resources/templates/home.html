@@ -2,7 +2,7 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lá số Tử Vi cá nhân hóa bởi AI | Tử Vi AI</title>
+    <title>Dữ liệu lá số minh bạch | Tử Vi AI</title>
     <link rel="stylesheet" th:href="@{/css/site.css}">
     <script th:src="@{/js/site.js}" defer></script>
 </head>
@@ -11,45 +11,57 @@
 <main>
     <section class="hero home-hero">
         <div class="hero-copy">
-            <span class="eyebrow">✦ Chiêm tinh học phương Đông &amp; Trí tuệ AI 4.0</span>
-            <h1>Lá số Tử Vi<br><em>Cá nhân hóa bởi AI</em></h1>
-            <p>Chỉ với vài thông tin cơ bản, bạn có thể khám phá toàn diện bản đồ số mệnh và đón nhận phân tích chuẩn xác về bản mệnh, cung sự nghiệp, duyên nợ hôn phối và vận hạn từng thời kỳ.</p>
+            <span class="eyebrow">✦ TỬ VI ĐẨU SỐ · DỮ LIỆU CÓ CẤU TRÚC</span>
+            <h1>Lá số Tử Vi<br><em>Tính được đến đâu, rõ đến đó</em></h1>
+            <p>Nhập thông tin sinh để xem dữ liệu hiện engine có thể tính. Kết quả ứng viên, dữ liệu nhập tay và phần chưa hỗ trợ được phân biệt rõ.</p>
             <div class="hero-spark">✦</div>
             <p class="handwritten">Khám phá bản thân từ những vì sao ✨</p>
-            <div class="trust-row"><span>♧ 100% Bảo mật dữ liệu</span><span>✣ Thuật toán 108 Tinh Đẩu</span><span>◉ Bình giải tức thì</span></div>
+            <div class="trust-row"><span>♧ Không tự suy diễn dữ liệu thiếu</span><span>✣ Hiển thị cung và sao có cấu trúc</span><span>◉ Nêu rõ quy tắc chưa xác minh</span></div>
         </div>
         <form class="chart-form card" th:action="@{/result}" method="get">
-            <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Điền đầy đủ thông tin để khởi tạo lá số và giải đoán vận trình chuẩn xác nhất.</p></div></div>
+            <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Dữ liệu dương lịch được dùng để chuẩn hóa giờ sinh. Muốn hiện các cung và sao ứng viên, nhập thêm dữ liệu âm lịch bên dưới.</p></div></div>
             <label for="fullName">Họ và tên</label>
-            <div class="input-with-icon"><span>♙</span><input id="fullName" name="name" required value="Nguyễn Thị Lan" placeholder="Ví dụ: Nguyễn Thị Lan"></div>
+            <div class="input-with-icon"><span>♙</span><input id="fullName" name="name" required placeholder="Ví dụ: Nguyễn Thị Lan"></div>
             <label>Giới tính sinh học (Âm Dương)</label>
             <div class="gender-options"><label class="gender-choice selected"><input type="radio" name="gender" value="Nữ" checked><span>♀</span> Nữ (Âm Nữ)</label><label class="gender-choice"><input type="radio" name="gender" value="Nam"><span>♂</span> Nam (Dương Nam)</label></div>
             <div class="form-two">
-                <div><label for="birthDate">Ngày sinh (Dương lịch)</label><div class="input-with-icon"><span>▦</span><input id="birthDate" name="birthDate" type="date" value="2005-06-12" required></div></div>
-                <div><label for="birthTime">Giờ sinh (không bắt buộc nếu không rõ)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time" value="10:30"></div></div>
+                <div><label for="birthDate">Ngày sinh (Dương lịch)</label><div class="input-with-icon"><span>▦</span><input id="birthDate" name="birthDate" type="date" required></div></div>
+                <div><label for="birthTime">Giờ sinh (không bắt buộc nếu không rõ)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time"></div></div>
             </div>
-            <label for="birthplace">Nơi ở hoặc sinh quán (Kinh độ)</label>
-            <div class="input-with-icon"><span>♧</span><input id="birthplace" name="birthplace" value="Hà Nội, Việt Nam" required placeholder="Tỉnh / thành phố"><span class="input-end">⌕</span></div>
+            <label for="birthplace">Nơi sinh (hiện chưa dùng để hiệu chỉnh múi giờ)</label>
+            <div class="input-with-icon"><span>♧</span><input id="birthplace" name="birthplace" placeholder="Tỉnh / thành phố"><span class="input-end">⌕</span></div>
+            <details class="optional-lunar-input">
+                <summary>Nhập dữ liệu âm lịch để tính các phần lá số hiện có</summary>
+                <p>Dữ liệu âm lịch và Can Chi năm cần được tra từ nguồn bạn tin cậy. Ứng dụng chưa tự quy đổi từ ngày dương lịch.</p>
+                <div class="form-two">
+                    <div><label for="lunarYear">Năm âm lịch</label><input id="lunarYear" name="lunarYear" type="number" min="1" max="9999" placeholder="Ví dụ: 1999"></div>
+                    <div><label for="lunarMonth">Tháng âm lịch</label><input id="lunarMonth" name="lunarMonth" type="number" min="1" max="12" placeholder="1-12"></div>
+                    <div><label for="lunarDay">Ngày âm lịch</label><input id="lunarDay" name="lunarDay" type="number" min="1" max="30" placeholder="1-30"></div>
+                    <div><label for="yearStem">Thiên can năm sinh</label><select id="yearStem" name="yearStem"><option value="">Chọn Thiên Can</option><option value="JIA">Giáp</option><option value="YI">Ất</option><option value="BING">Bính</option><option value="DING">Đinh</option><option value="WU">Mậu</option><option value="JI">Kỷ</option><option value="GENG">Canh</option><option value="XIN">Tân</option><option value="REN">Nhâm</option><option value="GUI">Quý</option></select></div>
+                    <div><label for="yearBranch">Địa chi năm sinh</label><select id="yearBranch" name="yearBranch"><option value="">Chọn Địa Chi</option><option value="TY">Tý</option><option value="SUU">Sửu</option><option value="DAN">Dần</option><option value="MAO">Mão</option><option value="THIN">Thìn</option><option value="TI">Tỵ</option><option value="NGO">Ngọ</option><option value="MUI">Mùi</option><option value="THAN">Thân</option><option value="DAU">Dậu</option><option value="TUAT">Tuất</option><option value="HOI">Hợi</option></select></div>
+                </div>
+                <label class="leap-month-choice"><input name="leapMonth" type="checkbox" value="true"> Đây là tháng nhuận</label>
+            </details>
             <button class="button button-primary button-wide" type="submit"><span class="button-spark">✦</span> Kiểm tra dữ liệu sinh　→</button>
-            <p class="privacy-note">♙ Thông tin của bạn được mã hóa và bảo mật tuyệt đối</p>
+            <p class="privacy-note">Kết quả là dữ liệu tham khảo; chart ứng viên chưa được xác minh độc lập.</p>
         </form>
     </section>
     <section class="section section-muted">
-        <div class="section-heading centered"><span class="eyebrow">✦ HÀNH TRÌNH CHIÊM NGHIỆM ✦</span><h2>Khám phá lá số của bạn trong 3 bước</h2><p>Quy trình tinh gọn, nhanh chóng nhờ sự kết hợp giữa mô hình tri thức cổ học và thuật toán AI tiên tiến.</p></div>
+        <div class="section-heading centered"><span class="eyebrow">✦ CÁCH HIỂN THỊ KẾT QUẢ ✦</span><h2>Xem rõ dữ liệu đã tính</h2><p>Kết quả phân biệt giữa thông tin do bạn nhập, phần tính được và phần chưa có căn cứ triển khai.</p></div>
         <div class="steps-grid">
-            <article class="step-card"><span class="icon-tile lilac">▣</span><small>Bước 01</small><h3>Nhập thông tin</h3><p>Cung cấp họ tên, ngày tháng năm sinh, khung giờ và địa điểm để hệ thống xác lập tọa độ Can Chi chuẩn.</p></article>
-            <article class="step-card"><span class="icon-tile gold">♧</span><small>Bước 02</small><h3>AI đối chiếu &amp; Luận giải</h3><p>Mô hình học máy tổng hợp 14 Chính Tinh, hàng trăm bảng tinh và các cách cục phức tạp để giải đoán đa chiều.</p></article>
-            <article class="step-card"><span class="icon-tile lavender">⊙</span><small>Bước 03</small><h3>Khám phá bản thân</h3><p>Nhận báo cáo trực quan về tính cách, bước ngoặt sự nghiệp, vận hội tài chính và hướng hóa giải vận hạn.</p></article>
+            <article class="step-card"><span class="icon-tile lilac">▣</span><small>Bước 01</small><h3>Nhập ngày giờ sinh</h3><p>Ngày dương lịch và giờ địa phương được chuẩn hóa; địa chi giờ chỉ hiện khi có giờ sinh.</p></article>
+            <article class="step-card"><span class="icon-tile gold">♧</span><small>Bước 02</small><h3>Bổ sung ngày âm nếu có</h3><p>Để xem chart ứng viên, cần tự cung cấp ngày âm và Can Chi năm vì hệ thống chưa tự chuyển đổi.</p></article>
+            <article class="step-card"><span class="icon-tile lavender">⊙</span><small>Bước 03</small><h3>Kiểm tra phần đã tính</h3><p>Xem 12 cung và các sao thuộc nhóm hiện triển khai, kèm ruleset và cảnh báo chưa đối chiếu lá số thực.</p></article>
         </div>
     </section>
     <section class="section benefits-section">
-        <div class="section-heading centered"><span class="eyebrow">✦ ƯU THẾ VƯỢT TRỘI ✦</span><h2>Tại sao nên chọn Tử Vi AI?</h2><p>Công nghệ AI hiện đại kết hợp cùng kho tàng cổ thư Đông Á, mang đến cho bạn góc nhìn thấu suốt, thoát khỏi mê tín dị đoan.</p></div>
+        <div class="section-heading centered"><span class="eyebrow">✦ NGUYÊN TẮC HIỂN THỊ ✦</span><h2>Minh bạch về giới hạn</h2><p>Chart ứng viên hiện dùng ruleset chưa được xác minh độc lập và không thay thế một lá số đã được đối chiếu.</p></div>
         <div class="benefit-grid">
-            <article class="benefit-card"><span class="benefit-icon purple">ϟ</span><h3>Nhanh chóng</h3><p>Chỉ mất vài giây để khởi tạo toàn bộ thiên bàn và địa bàn chi tiết.</p></article>
-            <article class="benefit-card"><span class="benefit-icon green">◉</span><h3>Chính xác</h3><p>Dựa trên thuật toán giải hạn chuẩn xác theo sách Tử Vi Áo Bí &amp; Toàn Thư.</p></article>
-            <article class="benefit-card"><span class="benefit-icon blue">✪</span><h3>Dễ hiểu</h3><p>Ngôn ngữ hiện đại, giải nghĩa thuật ngữ dễ tiếp cận, loại bỏ rào cản từ Hán Việt.</p></article>
-            <article class="benefit-card"><span class="benefit-icon orange">♥</span><h3>Toàn diện</h3><p>Bao quát trọn đời: sự nghiệp, quan lộc, hôn nhân, tiền tài và đại vận 10 năm.</p></article>
-            <article class="benefit-card"><span class="benefit-icon pink">♙</span><h3>Bảo mật</h3><p>Tuyệt đối không lưu trữ trái phép hay chia sẻ ngày giờ sinh cho bên thứ ba.</p></article>
+            <article class="benefit-card"><span class="benefit-icon purple">ϟ</span><h3>Không bịa dữ liệu</h3><p>Phần chưa thể tính từ đầu vào hiện tại được ghi rõ thay vì tự điền kết quả.</p></article>
+            <article class="benefit-card"><span class="benefit-icon green">◉</span><h3>Có cấu trúc</h3><p>Các cung, địa chi và sao đã tính được hiển thị thành từng mục riêng.</p></article>
+            <article class="benefit-card"><span class="benefit-icon blue">✪</span><h3>Rõ nguồn quy tắc</h3><p>Chart ghi nhận profile quy tắc đang dùng và trạng thái chưa xác minh.</p></article>
+            <article class="benefit-card"><span class="benefit-icon orange">♥</span><h3>Nêu phần còn thiếu</h3><p>Chuyển lịch, Can Chi từ ngày sinh, Nạp Âm và các nhóm sao chưa hỗ trợ không bị che khuất.</p></article>
+            <article class="benefit-card"><span class="benefit-icon pink">♙</span><h3>Không luận giải giả</h3><p>Giao diện kết quả chỉ trình bày dữ liệu tính toán, không tạo nội dung dự đoán khi engine chưa hỗ trợ.</p></article>
         </div>
     </section>
 </main>
