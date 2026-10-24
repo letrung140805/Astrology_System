@@ -250,4 +250,109 @@ lập; quy tắc an Mệnh/Thân/Cục, 12 cung, sao và độ sáng. Unit tests
 `BirthInputNormalizationServiceTests` kiểm tra ranh giờ, DST và policy đổi
 ngày; chúng không được xem là xác nhận Can Chi hay lịch âm.
 
+### Cung chức, Mệnh/Thân và Ngũ hành Cục
+
+Trang [Lập lá số Tử Vi của Tra Cứu Tử Vi](https://tracuutuvi.com/lap-la-so-tu-vi)
+nêu tên 12 cung chức và mô tả cung Thân cùng vị trí với một số cung chức.
+Nghiên cứu tiếp bài [An sao tử vi](https://tracuutuvi.com/an-sao-tu-vi.html)
+(các mục 2.2–3.4, 4.1–4.3; truy cập 2026-10-24) tìm thấy cách an Mệnh theo
+tháng/giờ âm lịch và bảng Cục theo Can năm với địa chi cung Mệnh. Đây là mô tả
+của chính website mục tiêu, phù hợp làm profile tham chiếu để đối chiếu với
+website, nhưng chưa phải xác minh độc lập về độ đúng của một trường phái Tử Vi.
+
+Nguồn nói: lấy Dần làm tháng 1, đếm thuận đến tháng sinh để định cung giờ Tý,
+rồi đếm nghịch đến giờ sinh để an Mệnh. Nguồn có ví dụ tháng 5, giờ Mão, nhưng
+không đưa kết quả cuối cùng thành dữ liệu máy đọc được. Bảng Cục được lập từ
+Can năm sinh và địa chi cung Mệnh. Cách an 12 cung sau đó trong cùng bài lại
+nói “theo chiều thuận hoặc nghịch tùy từng người, theo chiều nào cũng được”;
+điều này không đủ xác định một phép xếp 12 cung duy nhất nhất quán với yêu
+cầu của engine. Vì vậy phép an Mệnh/Cục có thể được đặc tả theo profile này,
+nhưng chưa được tích hợp vào kết quả production; chiều xếp 12 cung vẫn
+`PENDING_CONFIRMATION`.
+
+Nguồn được kiểm tra không công bố đủ thuật toán cung Thân, cách suy Can Chi
+cung Mệnh, Chủ Mệnh hay Chủ Thân. Các phần này vẫn `PENDING_CONFIRMATION`.
+
+`EarthlyBranch` và `PalaceFunction` là hai kiểu miền riêng; `PalaceLayout`
+chỉ chấp nhận ánh xạ một-một đủ 12 cung với 12 địa chi. Nó kiểm tra tính toàn
+vẹn cấu trúc, không quyết định thứ tự hay chiều an. `HourBranch` tham chiếu
+`EarthlyBranch` để tránh coi nhãn giờ là tên cung chức.
+
+Fixture đối chiếu chưa có (`PENDING_FIXTURE`). Mẫu rỗng ở
+`astrology/src/test/resources/calculation/reference-chart-fixture-template.json`
+chỉ là khung nhập liệu; không chứa kết quả mong đợi giả. Chỉ bổ sung fixture
+chạy được khi có biểu đồ tham chiếu độc lập, đầu vào/quy ước đầy đủ và ngày
+ghi nhận.
+
+### Mô hình vị trí sao
+
+`StarChart` là dữ liệu có cấu trúc theo `EarthlyBranch`, cho phép nhiều sao
+cùng một địa chi. Việc thêm lại cùng một sao tại địa chi cũ là idempotent;
+thêm sao đó tại địa chi khác bị từ chối thay vì ghi đè. `StarPlacementService`
+chỉ chấp nhận vị trí khi bằng chứng nhóm quy tắc có trạng thái `VERIFIED`;
+nguồn phải có URL HTTPS, phiên bản/ấn bản và mục tham chiếu.
+
+`StarRuleSet.pendingInitial()` hiện giữ an toàn trạng thái pending cho mọi
+nhóm, cho đến khi profile quy tắc được chọn và test đối chiếu được cung cấp.
+Bài [An sao tử vi](https://tracuutuvi.com/an-sao-tu-vi.html) mô tả các quy tắc
+cụ thể sau:
+
+| Nhóm | Quy tắc được nguồn mục tiêu công bố | Tình trạng |
+| --- | --- | --- |
+| 14 chính tinh | Tử Vi lấy ngày âm và số Cục; các sao còn lại an tương đối theo vị trí Tử Vi/Thiên Phủ và thứ tự nêu trong mục 3.1 | Có mô tả, chưa đối chiếu độc lập |
+| Lộc Tồn | Bảng 10 Thiên Can → địa chi Lộc Tồn; vòng Bác Sĩ 12 sao đi thuận với Dương Nam/Âm Nữ, nghịch với Âm Nam/Dương Nữ | Có bảng và chiều, cần fixture |
+| Tràng Sinh | Bảng Cục → vị trí Trường Sinh; 12 sao tiếp theo đi thuận/nghịch theo Âm Dương năm và giới tính | Có bảng và chiều, cần fixture |
+| Tứ Hóa | Bảng đủ 10 Thiên Can × 4 Hóa → sao tương ứng, áp vào vị trí sao đó | Có bảng, cần fixture |
+| Sao theo tháng/giờ | Mục 4.3 và các trang [Văn Xương](https://tracuutuvi.com/sao-van-xuong.html), [Văn Khúc](https://tracuutuvi.com/sao-van-khuc.html), [Tả Phù](https://tracuutuvi.com/sao-ta-phu.html), [Hữu Bật](https://tracuutuvi.com/sao-huu-bat.html) mô tả các điểm khởi đầu và chiều đếm | Có mô tả một số sao, cần kiểm tra toàn bảng và fixture |
+| Độ sáng sao | Chưa xác lập bảng đầy đủ, cùng cách diễn giải đồng nhất cho toàn bộ sao/địa chi | `PENDING_CONFIRMATION` |
+
+Đây là căn cứ đủ để xây một ruleset được gắn nhãn rõ `TRACUUTUVI_PUBLIC_ARTICLE`,
+không phải bằng chứng rằng ruleset đúng cho mọi trường phái hay tái tạo chính
+xác thuật toán nội bộ của website. Không được đổi `RuleStatus` sang
+`VERIFIED` trước khi có fixture chart độc lập hoặc đối chiếu thủ công với
+nhiều lá số website, ghi đủ input, quy ước giờ Tý và kết quả có cấu trúc.
+Nguồn [Hồ Ngọc Đức](https://xemamlich.uhm.vn/calrules.html) là tài liệu lịch
+âm Việt Nam, không phải tài liệu an sao Tử Vi.
+
+Một dự án Java công khai
+[minhthytran/tuvi-dauso-tanbien](https://github.com/minhthytran/tuvi-dauso-tanbien)
+tự mô tả là dựa theo sách *Tử Vi Đẩu Số Tân Biên* của Thái Thứ Lang nhưng
+không cung cấp edition/page citations và không có LICENSE ở repository gốc
+đã kiểm tra. Nó không được dùng làm dependency hoặc nguồn để sao chép code;
+có thể xem như đầu mối tìm tài liệu bản in, chưa phải bằng chứng độc lập đã
+xác minh.
+
+### Đối chiếu với lá số tham chiếu
+
+Mẫu fixture có cấu trúc nằm tại
+`astrology/src/test/resources/calculation/reference-chart-fixture-template.json`.
+Mỗi fixture cần giữ ngày theo loại lịch, cờ tháng nhuận, giờ/phút, giới tính,
+nơi sinh, múi giờ/offset, quy ước giờ Tý, URL nguồn, ngày chụp, cách ghi nhận,
+quy ước website đã chọn và các section dữ liệu đọc được. Ảnh chỉ là bằng chứng
+nguồn; expected values phải được ghi thủ công thành `CanChiValue`,
+`EarthlyBranch`, `PalaceFunction` và mã sao ổn định dạng chuỗi, không so sánh
+ảnh. Mã sao dạng chuỗi cho phép fixture giữ cả sao chưa có calculator hoặc
+chưa nằm trong enum của engine.
+
+`ReferenceChartComparator` so sánh chính xác các trường đã khai báo, báo từng
+field path, expected/actual và nhóm sai khác. `ReferenceChartRegressionRunner`
+từ chối fixture `PENDING_REFERENCE`. `ComparisonSummary` tính tỷ lệ trên số
+trường đã so sánh và trả tỷ lệ không xác định nếu mẫu số bằng 0. Calculator
+hiện chưa tạo snapshot thực tế và chưa có fixture do người dùng cung cấp, nên
+chưa có regression comparison nào chạy trên lá số tham chiếu thật.
+
+| Nhóm trường | Nhóm sai khác khi mismatch |
+| --- | --- |
+| Can Chi năm/tháng/ngày/giờ | `CAN_CHI` |
+| Bản mệnh | `NATAL_ELEMENT` |
+| Cục, Chủ Mệnh/Chủ Thân, độ sáng | `RULE_DATA` |
+| Cung Mệnh, cung Thân, 12 cung chức | `PALACE_PLACEMENT` |
+| Tọa độ các sao | `STAR_PLACEMENT` |
+| Lịch, quy ước ngày Tý, dữ liệu tham chiếu | Chưa tự kết luận nguyên nhân; cần so input/normalization và nguồn theo fixture |
+
+Tình trạng tập đối chiếu hiện tại: **0 fixture tham chiếu thực**, **0 trường
+đã so sánh**, tỷ lệ khớp **chưa xác định** (mẫu số bằng 0). Các test trong
+`ReferenceChartComparatorTests` dùng dữ liệu tổng hợp để kiểm tra comparator,
+không phải lá số thật và không được tính vào tỷ lệ.
+
 Phần **Astrology Engine** chịu trách nhiệm tính toán dữ liệu lá số. AI được sử dụng để diễn giải và trả lời dựa trên dữ liệu lá số và ngữ cảnh liên quan.

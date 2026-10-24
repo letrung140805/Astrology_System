@@ -1,0 +1,10 @@
+package com.example.astrology.calculation.chart;
+
+public enum StarRuleGroup {
+	FOURTEEN_MAJOR_STARS,
+	LOC_TON_AND_YEAR_STEM_STARS,
+	TIME_AND_MONTH_AUXILIARY_STARS,
+	FOUR_TRANSFORMATIONS,
+	CHANG_SHENG_CYCLE,
+	STAR_BRIGHTNESS
+}
