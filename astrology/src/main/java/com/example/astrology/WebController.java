@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import com.example.astrology.calculation.AstrologyCalculationInput;
+import com.example.astrology.calculation.AstrologyCalculationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class WebController {
 
+	private final AstrologyCalculationService astrologyCalculationService;
+
+	public WebController(AstrologyCalculationService astrologyCalculationService) {
+		this.astrologyCalculationService = astrologyCalculationService;
+	}
+
 	@GetMapping("/")
 	public String home() {
 		return "home";
@@ -20,17 +28,21 @@ public class WebController {
 
 	@GetMapping("/result")
 	public String result(
-			@RequestParam(defaultValue = "Nguyễn Thị Lan") String name,
-			@RequestParam(defaultValue = "Nữ") String gender,
-			@RequestParam(defaultValue = "2005-06-12") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
-			@RequestParam(defaultValue = "10:30") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime birthTime,
-			@RequestParam(defaultValue = "Hà Nội, Việt Nam") String birthplace,
+			@RequestParam String name,
+			@RequestParam String gender,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime birthTime,
+			@RequestParam(required = false) String birthplace,
 			Model model) {
+		var input = new AstrologyCalculationInput(name, gender, birthDate, birthTime, birthplace);
+		var assessment = astrologyCalculationService.assess(input);
+
 		model.addAttribute("name", name);
 		model.addAttribute("gender", gender);
 		model.addAttribute("birthDate", birthDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		model.addAttribute("birthTime", birthTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+		model.addAttribute("birthTime", birthTime == null ? null : birthTime.format(DateTimeFormatter.ofPattern("HH:mm")));
 		model.addAttribute("birthplace", birthplace);
+		model.addAttribute("calculation", assessment);
 		return "result";
 	}
 

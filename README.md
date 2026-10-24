@@ -206,4 +206,26 @@ Không lưu API key trong Entity hoặc database. Nội dung `embedding_referenc
 chỉ là định danh tham chiếu tới vector store bên ngoài, không phải embedding
 hay bí mật xác thực.
 
+## Astrology Calculation Engine
+
+`AstrologyCalculationService` nằm trong package `calculation` và được gọi từ
+`WebController`; service hiện chỉ kiểm tra dữ liệu bắt buộc và báo rõ các quy
+tắc chưa có căn cứ. Chưa có phép tính Can Chi, lịch âm, Mệnh/Cục, 12 cung hoặc
+vị trí sao. Vì vậy trang kết quả không hiển thị các lá số mẫu như kết quả tính
+thật.
+
+Ngày nhập từ biểu mẫu được hiểu là ngày dương lịch theo ISO; Java kiểm tra tính
+hợp lệ của ngày Gregorian. Giờ là giờ địa phương dạng `LocalTime`; hệ thống
+giữ nguyên giá trị và không đổi múi giờ, tính giờ mặt trời hoặc suy giờ chi.
+Nếu giờ sinh bị bỏ trống, dữ liệu được chấp nhận nhưng đánh dấu chưa thể lập
+phần lá số cần giờ sinh. Địa điểm hiện chỉ là văn bản, chưa được tra thành tọa
+độ hay múi giờ; nếu địa điểm để trống, hệ thống báo riêng dữ liệu còn thiếu.
+
+Trước khi triển khai phép tính, cần chọn và ghi nguồn/phiên bản cho lịch âm và
+tháng nhuận; mốc chuyển năm Can Chi; thuật toán Can Chi; quy tắc an Mệnh, an
+Thân và Cục; thứ tự/chiều an 12 cung; bảng an sao, độ sáng và tứ hóa; cách xử
+lý lịch sử múi giờ, tọa độ và giờ sinh không rõ. Unit tests của
+`AstrologyCalculationServiceTests` chỉ xác nhận kiểm tra đầu vào và việc không
+đưa ra kết quả khi các quy tắc này còn thiếu.
+
 Phần **Astrology Engine** chịu trách nhiệm tính toán dữ liệu lá số. AI được sử dụng để diễn giải và trả lời dựa trên dữ liệu lá số và ngữ cảnh liên quan.
