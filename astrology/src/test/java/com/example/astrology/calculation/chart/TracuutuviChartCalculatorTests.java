@@ -35,7 +35,9 @@ class TracuutuviChartCalculatorTests {
 		assertTrue(chart.stars().branchOf(StarId.HOA_LOC).isPresent());
 		assertTrue(chart.stars().branchOf(StarId.TRUONG_SINH).isPresent());
 		assertFalse(chart.fullyVerified());
-		assertEquals("tracuutuvi-public-rules-2026-10-24+quanshu-supplement-1", chart.ruleSetVersion());
+		assertEquals(
+				"tracuutuvi-public-rules-2026-10-24+quanshu-supplement-1+cestu-79ebf331",
+				chart.ruleSetVersion());
 	}
 
 	private int majorStarCount(StarChart chart) {

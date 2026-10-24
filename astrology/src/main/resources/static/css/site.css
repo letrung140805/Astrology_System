@@ -89,11 +89,6 @@ h1 { color: var(--ink); }
 .gender-choice.selected { color: white; background: #302f68; }
 .form-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-two label { margin-top: 14px; }
-.optional-lunar-input { margin-top: 16px; padding: 13px; border: 1px solid #e9e6f0; border-radius: 12px; background: #faf9fc; }
-.optional-lunar-input summary { color: var(--violet); cursor: pointer; font-size: 12px; font-weight: 700; }
-.optional-lunar-input > p { margin: 8px 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
-.optional-lunar-input input[type="number"], .optional-lunar-input select { width: 100%; min-width: 0; height: 42px; padding: 0 10px; border: 1px solid #e7e4ed; border-radius: 9px; background: white; color: var(--ink); }
-.leap-month-choice { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 11px; }
 .button { min-height: 42px; padding: 0 17px; border: 0; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; font-weight: 600; transition: transform .15s, box-shadow .2s, background .2s; }
 .button:hover { transform: translateY(-1px); }
 .button-primary { background: var(--ink); color: white; box-shadow: 0 6px 13px rgba(24, 23, 63, .17); }
@@ -213,6 +208,9 @@ h1 { color: var(--ink); }
 .chart-heading { margin-bottom: 14px; }
 .chart-heading h2 { margin: 7px 0 4px; font-size: 22px; }
 .chart-heading p { margin: 4px 0; color: var(--muted); font-size: 11px; }
+.chart-input-needed { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; padding: 14px 16px; border: 1px solid #e9e6f0; border-radius: 12px; background: #faf9fc; }
+.chart-input-needed p { margin: 0; line-height: 1.6; }
+.chart-input-needed .button { flex: 0 0 auto; }
 .unverified-warning { padding: 11px 13px; border-left: 3px solid #d59a31; border-radius: 6px; background: #fff7e6; color: #6b4b12 !important; }
 .calculated-summary { grid-template-columns: repeat(3, 1fr); }
 .palace-results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
@@ -223,6 +221,105 @@ h1 { color: var(--ink); }
 .palace-result ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
 .palace-result li { padding: 4px 7px; border-radius: 12px; background: #f0edff; color: #423b80; font-size: 10px; }
 .palace-result .empty-palace { margin: 10px 0 0; color: var(--muted); font-size: 10px; }
+.chart-scroll-frame { width: 100%; overflow-x: auto; padding: 2px 0 12px; }
+.astrology-chart-grid {
+    width: min(100%, 1020px);
+    min-width: 760px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+        "thien_di tat_ach tai_bach tu_tuc"
+        "no_boc center center phu_the"
+        "quan_loc center center huynh_de"
+        "dien_trach phuc_duc phu_mau menh";
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid #8d806c;
+    border-radius: 5px;
+    background: #8d806c;
+    box-shadow: 0 12px 30px rgba(49, 39, 24, .12);
+}
+.chart-palace {
+    min-width: 0;
+    overflow: hidden;
+    padding: clamp(8px, 1.3vw, 15px);
+    color: #30271d;
+    background:
+        radial-gradient(ellipse at 50% 80%, rgba(218, 188, 133, .14), transparent 65%),
+        #fffdf7;
+}
+.palace-thien_di { grid-area: thien_di; }
+.palace-tat_ach { grid-area: tat_ach; }
+.palace-tai_bach { grid-area: tai_bach; }
+.palace-tu_tuc { grid-area: tu_tuc; }
+.palace-no_boc { grid-area: no_boc; }
+.palace-phu_the { grid-area: phu_the; }
+.palace-quan_loc { grid-area: quan_loc; }
+.palace-huynh_de { grid-area: huynh_de; }
+.palace-dien_trach { grid-area: dien_trach; }
+.palace-phuc_duc { grid-area: phuc_duc; }
+.palace-phu_mau { grid-area: phu_mau; }
+.palace-menh { grid-area: menh; }
+.chart-palace .palace-result-heading {
+    align-items: flex-start;
+    min-height: 31px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(111, 91, 62, .2);
+}
+.chart-palace .palace-result-heading h3 {
+    color: #61431e;
+    font: 700 clamp(10px, 1.15vw, 14px) 'DM Sans', 'Segoe UI', sans-serif;
+    line-height: 1.25;
+}
+.chart-palace .palace-result-heading span {
+    flex: 0 0 auto;
+    color: #6c5d49;
+    font-size: 10px;
+}
+.chart-star-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 5px 8px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+.chart-star-list li {
+    min-width: 0;
+    color: #5c2823;
+    font-size: clamp(9px, .95vw, 11px);
+    font-weight: 600;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+.chart-palace .empty-palace { margin: 9px 0 0; color: #928675; font-size: 9px; line-height: 1.4; }
+.astrology-chart-center {
+    grid-area: center;
+    min-width: 0;
+    padding: clamp(15px, 2vw, 26px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(225, 209, 171, .26), transparent 72%),
+        #fffef9;
+    text-align: center;
+}
+.astrology-chart-center .chart-center-brand { display: flex; align-items: center; justify-content: center; gap: 9px; color: #6b501b; }
+.astrology-chart-center .chart-center-mark { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #bd9c51; border-radius: 50%; font-size: 19px; }
+.astrology-chart-center .chart-center-brand div { display: grid; text-align: left; }
+.astrology-chart-center .chart-center-brand strong { font: 700 15px 'Playfair Display', Georgia, serif; letter-spacing: .05em; }
+.astrology-chart-center .chart-center-brand small { margin-top: 2px; color: #88734e; font-size: 8px; letter-spacing: .16em; }
+.astrology-chart-center .chart-center-name { margin: 17px 0 10px; color: #4f3023; font: 700 clamp(16px, 2vw, 23px) 'Playfair Display', Georgia, serif; }
+.astrology-chart-center .chart-center-details { max-width: 370px; width: 100%; margin: 0 auto; display: grid; gap: 5px; text-align: left; }
+.astrology-chart-center .chart-center-details > div { display: grid; grid-template-columns: minmax(86px, .9fr) minmax(0, 1.3fr); gap: 8px; padding-bottom: 4px; border-bottom: 1px dotted rgba(113, 90, 55, .2); font-size: clamp(9px, .95vw, 11px); }
+.astrology-chart-center .chart-center-details dt { color: #76664f; }
+.astrology-chart-center .chart-center-details dd { margin: 0; color: #33271d; font-weight: 600; }
+.astrology-chart-center .chart-center-disclaimer { margin: 12px 0 0; color: #88734e; font-size: 9px; line-height: 1.45; }
 .result-layout { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(270px, .9fr); align-items: start; gap: 18px; }
 .subsection-title { display: flex; justify-content: space-between; align-items: end; gap: 15px; margin: 0 0 10px; }
 .subsection-title > div { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
@@ -469,12 +566,11 @@ body.dark-mode .card-tag { background: #403d56; color: #d0caff; }
 body.dark-mode .values-grid article > span { background: #403d56; color: var(--ink); }
 body.dark-mode .chart-center .eyebrow { color: #c5bfff; }
 body.dark-mode .chart-center { color: var(--ink); }
-body.dark-mode .optional-lunar-input { background: var(--surface-muted); border-color: #444153; }
-body.dark-mode .optional-lunar-input input[type="number"], body.dark-mode .optional-lunar-input select { color: var(--ink); background: #29273a; border-color: #444153; }
 body.dark-mode .result-input-warning { background: #352f22; border-color: #8c6d31; }
 body.dark-mode .unverified-warning { background: #352f22; color: #f3d89e !important; }
 body.dark-mode .palace-result-heading { border-color: #444153; }
 body.dark-mode .palace-result li { background: #39354e; color: #dedbff; }
+body.dark-mode .chart-input-needed { background: var(--surface-muted); border-color: #444153; }
 body.dark-mode .chat-window { background: linear-gradient(120deg, #252342, #191827); }
 body.dark-mode .message-bubble { background: #f4f3f8; color: #282735; }
 body.dark-mode .message-bubble p { color: #4c4a59; }
@@ -568,6 +664,7 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
     .birth-summary > div { min-height: 76px; }
     .calculated-summary { grid-template-columns: repeat(2, 1fr); }
     .palace-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .chart-input-needed { align-items: flex-start; flex-direction: column; }
     .subsection-title { align-items: flex-start; }
     .subsection-title > small { display: none; }
     .palace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; gap: 7px; padding: 9px; }

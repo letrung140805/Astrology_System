@@ -17,9 +17,15 @@ import org.springframework.stereotype.Service;
 public class BirthInputNormalizationService {
 
 	public NormalizedBirthInput normalize(AstrologyCalculationInput input) {
+		return normalize(input, ZiHourDayBoundary.UNSPECIFIED);
+	}
+
+	public NormalizedBirthInput normalize(
+			AstrologyCalculationInput input,
+			ZiHourDayBoundary ziHourDayBoundary) {
 		Objects.requireNonNull(input, "Thông tin đầu vào không được để trống.");
 		return normalizeSolar(input.birthDate(), input.birthTime(), null, null,
-				ZiHourDayBoundary.UNSPECIFIED);
+				ziHourDayBoundary);
 	}
 
 	public NormalizedBirthInput normalize(

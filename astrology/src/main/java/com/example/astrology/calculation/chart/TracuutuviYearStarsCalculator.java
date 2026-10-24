@@ -48,6 +48,30 @@ public class TracuutuviYearStarsCalculator {
 			Map.entry(HeavenlyStem.XIN, EarthlyBranch.DAU),
 			Map.entry(HeavenlyStem.REN, EarthlyBranch.HOI),
 			Map.entry(HeavenlyStem.GUI, EarthlyBranch.TY));
+	private static final Map<HeavenlyStem, List<EarthlyBranch>> TIANKUI_BRANCHES = Map.ofEntries(
+			Map.entry(HeavenlyStem.JIA, List.of(EarthlyBranch.SUU, EarthlyBranch.MUI)),
+			Map.entry(HeavenlyStem.YI, List.of(EarthlyBranch.TY, EarthlyBranch.THAN)),
+			Map.entry(HeavenlyStem.BING, List.of(EarthlyBranch.HOI, EarthlyBranch.DAU)),
+			Map.entry(HeavenlyStem.DING, List.of(EarthlyBranch.HOI, EarthlyBranch.DAU)),
+			Map.entry(HeavenlyStem.WU, List.of(EarthlyBranch.SUU, EarthlyBranch.MUI)),
+			Map.entry(HeavenlyStem.JI, List.of(EarthlyBranch.TY, EarthlyBranch.THAN)),
+			Map.entry(HeavenlyStem.GENG, List.of(EarthlyBranch.SUU, EarthlyBranch.MUI)),
+			Map.entry(HeavenlyStem.XIN, List.of(EarthlyBranch.NGO, EarthlyBranch.DAN)),
+			Map.entry(HeavenlyStem.REN, List.of(EarthlyBranch.MAO, EarthlyBranch.TI)),
+			Map.entry(HeavenlyStem.GUI, List.of(EarthlyBranch.MAO, EarthlyBranch.TI)));
+	private static final Map<EarthlyBranch, EarthlyBranch> TIANMA_BRANCH = Map.ofEntries(
+			Map.entry(EarthlyBranch.DAN, EarthlyBranch.THAN),
+			Map.entry(EarthlyBranch.NGO, EarthlyBranch.THAN),
+			Map.entry(EarthlyBranch.TUAT, EarthlyBranch.THAN),
+			Map.entry(EarthlyBranch.THAN, EarthlyBranch.DAN),
+			Map.entry(EarthlyBranch.TY, EarthlyBranch.DAN),
+			Map.entry(EarthlyBranch.THIN, EarthlyBranch.DAN),
+			Map.entry(EarthlyBranch.TI, EarthlyBranch.HOI),
+			Map.entry(EarthlyBranch.DAU, EarthlyBranch.HOI),
+			Map.entry(EarthlyBranch.SUU, EarthlyBranch.HOI),
+			Map.entry(EarthlyBranch.HOI, EarthlyBranch.TI),
+			Map.entry(EarthlyBranch.MAO, EarthlyBranch.TI),
+			Map.entry(EarthlyBranch.MUI, EarthlyBranch.TI));
 
 	private final StarPlacementService placementService;
 	private final StarRuleEvidence evidence;
@@ -66,7 +90,12 @@ public class TracuutuviYearStarsCalculator {
 
 		chart = placeCycle(chart, THAI_TUE_CYCLE, input.yearBranch(), 1);
 		EarthlyBranch thienKhong = TracuutuviPositionsCalculator.step(input.yearBranch(), 1);
-		return placementService.addDocumentedPlacement(chart, StarId.THIEN_KHONG, thienKhong, evidence);
+		chart = placementService.addDocumentedPlacement(chart, StarId.THIEN_KHONG, thienKhong, evidence);
+		List<EarthlyBranch> tienKuiBranches = TIANKUI_BRANCHES.get(input.yearStem());
+		chart = placementService.addDocumentedPlacement(chart, StarId.THIEN_KHOI, tienKuiBranches.get(0), evidence);
+		chart = placementService.addDocumentedPlacement(chart, StarId.THIEN_VIET, tienKuiBranches.get(1), evidence);
+		return placementService.addDocumentedPlacement(
+				chart, StarId.THIEN_MA, TIANMA_BRANCH.get(input.yearBranch()), evidence);
 	}
 
 	static int cycleDirection(HeavenlyStem stem, BirthSex sex) {

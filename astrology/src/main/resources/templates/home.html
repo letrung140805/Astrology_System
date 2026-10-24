@@ -19,29 +19,17 @@
             <div class="trust-row"><span>♧ Không tự suy diễn dữ liệu thiếu</span><span>✣ Hiển thị cung và sao có cấu trúc</span><span>◉ Nêu rõ quy tắc chưa xác minh</span></div>
         </div>
         <form class="chart-form card" th:action="@{/result}" method="get">
-            <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Dữ liệu dương lịch được dùng để chuẩn hóa giờ sinh. Muốn hiện các cung và sao ứng viên, nhập thêm dữ liệu âm lịch bên dưới.</p></div></div>
+            <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Chỉ cần thông tin sinh cơ bản. Hệ thống tự quy đổi ngày dương sang âm lịch theo lịch Việt Nam (GMT+7).</p></div></div>
             <label for="fullName">Họ và tên</label>
             <div class="input-with-icon"><span>♙</span><input id="fullName" name="name" required placeholder="Ví dụ: Nguyễn Thị Lan"></div>
             <label>Giới tính sinh học (Âm Dương)</label>
             <div class="gender-options"><label class="gender-choice selected"><input type="radio" name="gender" value="Nữ" checked><span>♀</span> Nữ (Âm Nữ)</label><label class="gender-choice"><input type="radio" name="gender" value="Nam"><span>♂</span> Nam (Dương Nam)</label></div>
             <div class="form-two">
                 <div><label for="birthDate">Ngày sinh (Dương lịch)</label><div class="input-with-icon"><span>▦</span><input id="birthDate" name="birthDate" type="date" required></div></div>
-                <div><label for="birthTime">Giờ sinh (không bắt buộc nếu không rõ)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time"></div></div>
+                <div><label for="birthTime">Giờ sinh địa phương (không bắt buộc nếu không rõ)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time"></div></div>
             </div>
             <label for="birthplace">Nơi sinh (hiện chưa dùng để hiệu chỉnh múi giờ)</label>
             <div class="input-with-icon"><span>♧</span><input id="birthplace" name="birthplace" placeholder="Tỉnh / thành phố"><span class="input-end">⌕</span></div>
-            <details class="optional-lunar-input">
-                <summary>Nhập dữ liệu âm lịch để tính các phần lá số hiện có</summary>
-                <p>Dữ liệu âm lịch và Can Chi năm cần được tra từ nguồn bạn tin cậy. Ứng dụng chưa tự quy đổi từ ngày dương lịch.</p>
-                <div class="form-two">
-                    <div><label for="lunarYear">Năm âm lịch</label><input id="lunarYear" name="lunarYear" type="number" min="1" max="9999" placeholder="Ví dụ: 1999"></div>
-                    <div><label for="lunarMonth">Tháng âm lịch</label><input id="lunarMonth" name="lunarMonth" type="number" min="1" max="12" placeholder="1-12"></div>
-                    <div><label for="lunarDay">Ngày âm lịch</label><input id="lunarDay" name="lunarDay" type="number" min="1" max="30" placeholder="1-30"></div>
-                    <div><label for="yearStem">Thiên can năm sinh</label><select id="yearStem" name="yearStem"><option value="">Chọn Thiên Can</option><option value="JIA">Giáp</option><option value="YI">Ất</option><option value="BING">Bính</option><option value="DING">Đinh</option><option value="WU">Mậu</option><option value="JI">Kỷ</option><option value="GENG">Canh</option><option value="XIN">Tân</option><option value="REN">Nhâm</option><option value="GUI">Quý</option></select></div>
-                    <div><label for="yearBranch">Địa chi năm sinh</label><select id="yearBranch" name="yearBranch"><option value="">Chọn Địa Chi</option><option value="TY">Tý</option><option value="SUU">Sửu</option><option value="DAN">Dần</option><option value="MAO">Mão</option><option value="THIN">Thìn</option><option value="TI">Tỵ</option><option value="NGO">Ngọ</option><option value="MUI">Mùi</option><option value="THAN">Thân</option><option value="DAU">Dậu</option><option value="TUAT">Tuất</option><option value="HOI">Hợi</option></select></div>
-                </div>
-                <label class="leap-month-choice"><input name="leapMonth" type="checkbox" value="true"> Đây là tháng nhuận</label>
-            </details>
             <button class="button button-primary button-wide" type="submit"><span class="button-spark">✦</span> Kiểm tra dữ liệu sinh　→</button>
             <p class="privacy-note">Kết quả là dữ liệu tham khảo; chart ứng viên chưa được xác minh độc lập.</p>
         </form>
@@ -50,8 +38,8 @@
         <div class="section-heading centered"><span class="eyebrow">✦ CÁCH HIỂN THỊ KẾT QUẢ ✦</span><h2>Xem rõ dữ liệu đã tính</h2><p>Kết quả phân biệt giữa thông tin do bạn nhập, phần tính được và phần chưa có căn cứ triển khai.</p></div>
         <div class="steps-grid">
             <article class="step-card"><span class="icon-tile lilac">▣</span><small>Bước 01</small><h3>Nhập ngày giờ sinh</h3><p>Ngày dương lịch và giờ địa phương được chuẩn hóa; địa chi giờ chỉ hiện khi có giờ sinh.</p></article>
-            <article class="step-card"><span class="icon-tile gold">♧</span><small>Bước 02</small><h3>Bổ sung ngày âm nếu có</h3><p>Để xem chart ứng viên, cần tự cung cấp ngày âm và Can Chi năm vì hệ thống chưa tự chuyển đổi.</p></article>
-            <article class="step-card"><span class="icon-tile lavender">⊙</span><small>Bước 03</small><h3>Kiểm tra phần đã tính</h3><p>Xem 12 cung và các sao thuộc nhóm hiện triển khai, kèm ruleset và cảnh báo chưa đối chiếu lá số thực.</p></article>
+            <article class="step-card"><span class="icon-tile gold">♧</span><small>Bước 02</small><h3>Tự quy đổi lịch âm</h3><p>Engine quy đổi ngày dương và xác định Can Chi năm theo năm âm lịch, dùng quy ước lịch Việt Nam GMT+7.</p></article>
+            <article class="step-card"><span class="icon-tile lavender">⊙</span><small>Bước 03</small><h3>Kiểm tra phần đã tính</h3><p>Xem 12 cung và các sao thuộc nhóm hiện triển khai, kèm profile quy tắc và cảnh báo chưa đối chiếu lá số thực.</p></article>
         </div>
     </section>
     <section class="section benefits-section">

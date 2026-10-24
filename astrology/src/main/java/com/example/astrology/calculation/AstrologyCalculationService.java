@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.example.astrology.calculation.calendar.BirthInputNormalizationService;
+import com.example.astrology.calculation.calendar.ZiHourDayBoundary;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class AstrologyCalculationService {
 			CalculationGap.LUNAR_CALENDAR,
 			CalculationGap.CAN_CHI_YEAR_BOUNDARY,
 			CalculationGap.CAN_CHI_RULES,
+			CalculationGap.NATAL_ELEMENT,
 			CalculationGap.MENH_AND_CUC,
 			CalculationGap.TWELVE_PALACES,
 			CalculationGap.STAR_PLACEMENT,
@@ -27,7 +29,8 @@ public class AstrologyCalculationService {
 
 	public CalculationAssessment assess(AstrologyCalculationInput input) {
 		Objects.requireNonNull(input, "Thông tin đầu vào không được để trống.");
-		var normalizedBirthInput = birthInputNormalizationService.normalize(input);
+		var normalizedBirthInput = birthInputNormalizationService.normalize(
+				input, ZiHourDayBoundary.CHANGE_AT_MIDNIGHT);
 		if (input.gender() == null || input.gender().isBlank()) {
 			throw new IllegalArgumentException("Giới tính là bắt buộc để lập lá số.");
 		}
