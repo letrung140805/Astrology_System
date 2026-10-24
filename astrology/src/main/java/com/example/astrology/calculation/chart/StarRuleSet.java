@@ -35,6 +35,40 @@ public record StarRuleSet(String version, Map<StarRuleGroup, StarRuleEvidence> e
 		return new StarRuleSet(version, evidence);
 	}
 
+	public static StarRuleSet tracuutuviPublicCandidate() {
+		String version = "tracuutuvi-public-rules-2026-10-24+quanshu-supplement-1";
+		var site = new RuleSource(
+				"Tra Cứu Tử Vi - An sao tử vi",
+				java.net.URI.create("https://tracuutuvi.com/an-sao-tu-vi.html"),
+				"Public article accessed 2026-10-24",
+				"sections 2.2-3.4 and 4.1");
+		var classic = new RuleSource(
+				"紫微斗數全書",
+				java.net.URI.create("https://zh.wikisource.org/wiki/紫微斗數全書/卷二"),
+				"Wikisource electronic transcription accessed 2026-10-24",
+				"安身命例; 安十二宮例; 安南北斗諸星訣");
+		var fourTransformations = new RuleSource(
+				"Tra Cứu Tử Vi - Tứ Hóa",
+				java.net.URI.create("https://tracuutuvi.com/tu-hoa.html"),
+				"Public article accessed 2026-10-24",
+				"section 2; Nam phái table");
+		var evidence = new EnumMap<StarRuleGroup, StarRuleEvidence>(StarRuleGroup.class);
+		evidence.put(StarRuleGroup.FOURTEEN_MAJOR_STARS,
+				StarRuleEvidence.documented(StarRuleGroup.FOURTEEN_MAJOR_STARS, version, java.util.List.of(site, classic)));
+		evidence.put(StarRuleGroup.LOC_TON_AND_YEAR_STEM_STARS,
+				StarRuleEvidence.documented(StarRuleGroup.LOC_TON_AND_YEAR_STEM_STARS, version, java.util.List.of(site)));
+		evidence.put(StarRuleGroup.TIME_AND_MONTH_AUXILIARY_STARS,
+				StarRuleEvidence.documented(StarRuleGroup.TIME_AND_MONTH_AUXILIARY_STARS, version, java.util.List.of(site)));
+		evidence.put(StarRuleGroup.FOUR_TRANSFORMATIONS,
+				StarRuleEvidence.documented(
+						StarRuleGroup.FOUR_TRANSFORMATIONS, version, java.util.List.of(site, fourTransformations)));
+		evidence.put(StarRuleGroup.CHANG_SHENG_CYCLE,
+				StarRuleEvidence.documented(StarRuleGroup.CHANG_SHENG_CYCLE, version, java.util.List.of(site)));
+		evidence.put(StarRuleGroup.STAR_BRIGHTNESS,
+				StarRuleEvidence.pending(StarRuleGroup.STAR_BRIGHTNESS, version));
+		return new StarRuleSet(version, evidence);
+	}
+
 	public boolean isFullyVerified() {
 		return evidence.values().stream().allMatch(item -> item.status() == RuleStatus.VERIFIED);
 	}

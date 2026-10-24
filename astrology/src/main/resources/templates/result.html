@@ -2,66 +2,65 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lá số Tử Vi | Tử Vi AI</title>
+    <title>Kết quả tính lá số | Tử Vi AI</title>
     <link rel="stylesheet" th:href="@{/css/site.css}">
-    <script th:src="@{/js/site.js}" defer></script>
 </head>
 <body>
 <div th:replace="~{fragments/layout :: header('result')}"></div>
 <main class="page-main result-main">
     <div class="result-titlebar">
-        <div><span class="eyebrow">✦ Đánh giá dữ liệu đầu vào</span><h1>Thông tin sinh của <em th:text="${name}">Người dùng</em></h1></div>
+        <div><span class="eyebrow">✦ Dữ liệu tính toán được</span><h1>Thông tin sinh của <em th:text="${name}">Người dùng</em></h1></div>
     </div>
     <section class="birth-summary card">
-        <div><small>Ngày dương lịch nhập</small><strong th:text="${birthDate}">12/06/2005</strong><small>Chưa quy đổi sang âm lịch</small></div>
-        <div><small>Giờ địa phương nhập</small><strong th:text="${birthTime != null ? birthTime : 'Không rõ'}">10:30</strong><small>Không hiệu chỉnh múi giờ/giờ mặt trời</small></div>
-        <div><small>Giới tính đã nhập</small><strong th:text="${gender}">Chưa rõ</strong><small>Chưa suy diễn Âm/Dương</small></div>
-        <div><small>Nơi sinh đã nhập</small><strong th:text="${birthplace != null ? birthplace : 'Chưa cung cấp'}">Hà Nội, Việt Nam</strong><small>Chưa tra tọa độ hoặc múi giờ</small></div>
+        <div><small>Ngày dương lịch nhập</small><strong th:text="${birthDate}">12/06/2005</strong><small>Chưa tự quy đổi sang âm lịch</small></div>
+        <div><small>Giờ địa phương nhập</small><strong th:text="${birthTime != null ? birthTime : 'Không rõ'}">10:30</strong><small>Chưa hiệu chỉnh giờ mặt trời</small></div>
+        <div><small>Địa chi giờ tính được</small><strong th:text="${hourBranch != null ? hourBranch.earthlyBranch.vietnameseName : 'Chưa xác định'}">Tỵ</strong><small>Chỉ phân loại theo giờ địa phương nhập</small></div>
+        <div><small>Giới tính đã nhập</small><strong th:text="${gender}">Chưa rõ</strong><small>Áp dụng quy ước giới tính nếu có chart</small></div>
+        <div><small>Nơi sinh đã nhập</small><strong th:text="${birthplace != null ? birthplace : 'Chưa cung cấp'}">Hà Nội, Việt Nam</strong><small>Chưa tra tọa độ hoặc múi giờ lịch sử</small></div>
     </section>
-    <section class="card" role="status">
-        <h2>Chưa thể lập lá số</h2>
-        <p>Hệ thống chưa có quy tắc tính được kiểm chứng. Các mục sau cần được xác định trước khi hiển thị Can Chi, Mệnh/Cục, cung hoặc sao:</p>
-        <ul>
-            <li th:each="gap : ${calculation.gaps}" th:text="${gap.description}">Quy tắc cần xác định</li>
-        </ul>
+
+    <section class="card result-notice" role="status">
+        <h2>Phần chưa tính được từ ngày dương lịch</h2>
+        <p>Ứng dụng chưa có bộ chuyển lịch âm, Can Chi và Nạp Âm đã kiểm chứng; vì vậy không tự tạo các dữ liệu này.</p>
+        <ul><li th:each="gap : ${remainingGaps}" th:text="${gap.description}">Quy tắc cần xác định</li></ul>
+        <ul th:if="${chart != null}"><li th:each="limitation : ${chartLimitations}" th:text="${limitation}">Giới hạn chart ứng viên</li></ul>
     </section>
-    <div class="result-layout" th:if="${calculation.complete}">
-        <section class="chart-column">
-            <div class="subsection-title"><div><span class="eyebrow">✣</span><h2>Bàn Thiên Địa 12 Cung Số</h2></div><small>Nhấp vào từng cung để xem luận giải tinh tú</small></div>
-            <div class="palace-grid card">
-                <button class="palace-card p1 selected" type="button" data-palace="Mệnh"><small>THÌN · MỆNH <i>2 - 11</i></small><strong>Tử Vi • Thiên Phủ</strong><span>Tả Phù · Hữu Bật · Quốc Ấn</span><small>Tiểu hạn: Mão</small></button>
-                <button class="palace-card p2" type="button" data-palace="Phụ Mẫu"><small>TỴ · Phụ Mẫu <i>114 - 123</i></small><strong>Thái Âm (V)</strong><span>Văn Xương · Thiên Khôi · Đà La</span><small>Tiểu hạn: Thìn</small></button>
-                <button class="palace-card p3" type="button" data-palace="Phúc Đức"><small>NGỌ · Phúc Đức <i>104 - 113</i></small><strong>Tham Lang (Đ)</strong><span>Hóa Quyền · Linh Tinh · Phong Cáo</span><small>Tiểu hạn: Tỵ</small></button>
-                <button class="palace-card p4" type="button" data-palace="Điền Trạch"><small>MÙI · Điền Trạch <i>94 - 103</i></small><strong>Cự Môn (M)</strong><span>Hóa Khoa · Bát Tọa · Tam Thai</span><small>Tiểu hạn: Ngọ</small></button>
-                <button class="palace-card p5" type="button" data-palace="Quan Lộc"><small>THÂN · Quan Lộc <i>84 - 93</i></small><strong>Thiên Đồng (V)</strong><span>Hóa Lộc · Tả Phù · Thiên Khốc</span><small>Tiểu hạn: Mùi</small></button>
-                <button class="palace-card p6" type="button" data-palace="Nô Bộc"><small>DẬU · Nô Bộc <i>74 - 83</i></small><strong>Vũ Khúc • Phá Quân</strong><span>Văn Khúc · Thiên Việt · Hóa Tinh</span><small>Tiểu hạn: Thân</small></button>
-                <button class="palace-card p7" type="button" data-palace="Thiên Di"><small>TUẤT · Thiên Di <i>64 - 73</i></small><strong>Thất Sát (Miếu)</strong><span>Thiên Mã · Long Trì · Phượng Các</span><small>Tiểu hạn: Dậu</small></button>
-                <button class="palace-card p8" type="button" data-palace="Tật Ách"><small>HỢI · Tật Ách <i>52 - 61</i></small><strong>Thiên Tướng (Đ)</strong><span>Hỏa Kỵ · Bạch Hổ · Kình Dương</span><small>Tiểu hạn: Tuất</small></button>
-                <div class="chart-center"><span class="eyebrow">THIÊN BÀN BẢN ĐỒ CƯƠNG VỊ</span><h3>TỬ VI ĐẨU SỐ</h3><p>Khôn nguyên niên Can Chi · Mệnh Thủy Ngũ Hành</p><div class="yin-yang">☯</div><div class="chart-pills"><span th:text="${gender} + ' · Thủy Nhị Cục'">Thủy Nhị Cục</span><span>Âm Nữ</span></div><p>Cung Thân đồng cư Cung Quan Lộc</p><div class="chart-date"><span>Lai Nhân Cung<br><b>Cung Phúc Đức</b></span><span>Lưu Niên 2025<br><b>Ất Tỵ (Cung Dậu)</b></span></div></div>
-                <button class="palace-card p9" type="button" data-palace="Tài Bạch"><small>TÝ · Tài Bạch <i>42 - 51</i></small><strong>Vô Chính Diệu</strong><span>Lộc Tồn · Thiên Khôi · Thái Tuế</span><small>Tiểu hạn: Hợi</small></button>
-                <button class="palace-card p10" type="button" data-palace="Tử Tức"><small>SỬU · Tử Tức <i>32 - 41</i></small><strong>Liêm Trinh (V)</strong><span>Thiên Đức · Phúc Đức · Địa Kiếp</span><small>Tiểu hạn: Tý</small></button>
-                <button class="palace-card p11" type="button" data-palace="Phu Thê"><small>DẦN · Phu Thê <i>22 - 31</i></small><strong>Thiên Cơ • Thiên Lương</strong><span>Hóa Khoa · Ân Quang</span><small>Tiểu hạn: Sửu</small></button>
-                <button class="palace-card p12" type="button" data-palace="Huynh Đệ"><small>MÃO · Huynh Đệ <i>12 - 21</i></small><strong>Thái Dương (Đ)</strong><span>Thiên Việt · Đào Hoa · Địa Không</span><small>Tiểu hạn: Dần</small></button>
-            </div>
-            <div class="selected-palace card"><span class="icon-tile lavender">⊙</span><div><strong>Đang chọn: Cung <span data-palace-name>Mệnh</span> (Thìn)</strong><p data-palace-description>Tử Vi và Thiên Phủ hội tụ tại đây, cho thấy tư duy độc lập, khả năng lãnh đạo và thiên hướng tổ chức vững vàng.</p></div><a href="#readings">Xem phân tích chi tiết ↓</a></div>
+
+    <section class="card result-notice result-input-warning" role="alert" th:if="${chartInputMessage != null}">
+        <p th:text="${chartInputMessage}">Thông tin âm lịch chưa đầy đủ.</p>
+    </section>
+
+    <section class="chart-result" th:if="${chart != null}">
+        <div class="chart-heading">
+            <span class="eyebrow">✣ KẾT QUẢ CÓ CẤU TRÚC</span>
+            <h2>Lá số theo ruleset ứng viên</h2>
+            <p>Profile: <code th:text="${chart.ruleSetVersion}">ruleset-version</code></p>
+            <p class="unverified-warning">Các phép an này được ghi nhận từ nguồn đã nêu nhưng chưa được xác minh bằng fixture lá số thực. Không dùng như kết quả chính thức.</p>
+        </div>
+        <section class="birth-summary card calculated-summary">
+            <div><small>Ngày âm đã nhập</small><strong th:text="${chart.input.lunarDay + '/' + chart.input.lunarMonth + '/' + chart.input.lunarYear}">15/5/1999</strong><small th:text="${chart.input.leapMonth ? 'Tháng nhuận' : 'Tháng thường'}">Tháng thường</small></div>
+            <div><small>Can Chi năm đã nhập</small><strong th:text="${chart.input.yearStem.vietnameseName + ' ' + chart.input.yearBranch.vietnameseName}">Kỷ Mão</strong><small>Do người dùng cung cấp, chưa tự tính</small></div>
+            <div><small>Địa chi giờ</small><strong th:text="${chart.input.birthHour.earthlyBranch.vietnameseName}">Mão</strong><small>Phân loại từ giờ địa phương</small></div>
+            <div><small>Cung Mệnh</small><strong th:text="${chart.positions.mingPalace.vietnameseName}">Dần</strong><small>Địa chi cung</small></div>
+            <div><small>Cung Thân</small><strong th:text="${chart.positions.thanPalace.vietnameseName}">Thân</strong><small>Địa chi cung</small></div>
+            <div><small>Ngũ hành Cục</small><strong th:text="${chart.positions.bureau.vietnameseName}">Thủy Nhị Cục</strong><small>Bảng Tra Cứu Tử Vi</small></div>
         </section>
-        <aside class="insight-column">
-            <article class="card insight-card"><span class="icon-tile gold">♧</span><h2>Tổng quan cuộc đời</h2><small>Khái quát vận số &amp; bản sắc</small><p>Bạn là người sở hữu tư duy chiến lược sâu sắc, nội tâm điềm đạm nhưng giàu tham vọng. Bộ sao Hoàng Gia giúp bạn luôn được quý nhân soi đường, có sức ảnh hưởng tự nhiên đến tập thể và khả năng tự tái tạo sau thử thách rất bền bỉ.</p><div class="insight-line"><span>● Đặc trưng khí chất</span><b>Điềm tĩnh • Trọng nghĩa</b></div><div class="insight-line"><span>● Bước ngoặt đại vận</span><b>Giai đoạn 22 - 28 tuổi</b></div></article>
-            <article class="card radar-card"><h2>Thước đo Ngũ Khí Vận Mệnh</h2><small>Phân bố căn bản theo trường năng lượng can chi</small><svg viewBox="0 0 260 220" role="img" aria-label="Biểu đồ ngũ hành"><polygon points="130,27 218,89 184,188 76,188 42,89" fill="none" stroke="#ddd9e5"/><polygon points="130,50 196,97 170,166 91,166 64,97" fill="none" stroke="#ddd9e5"/><polygon points="130,73 174,105 157,145 105,145 87,105" fill="none" stroke="#ddd9e5"/><path d="M130 49 L194 95 L169 166 L91 162 L72 96 Z" fill="rgba(94,84,167,.22)" stroke="#6057a8" stroke-width="2"/><circle cx="130" cy="49" r="4" fill="#171746"/><circle cx="194" cy="95" r="4" fill="#171746"/><circle cx="169" cy="166" r="4" fill="#171746"/><circle cx="91" cy="162" r="4" fill="#171746"/><circle cx="72" cy="96" r="4" fill="#171746"/><text x="130" y="17" text-anchor="middle">Thiên Thời (85%)</text><text x="225" y="95">Trí Tuệ</text><text x="181" y="205">Tài Lộc</text><text x="39" y="205">Địa Lợi</text><text x="2" y="95">Nhân Hòa</text></svg><p class="radar-note">Khí vận đạt đỉnh ở trục <b>Trí Tuệ &amp; Thiên thời</b>. Nên tận dụng các kế hoạch học thuật, sáng tạo và mở rộng quan hệ đối ngoại.</p></article>
-        </aside>
-    </div>
-    <section id="readings" class="readings-section" th:if="${calculation.complete}">
-        <div class="subsection-title"><div><span class="eyebrow">LUẬN GIẢI CHUYÊN SÂU</span><h2>Luận giải 4 Trụ Vận Mệnh Cốt Lõi</h2><p>Phân tích chuyên sâu từ sự phối chiếu của các Chính Diệu và Tuần Triệt</p></div><button class="text-button" type="button" data-expand-all>☷ Mở rộng toàn bộ</button></div>
-        <div class="reading-grid">
-            <details class="reading-card" open><summary><span class="icon-tile neutral">▣</span><span><b>Sự nghiệp &amp; Công danh</b><small>Cung Thân đồng Quan Lộc • Thiên Đồng (V)</small></span></summary><p>Cung Quan Lộc tọa tại Thân mang sao Thiên Đồng đắc địa hội tụ Hóa Lộc và Tả Phù biểu thị một con đường nghề nghiệp mở rộng bằng sáng tạo, giao tiếp và kết nối cộng đồng.</p><div class="reading-note"><b>▣ Lĩnh vực vượng phát nhất:</b><p>Công nghệ - Truyền thông số, nghiên cứu dữ liệu, thiết kế giải pháp chiến lược, giáo dục đào tạo hoặc cố vấn độc lập.</p></div></details>
-            <details class="reading-card"><summary><span class="icon-tile lavender">♡</span><span><b>Tình duyên &amp; Gia đạo</b><small>Cung Phu Thê tại Dần • Cơ Lương Đồng Hành</small></span></summary><p>Đề cao sự đồng điệu trí tuệ và cùng chia sẻ những giá trị sống bền vững. Giao tiếp chân thành là chìa khóa giúp tình cảm thêm gắn kết.</p></details>
-            <details class="reading-card"><summary><span class="icon-tile gold">▣</span><span><b>Tài lộc &amp; Năng lực tài chính</b><small>Cung Tài Bạch tại Tý • Vô Chính Diệu đắc Lộc Tồn</small></span></summary><p>Tài chính thuận từ sự tích lũy có kế hoạch, kỹ năng chuyên môn và các cơ hội cộng tác dài hạn.</p></details>
-            <details class="reading-card"><summary><span class="icon-tile neutral">⌛</span><span><b>Vận hạn theo giai đoạn (Đại vận)</b><small>Đại vận 22 - 31 tuổi (Cung Dần) &amp; Lưu niên 2025</small></span></summary><p>Thời kỳ thích hợp để học hỏi, mở rộng quan hệ và xây dựng nền tảng nghề nghiệp ổn định.</p></details>
+        <div class="palace-results">
+            <article class="card palace-result" th:each="palace : ${chartPalaces}">
+                <div class="palace-result-heading">
+                    <h3 th:text="${palace.function.vietnameseName}">Mệnh</h3>
+                    <span th:text="${palace.branch.vietnameseName}">Dần</span>
+                </div>
+                <ul th:if="${!palace.stars.isEmpty()}">
+                    <li th:each="star : ${palace.stars}" th:text="${star}">Tử Vi</li>
+                </ul>
+                <p class="empty-palace" th:if="${palace.stars.isEmpty()}">Chưa có sao trong các nhóm đã tính.</p>
+            </article>
         </div>
     </section>
-    <div class="disclaimer result-disclaimer"><span>⚠</span><p><b>Lưu ý quan trọng</b><br>Thông tin trên được cung cấp với mục đích tham khảo, chiêm nghiệm văn hóa và khám phá bản thân; không phải cơ sở để đưa ra các quyết định quan trọng về y tế, tài chính hoặc pháp lý.</p></div>
+
+    <div class="disclaimer result-disclaimer"><span>⚠</span><p><b>Giới hạn kết quả</b><br>Engine chỉ hiển thị dữ liệu được tính từ input và ruleset nêu trên. Các nhóm chưa triển khai hoặc chưa có căn cứ không được suy diễn; kết quả hiện tại không phải lá số đã xác minh đầy đủ hay nội dung luận giải.</p></div>
 </main>
-<a class="chat-fab" th:href="@{/chat}" th:if="${calculation.complete}">✦ Hỏi AI Tử Vi</a>
 <div th:replace="~{fragments/layout :: footer}"></div>
 </body>
 </html>
