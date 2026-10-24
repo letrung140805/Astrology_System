@@ -9,11 +9,15 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.example.astrology.calculation.calendar.BirthInputNormalizationService;
+import com.example.astrology.calculation.calendar.CycleDateAdjustment;
+import com.example.astrology.calculation.calendar.HourBranch;
 import org.junit.jupiter.api.Test;
 
 class AstrologyCalculationServiceTests {
 
-	private final AstrologyCalculationService service = new AstrologyCalculationService();
+	private final AstrologyCalculationService service =
+			new AstrologyCalculationService(new BirthInputNormalizationService());
 
 	@Test
 	void acceptsGregorianLeapDayAndPreservesLocalBirthTimeWithoutTimezoneConversion() {
@@ -23,6 +27,8 @@ class AstrologyCalculationServiceTests {
 		var assessment = service.assess(input);
 
 		assertEquals(input, assessment.input());
+		assertEquals(HourBranch.ZI, assessment.normalizedBirthInput().hourBranch());
+		assertEquals(CycleDateAdjustment.UNRESOLVED, assessment.normalizedBirthInput().cycleDateAdjustment());
 		assertFalse(assessment.isComplete());
 		assertTrue(assessment.gaps().contains(CalculationGap.TIMEZONE_AND_LOCATION));
 		assertFalse(assessment.gaps().contains(CalculationGap.UNKNOWN_BIRTH_TIME));

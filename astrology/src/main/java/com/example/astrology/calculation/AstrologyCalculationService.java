@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.example.astrology.calculation.calendar.BirthInputNormalizationService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AstrologyCalculationService {
+
+	private final BirthInputNormalizationService birthInputNormalizationService;
+
+	public AstrologyCalculationService(BirthInputNormalizationService birthInputNormalizationService) {
+		this.birthInputNormalizationService = birthInputNormalizationService;
+	}
 
 	private static final List<CalculationGap> UNIMPLEMENTED_RULES = List.of(
 			CalculationGap.LUNAR_CALENDAR,
@@ -20,7 +27,7 @@ public class AstrologyCalculationService {
 
 	public CalculationAssessment assess(AstrologyCalculationInput input) {
 		Objects.requireNonNull(input, "Thông tin đầu vào không được để trống.");
-		Objects.requireNonNull(input.birthDate(), "Ngày sinh dương lịch là bắt buộc.");
+		var normalizedBirthInput = birthInputNormalizationService.normalize(input);
 		if (input.gender() == null || input.gender().isBlank()) {
 			throw new IllegalArgumentException("Giới tính là bắt buộc để lập lá số.");
 		}
@@ -33,6 +40,6 @@ public class AstrologyCalculationService {
 			gaps.add(CalculationGap.BIRTHPLACE);
 		}
 
-		return new CalculationAssessment(input, gaps);
+		return new CalculationAssessment(input, normalizedBirthInput, gaps);
 	}
 }

@@ -209,10 +209,33 @@ hay bí mật xác thực.
 ## Astrology Calculation Engine
 
 `AstrologyCalculationService` nằm trong package `calculation` và được gọi từ
-`WebController`; service hiện chỉ kiểm tra dữ liệu bắt buộc và báo rõ các quy
-tắc chưa có căn cứ. Chưa có phép tính Can Chi, lịch âm, Mệnh/Cục, 12 cung hoặc
-vị trí sao. Vì vậy trang kết quả không hiển thị các lá số mẫu như kết quả tính
-thật.
+`WebController`. `BirthInputNormalizationService` kiểm tra/chuẩn hóa ngày dương
+Gregorian, giữ riêng đầu vào lịch âm và cờ tháng nhuận, giải quyết offset IANA
+cho ngày giờ địa phương dương lịch và xác định địa chi giờ theo các khoảng giờ
+được công bố. Khoảng giờ trên trang an sao nêu Tý 23:00–01:00; trang đó cũng có
+một ví dụ gọi 10:00 là giờ Tý, trái với chính bảng khoảng giờ. Engine dùng bảng
+khoảng giờ, không dùng ví dụ mâu thuẫn, và ghi nhận nguồn này cần xác minh
+thêm bằng lá số đối chiếu.
+
+Lựa chọn đổi ngày Can Chi tại giờ Tý phải được truyền rõ bằng
+`ZiHourDayBoundary`; mặc định `UNSPECIFIED` để thời điểm 23:00 được đánh dấu
+chưa xác định, không tự dịch ngày sinh gốc. DST gap bị từ chối; DST overlap
+cần UTC offset tường minh. Đối với ngày âm, không áp dụng kiểm tra DST trước
+khi đổi được ngày sang Gregorian.
+
+Chưa có phép chuyển lịch âm/dương, Can Chi năm/tháng/ngày/thiên can giờ hoặc
+bảng nạp âm chạy được. Các port `VietnameseLunarCalendarProvider`,
+`CanChiCalculator` và `NapAmCalculator` chỉ mô tả hợp đồng, chưa đăng ký
+implementation. Không hiển thị kết quả giả; trang kết quả tiếp tục báo rõ
+các quy tắc còn thiếu.
+
+Thư viện `nhatanh2996/LunarCalendar4J` có MIT license, nhưng tại revision
+`1b5ef2b169276b2e39918bd292a645318e7efe7c` `convertSolar2LunarDate` trả `null`,
+artifact không có trên Maven Central; vì vậy không tích hợp. Ứng dụng Android
+`tinhtinh1908/Amlich` có Apache-2.0 nhưng chưa xác minh được module chuyển lịch
+thuần Java độc lập và các fixture, nên cũng chưa dùng. Ngày rà soát nguồn:
+2026-10-24. Khi chọn implementation, provider phải ghi tên, phiên bản, URL,
+phạm vi năm, chính sách múi giờ và bộ fixture đã đối chiếu.
 
 Ngày nhập từ biểu mẫu được hiểu là ngày dương lịch theo ISO; Java kiểm tra tính
 hợp lệ của ngày Gregorian. Giờ là giờ địa phương dạng `LocalTime`; hệ thống
@@ -221,11 +244,10 @@ Nếu giờ sinh bị bỏ trống, dữ liệu được chấp nhận nhưng đ
 phần lá số cần giờ sinh. Địa điểm hiện chỉ là văn bản, chưa được tra thành tọa
 độ hay múi giờ; nếu địa điểm để trống, hệ thống báo riêng dữ liệu còn thiếu.
 
-Trước khi triển khai phép tính, cần chọn và ghi nguồn/phiên bản cho lịch âm và
-tháng nhuận; mốc chuyển năm Can Chi; thuật toán Can Chi; quy tắc an Mệnh, an
-Thân và Cục; thứ tự/chiều an 12 cung; bảng an sao, độ sáng và tứ hóa; cách xử
-lý lịch sử múi giờ, tọa độ và giờ sinh không rõ. Unit tests của
-`AstrologyCalculationServiceTests` chỉ xác nhận kiểm tra đầu vào và việc không
-đưa ra kết quả khi các quy tắc này còn thiếu.
+Trước khi triển khai các phép tính còn thiếu, cần chọn nguồn/phiên bản lịch âm;
+mốc chuyển năm/tháng/ngày Can Chi; bảng nạp âm đủ 60 tổ hợp và fixtures độc
+lập; quy tắc an Mệnh/Thân/Cục, 12 cung, sao và độ sáng. Unit tests của
+`BirthInputNormalizationServiceTests` kiểm tra ranh giờ, DST và policy đổi
+ngày; chúng không được xem là xác nhận Can Chi hay lịch âm.
 
 Phần **Astrology Engine** chịu trách nhiệm tính toán dữ liệu lá số. AI được sử dụng để diễn giải và trả lời dựa trên dữ liệu lá số và ngữ cảnh liên quan.
