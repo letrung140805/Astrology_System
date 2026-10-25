@@ -1,6 +1,5 @@
 package com.example.astrology.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,7 +13,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -23,10 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "birth_profiles", indexes = {
-		@Index(name = "idx_birth_profiles_user", columnList = "user_id"),
-		@Index(name = "idx_birth_profiles_birth_date", columnList = "birth_date")
-})
+@Table(name = "birth_profiles")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,8 +31,8 @@ public class BirthProfile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	private AppUser user;
 
 	@Column(name = "profile_name", length = 150)
@@ -63,12 +58,6 @@ public class BirthProfile {
 
 	@Column(name = "birth_country", length = 100)
 	private String birthCountry = "Vietnam";
-
-	@Column(precision = 10, scale = 7)
-	private BigDecimal latitude;
-
-	@Column(precision = 10, scale = 7)
-	private BigDecimal longitude;
 
 	@Column(length = 50)
 	private String timezone = "Asia/Ho_Chi_Minh";

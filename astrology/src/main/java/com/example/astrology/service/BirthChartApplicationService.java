@@ -83,7 +83,7 @@ public class BirthChartApplicationService {
 						"Nam".equals(input.gender()) ? BirthSex.MALE : BirthSex.FEMALE);
 				chart = chartCalculator.calculate(lunarInput);
 			}
-		} catch (DateTimeException exception) {
+		} catch (DateTimeException | IllegalArgumentException | IllegalStateException exception) {
 			chartInputMessage = exception.getMessage();
 		}
 

@@ -11,7 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -20,11 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "astrology_charts", indexes = {
-		@Index(name = "idx_charts_user", columnList = "user_id"),
-		@Index(name = "idx_charts_birth_profile", columnList = "birth_profile_id"),
-		@Index(name = "idx_charts_generated_at", columnList = "generated_at")
-})
+@Table(name = "astrology_charts")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,12 +30,12 @@ public class BirthChart {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
-	private AppUser user;
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "birth_profile_id", nullable = false)
 	private BirthProfile birthProfile;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private AppUser user;
 
 	@Column(name = "chart_name", length = 150)
 	private String chartName;
@@ -66,27 +61,6 @@ public class BirthChart {
 	@Column(name = "year_chi", length = 30)
 	private String yearChi;
 
-	@Column(name = "month_can", length = 30)
-	private String monthCan;
-
-	@Column(name = "month_chi", length = 30)
-	private String monthChi;
-
-	@Column(name = "day_can", length = 30)
-	private String dayCan;
-
-	@Column(name = "day_chi", length = 30)
-	private String dayChi;
-
-	@Column(name = "hour_can", length = 30)
-	private String hourCan;
-
-	@Column(name = "hour_chi", length = 30)
-	private String hourChi;
-
-	@Column(name = "yin_yang", length = 30)
-	private String yinYang;
-
 	@Column(name = "menh_name", length = 100)
 	private String menhName;
 
@@ -100,10 +74,10 @@ public class BirthChart {
 	private String cucElement;
 
 	@Column(name = "cung_menh_branch", length = 30)
-	private String cungMenhBranch;
+	private String mingPalaceBranch;
 
 	@Column(name = "cung_than_branch", length = 30)
-	private String cungThanBranch;
+	private String thanPalaceBranch;
 
 	@Column(name = "than_location", length = 100)
 	private String thanLocation;
@@ -111,12 +85,22 @@ public class BirthChart {
 	@Column(name = "chart_status", nullable = false, length = 30)
 	private String chartStatus = "COMPLETED";
 
-	@Column(name = "calculation_version", length = 50)
+	@Column(name = "calculation_version", length = 120)
 	private String calculationVersion;
+
+	@Column(name = "raw_calculation_data", columnDefinition = "LONGTEXT")
+	private String rawCalculationData;
+
+	@Column(name = "access_token_hash", length = 64, unique = true)
+	private String accessTokenHash;
 
 	@CreationTimestamp
 	@Column(name = "generated_at", nullable = false, updatable = false)
 	private LocalDateTime generatedAt;
+
+	@CreationTimestamp
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)

@@ -5,6 +5,8 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public record StarRuleSet(String version, Map<StarRuleGroup, StarRuleEvidence> evidence) {
 
 	public StarRuleSet {
@@ -76,6 +78,7 @@ public record StarRuleSet(String version, Map<StarRuleGroup, StarRuleEvidence> e
 		return new StarRuleSet(version, evidence);
 	}
 
+	@JsonIgnore
 	public boolean isFullyVerified() {
 		return evidence.values().stream().allMatch(item -> item.status() == RuleStatus.VERIFIED);
 	}
