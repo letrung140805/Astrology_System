@@ -12,6 +12,12 @@
     <div class="result-titlebar">
         <div><span class="eyebrow">✦ Dữ liệu tính toán được</span><h1>Thông tin sinh của <em th:text="${name}">Người dùng</em></h1></div>
     </div>
+    <section class="card result-notice result-input-warning" role="alert" th:if="${saveErrorMessage != null}">
+        <p th:text="${saveErrorMessage}">Lá số chưa được lưu.</p>
+    </section>
+    <section class="card result-notice" role="status" th:if="${storedChart == true}">
+        <p>Đây là lá số đã lưu và được tải từ cơ sở dữ liệu. Lưu lại liên kết này để mở lại lá số.</p>
+    </section>
     <section class="birth-summary card">
         <div><small>Ngày dương lịch nhập</small><strong th:text="${birthDate}">12/06/2005</strong><small>Lịch Việt Nam UTC+7</small></div>
         <div><small>Ngày âm lịch tự quy đổi</small><strong th:if="${lunarDate != null}" th:text="${lunarDate.day + '/' + lunarDate.month + '/' + lunarDate.year + (lunarDate.leapMonth ? ' (nhuận)' : '')}">Ngày âm</strong><strong th:if="${lunarDate == null}">Chưa xác định</strong><small th:if="${lunarDate != null}" th:text="${lunarCalendarName}">Nguồn lịch</small><small th:if="${lunarDate == null}">Ngày nằm ngoài phạm vi hiện hỗ trợ</small></div>

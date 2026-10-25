@@ -18,7 +18,8 @@
             <p class="handwritten">Khám phá bản thân từ những vì sao ✨</p>
             <div class="trust-row"><span>♧ Không tự suy diễn dữ liệu thiếu</span><span>✣ Hiển thị cung và sao có cấu trúc</span><span>◉ Nêu rõ quy tắc chưa xác minh</span></div>
         </div>
-        <form class="chart-form card" th:action="@{/result}" method="get">
+        <form class="chart-form card" th:action="@{/result}" method="post">
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Chỉ cần thông tin sinh cơ bản. Hệ thống tự quy đổi ngày dương sang âm lịch theo lịch Việt Nam (GMT+7).</p></div></div>
             <label for="fullName">Họ và tên</label>
             <div class="input-with-icon"><span>♙</span><input id="fullName" name="name" required placeholder="Ví dụ: Nguyễn Thị Lan"></div>
@@ -26,12 +27,12 @@
             <div class="gender-options"><label class="gender-choice selected"><input type="radio" name="gender" value="Nữ" checked><span>♀</span> Nữ (Âm Nữ)</label><label class="gender-choice"><input type="radio" name="gender" value="Nam"><span>♂</span> Nam (Dương Nam)</label></div>
             <div class="form-two">
                 <div><label for="birthDate">Ngày sinh (Dương lịch)</label><div class="input-with-icon"><span>▦</span><input id="birthDate" name="birthDate" type="date" required></div></div>
-                <div><label for="birthTime">Giờ sinh địa phương (không bắt buộc nếu không rõ)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time"></div></div>
+                <div><label for="birthTime">Giờ sinh địa phương (bắt buộc để lập và lưu lá số)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time" required></div></div>
             </div>
             <label for="birthplace">Nơi sinh (hiện chưa dùng để hiệu chỉnh múi giờ)</label>
             <div class="input-with-icon"><span>♧</span><input id="birthplace" name="birthplace" placeholder="Tỉnh / thành phố"><span class="input-end">⌕</span></div>
-            <button class="button button-primary button-wide" type="submit"><span class="button-spark">✦</span> Kiểm tra dữ liệu sinh　→</button>
-            <p class="privacy-note">Kết quả là dữ liệu tham khảo; chart ứng viên chưa được xác minh độc lập.</p>
+            <button class="button button-primary button-wide" type="submit"><span class="button-spark">✦</span> Tạo và lưu lá số　→</button>
+            <p class="privacy-note">Chart là dữ liệu tham khảo, chưa được xác minh độc lập. Liên kết mở lại chart guest là mã riêng tư; không chia sẻ công khai.</p>
         </form>
     </section>
     <section class="section section-muted">

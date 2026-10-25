@@ -10,22 +10,15 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "astrology_palaces", uniqueConstraints = {
-		@UniqueConstraint(name = "uk_chart_palace_order", columnNames = { "chart_id", "palace_order" })
-}, indexes = {
-		@Index(name = "idx_palaces_chart", columnList = "chart_id"),
-		@Index(name = "idx_palaces_name", columnList = "palace_name")
-})
+@Table(name = "astrology_palaces")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -41,6 +34,9 @@ public class AstrologyPalace {
 
 	@Column(name = "palace_order", nullable = false)
 	private Integer palaceOrder;
+
+	@Column(name = "position", nullable = false)
+	private Integer position;
 
 	@Column(name = "palace_name", nullable = false, length = 100)
 	private String palaceName;

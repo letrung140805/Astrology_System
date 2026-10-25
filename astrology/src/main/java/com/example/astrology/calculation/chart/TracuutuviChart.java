@@ -2,6 +2,8 @@ package com.example.astrology.calculation.chart;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public record TracuutuviChart(
 		LunarChartInput input,
 		AstrologyPositions positions,
@@ -15,10 +17,12 @@ public record TracuutuviChart(
 		Objects.requireNonNull(ruleSet, "Bộ quy tắc không được để trống.");
 	}
 
+	@JsonIgnore
 	public String ruleSetVersion() {
 		return ruleSet.version();
 	}
 
+	@JsonIgnore
 	public boolean fullyVerified() {
 		return ruleSet.isFullyVerified();
 	}

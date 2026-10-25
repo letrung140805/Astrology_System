@@ -29,8 +29,7 @@ Một ứng dụng web AI về **chiêm tinh/tử vi Việt Nam**, được xây
     ├── static/                                  # CSS and JavaScript
     └── application.properties                   # Application configuration
 
-    database/migrations/                         # Manual SQL migrations
-    tuvi_AI.sql                                   # Base MySQL schema
+    tuvi_AI.sql                                   # Database schema tuvi_ai
 
 ## Chạy Ứng dụng
 
@@ -39,19 +38,18 @@ Một ứng dụng web AI về **chiêm tinh/tử vi Việt Nam**, được xây
     git clone <GITHUB_REPOSITORY_URL>
     cd Astrology_System
 
-### Tạo Database
+### Database
 
-Import file:
+Ứng dụng chỉ kết nối tới database `tuvi_ai` được khai báo trong
+`tuvi_AI.sql`; không dùng `astrology_ai` hoặc database khác. File SQL tạo duy
+nhất schema này nếu chưa tồn tại, tạo các bảng còn thiếu, và có đoạn nâng cấp
+có điều kiện cho dữ liệu hiện có. Sao lưu trước khi chạy file trên database
+đang có dữ liệu. Không xóa database hoặc bảng để cài đặt phiên bản này.
 
-    tuvi_AI.sql
-
-Hoặc sử dụng MySQL:
-
-    mysql -u root -p < tuvi_AI.sql
-
-Database sử dụng:
-
-    tuvi_ai
+File SQL cho phép `user_id` rỗng đối với hồ sơ/lá số khách và thêm hash token
+vào chart để mở lại lá số. Các thay đổi tương thích được thực hiện trong cùng
+`tuvi_AI.sql`; không cần chạy file migration riêng. JPA dùng
+`spring.jpa.hibernate.ddl-auto=none` để không tự thay đổi schema.
 
 ### Cấu hình MySQL
 
@@ -145,7 +143,7 @@ File `application.properties` chứa các cấu hình chính:
     spring.datasource.username=root
     spring.datasource.password=YOUR_PASSWORD
 
-    spring.jpa.hibernate.ddl-auto=update
+    spring.jpa.hibernate.ddl-auto=none
     spring.jpa.show-sql=true
     spring.jpa.properties.hibernate.format_sql=true
 
@@ -158,13 +156,26 @@ File `application.properties` chứa các cấu hình chính:
 
     User
       ↓
-    Birth Information
+    Birth Form (POST)
       ↓
     Astrology Engine
       ↓
-    Astrology Chart
+    Birth Profile + Astrology Chart + Palaces + Stars
       ↓
     MySQL
+      ↓
+    Redirect to stored chart access URL
+      ↓
+    Load saved profile/chart from MySQL
+      ↓
+    Thymeleaf
+
+Khi tạo chart với guest, ứng dụng tạo UUID ngẫu nhiên làm bearer access token,
+chỉ lưu SHA-256 của token trong database và chỉ trả URL truy cập sau khi transaction
+lưu hồ sơ cùng chart hoàn tất. Lịch sử khách lấy từ các token lưu trong phiên trình
+duyệt hiện tại; ai có liên kết riêng tư đều có thể mở chart đó. Nếu request có
+principal đã xác thực và tài khoản tồn tại trong `users`, chart được gắn với user
+đó, và trang lịch sử truy vấn theo owner. Trang `/login` hiện chưa tự tạo phiên đăng nhập.
       ↓
     AI Orchestrator
       ↓
@@ -178,11 +189,37 @@ File `application.properties` chứa các cấu hình chính:
 
 ## Mô hình dữ liệu JPA
 
-Các Entity JPA nằm trong `astrology/src/main/java/com/example/astrology/entity/`
-và ánh xạ vào các bảng đã có trong `tuvi_AI.sql`: `AppUser` → `users`,
+Các Entity của luồng lá số ánh xạ theo `tuvi_AI.sql`: `AppUser` → `users`,
 `BirthProfile` → `birth_profiles`, `BirthChart` → `astrology_charts`,
-`AstrologyPalace` → `astrology_palaces`, `Star` → `stars`,
-`ChartPalaceStar` → `chart_palace_stars`, `AstrologyKnowledge` →
-`knowledge_documents`, `KnowledgeChunk` → `knowledge_chunks`,
-`Conversation` → `conversations` và `ChatMessage` → `messages`.
+`AstrologyPalace` → `astrology_palaces`, `Star` → `stars` và
+`ChartPalaceStar` → `chart_palace_stars`. Bảng sao danh mục được tạo khi cần;
+liên kết sao-cung lưu tại `chart_palace_stars`.
 
+### SQL xác minh chart đã lưu
+
+Sau khi chạy `tuvi_AI.sql` và tạo chart, dùng truy vấn này để xem dữ liệu:
+
+```sql
+USE tuvi_ai;
+
+SELECT bp.id AS birth_profile_id, ac.id AS chart_id, bp.full_name,
+       bp.birth_date, bp.birth_time, ac.calculation_version, ac.generated_at
+FROM birth_profiles bp
+JOIN astrology_charts ac ON ac.birth_profile_id = bp.id
+ORDER BY ac.generated_at DESC;
+
+SELECT ac.id AS chart_id, COUNT(DISTINCT ap.id) AS palace_count,
+       COUNT(cps.id) AS chart_star_count
+FROM astrology_charts ac
+JOIN astrology_palaces ap ON ap.chart_id = ac.id
+LEFT JOIN chart_palace_stars cps ON cps.palace_id = ap.id
+GROUP BY ap.chart_id;
+
+SELECT ac.id AS chart_id, ap.palace_order, ap.palace_name,
+       s.vietnamese_name, s.star_type, cps.brightness
+FROM astrology_charts ac
+JOIN astrology_palaces ap ON ap.chart_id = ac.id
+LEFT JOIN chart_palace_stars cps ON cps.palace_id = ap.id
+LEFT JOIN stars s ON s.id = cps.star_id
+ORDER BY ac.generated_at DESC, ap.palace_order, cps.star_order;
+```

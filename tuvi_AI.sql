@@ -2,6 +2,7 @@
 -- TỬ VI AI DATABASE
 -- AI-Based Vietnamese Astrology System
 -- MySQL 8.x
+-- Back up an existing tuvi_ai database before running this file.
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS tuvi_ai
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
 CREATE TABLE IF NOT EXISTS birth_profiles (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    user_id BIGINT NOT NULL,
+    user_id BIGINT NULL,
 
     profile_name VARCHAR(150),
 
@@ -126,7 +127,7 @@ CREATE TABLE IF NOT EXISTS birth_profiles (
 CREATE TABLE IF NOT EXISTS astrology_charts (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    user_id BIGINT NOT NULL,
+    user_id BIGINT NULL,
 
     birth_profile_id BIGINT NOT NULL,
 
@@ -170,9 +171,13 @@ CREATE TABLE IF NOT EXISTS astrology_charts (
 
     chart_status VARCHAR(30) NOT NULL DEFAULT 'COMPLETED',
 
-    calculation_version VARCHAR(50),
+    calculation_version VARCHAR(120),
 
     raw_calculation_data LONGTEXT,
+
+    access_token_hash CHAR(64),
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     generated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -191,7 +196,8 @@ CREATE TABLE IF NOT EXISTS astrology_charts (
 
     INDEX idx_charts_user (user_id),
     INDEX idx_charts_birth_profile (birth_profile_id),
-    INDEX idx_charts_generated_at (generated_at)
+    INDEX idx_charts_generated_at (generated_at),
+    UNIQUE KEY uk_astrology_charts_access_token_hash (access_token_hash)
 ) ENGINE=InnoDB;
 
 
@@ -203,6 +209,8 @@ CREATE TABLE IF NOT EXISTS astrology_palaces (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
     chart_id BIGINT NOT NULL,
+
+    position INT NOT NULL,
 
     palace_order INT NOT NULL,
 
@@ -680,5 +688,85 @@ CREATE TABLE IF NOT EXISTS chart_shares (
     INDEX idx_chart_shares_token (share_token),
     INDEX idx_chart_shares_chart (chart_id)
 );
+
+-- Upgrade existing tuvi_ai installations without dropping or replacing data.
+DROP PROCEDURE IF EXISTS upgrade_tuvi_ai_chart_history;
+DELIMITER $$
+CREATE PROCEDURE upgrade_tuvi_ai_chart_history()
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'birth_profiles'
+          AND COLUMN_NAME = 'user_id'
+          AND IS_NULLABLE = 'NO'
+    ) THEN
+        ALTER TABLE birth_profiles MODIFY COLUMN user_id BIGINT NULL;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'astrology_charts'
+          AND COLUMN_NAME = 'user_id'
+          AND IS_NULLABLE = 'NO'
+    ) THEN
+        ALTER TABLE astrology_charts MODIFY COLUMN user_id BIGINT NULL;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'astrology_charts'
+          AND COLUMN_NAME = 'access_token_hash'
+    ) THEN
+        ALTER TABLE astrology_charts ADD COLUMN access_token_hash CHAR(64) NULL;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'astrology_charts'
+          AND COLUMN_NAME = 'created_at'
+    ) THEN
+        ALTER TABLE astrology_charts
+            ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'astrology_palaces'
+          AND COLUMN_NAME = 'position'
+    ) THEN
+        ALTER TABLE astrology_palaces ADD COLUMN position INT NULL;
+        UPDATE astrology_palaces SET position = palace_order WHERE position IS NULL;
+        ALTER TABLE astrology_palaces MODIFY COLUMN position INT NOT NULL;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'astrology_charts'
+          AND COLUMN_NAME = 'calculation_version'
+          AND CHARACTER_MAXIMUM_LENGTH < 120
+    ) THEN
+        ALTER TABLE astrology_charts MODIFY COLUMN calculation_version VARCHAR(120) NULL;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.STATISTICS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'astrology_charts'
+          AND INDEX_NAME = 'uk_astrology_charts_access_token_hash'
+    ) THEN
+        ALTER TABLE astrology_charts
+            ADD UNIQUE KEY uk_astrology_charts_access_token_hash (access_token_hash);
+    END IF;
+END$$
+DELIMITER ;
+
+CALL upgrade_tuvi_ai_chart_history();
+DROP PROCEDURE upgrade_tuvi_ai_chart_history;
 
 SHOW TABLES;
