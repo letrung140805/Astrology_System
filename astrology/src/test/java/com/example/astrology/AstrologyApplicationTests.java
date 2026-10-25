@@ -46,6 +46,7 @@ class AstrologyApplicationTests {
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Lá số theo ruleset ứng viên")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Cung Mệnh")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Tử Vi")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("element-")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("astrology-chart-grid")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("palace-thien_di")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("astrology-chart-center")))

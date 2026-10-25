@@ -1,5 +1,7 @@
 package com.example.astrology.calculation.chart;
 
+import com.example.astrology.calculation.FiveElement;
+
 public enum StarId {
 	TU_VI("Tử Vi"),
 	THIEN_CO("Thiên Cơ"),
@@ -73,5 +75,25 @@ public enum StarId {
 
 	public String vietnameseName() {
 		return vietnameseName;
+	}
+
+	public FiveElement element() {
+		return switch (this) {
+			case TU_VI, THIEN_PHU, CU_MON, LOC_TON, TA_PHU, PHUC_DUC_STAR,
+					BENH, MO -> FiveElement.EARTH;
+			case THIEN_CO, THAM_LANG, THIEN_LUONG, TUONG_QUAN, TANG_MON,
+					MOC_DUC, DUONG -> FiveElement.WOOD;
+			case THIEN_DONG, THAI_AM, THIEN_TUONG, PHA_QUAN, VAN_KHUC,
+					HUU_BAT, BAC_SI, THANH_LONG, BENH_PHU, DAI_HAO,
+					THIEU_AM, LONG_DUC, SUY, TU, TUYET, THAI -> FiveElement.WATER;
+			case THAI_DUONG, LIEM_TRINH, THIEN_KHOI, THIEN_VIET, THIEN_MA,
+					HOA_LOC, HOA_QUYEN, LUC_SI, TIEU_HAO, PHI_LIEM, HY_THAN,
+					PHUC_BINH, QUAN_PHU_BAC_SI, THAI_TUE, THIEU_DUONG,
+					THIEN_KHONG, QUAN_PHU_THAI_TUE, TU_PHU, TUE_PHA,
+					DIEU_KHACH, TRUC_PHU, LAM_QUAN -> FiveElement.FIRE;
+			case VU_KHUC, THAT_SAT, VAN_XUONG, HOA_KHOA, HOA_KY, TAU_THU,
+					BACH_HO, QUAN_DOI -> FiveElement.METAL;
+			case TRUONG_SINH, DE_VUONG -> FiveElement.WOOD;
+		};
 	}
 }

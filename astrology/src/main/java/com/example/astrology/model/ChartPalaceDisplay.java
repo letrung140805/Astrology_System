@@ -9,7 +9,7 @@ import com.example.astrology.calculation.chart.PalaceFunction;
 public record ChartPalaceDisplay(
 		PalaceFunction function,
 		EarthlyBranch branch,
-		List<String> stars) {
+		List<ChartStarDisplay> stars) {
 
 	public ChartPalaceDisplay {
 		Objects.requireNonNull(function, "Cung chức không được để trống.");
