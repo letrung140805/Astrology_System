@@ -1,5 +1,7 @@
 package com.example.astrology.calculation.calendar;
 
+import com.example.astrology.calculation.FiveElement;
+
 public enum EarthlyBranch {
 	TY("Tý"),
 	SUU("Sửu"),
@@ -22,5 +24,15 @@ public enum EarthlyBranch {
 
 	public String vietnameseName() {
 		return vietnameseName;
+	}
+
+	public FiveElement element() {
+		return switch (this) {
+			case TY, HOI -> FiveElement.WATER;
+			case SUU, THIN, MUI, TUAT -> FiveElement.EARTH;
+			case DAN, MAO -> FiveElement.WOOD;
+			case TI, NGO -> FiveElement.FIRE;
+			case THAN, DAU -> FiveElement.METAL;
+		};
 	}
 }

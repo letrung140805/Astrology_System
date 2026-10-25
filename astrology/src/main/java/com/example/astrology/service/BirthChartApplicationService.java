@@ -24,6 +24,7 @@ import com.example.astrology.calculation.chart.TracuutuviChart;
 import com.example.astrology.calculation.chart.TracuutuviChartCalculator;
 import com.example.astrology.model.BirthChartPageData;
 import com.example.astrology.model.ChartPalaceDisplay;
+import com.example.astrology.model.ChartStarDisplay;
 
 @Service
 public class BirthChartApplicationService {
@@ -122,10 +123,10 @@ public class BirthChartApplicationService {
 		List<ChartPalaceDisplay> palaces = new ArrayList<>();
 		for (PalaceFunction function : PalaceFunction.values()) {
 			EarthlyBranch branch = chart.positions().palaces().positions().get(function);
-			List<String> stars = new ArrayList<>();
+			List<ChartStarDisplay> stars = new ArrayList<>();
 			for (StarId star : StarId.values()) {
 				if (chart.stars().branchOf(star).filter(branch::equals).isPresent()) {
-					stars.add(star.vietnameseName());
+					stars.add(new ChartStarDisplay(star.vietnameseName(), star.element()));
 				}
 			}
 			palaces.add(new ChartPalaceDisplay(function, branch, stars));
