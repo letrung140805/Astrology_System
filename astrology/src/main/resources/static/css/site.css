@@ -566,11 +566,28 @@ body.dark-mode .card-tag { background: #403d56; color: #d0caff; }
 body.dark-mode .values-grid article > span { background: #403d56; color: var(--ink); }
 body.dark-mode .chart-center .eyebrow { color: #c5bfff; }
 body.dark-mode .chart-center { color: var(--ink); }
+body.dark-mode .brand-mark { border-color: #5b5675; background: #403d56; color: #ffd27d; }
+body.dark-mode .icon-tile.lilac, body.dark-mode .icon-tile.lavender, body.dark-mode .icon-tile.neutral, body.dark-mode .benefit-icon.purple { background: #403d56; color: #dedbff; }
+body.dark-mode .step-card small { background: #403d56; color: var(--ink); }
+body.dark-mode .social-links a { background: #403d56; color: var(--ink); }
+body.dark-mode .result-titlebar .eyebrow { background: #403d56; color: #dedbff; }
 body.dark-mode .result-input-warning { background: #352f22; border-color: #8c6d31; }
 body.dark-mode .unverified-warning { background: #352f22; color: #f3d89e !important; }
 body.dark-mode .palace-result-heading { border-color: #444153; }
 body.dark-mode .palace-result li { background: #39354e; color: #dedbff; }
 body.dark-mode .chart-input-needed { background: var(--surface-muted); border-color: #444153; }
+body.dark-mode .astrology-chart-grid { border-color: #514d68; background: #514d68; box-shadow: 0 12px 30px #0005; }
+body.dark-mode .chart-palace { color: var(--ink); background: radial-gradient(ellipse at 50% 80%, rgba(183, 176, 255, .08), transparent 65%), #252334; }
+body.dark-mode .chart-palace .palace-result-heading { border-color: #514d68; }
+body.dark-mode .chart-palace .palace-result-heading h3 { color: #e7c985; }
+body.dark-mode .chart-palace .palace-result-heading span, body.dark-mode .chart-star-list li { color: #dedbff; }
+body.dark-mode .chart-palace .empty-palace { color: #c2c0d0; }
+body.dark-mode .astrology-chart-center { background: radial-gradient(ellipse at center, rgba(183, 176, 255, .1), transparent 72%), #211f31; }
+body.dark-mode .astrology-chart-center .chart-center-brand { color: #e7c985; }
+body.dark-mode .astrology-chart-center .chart-center-mark { border-color: #9d8552; }
+body.dark-mode .astrology-chart-center .chart-center-brand small, body.dark-mode .astrology-chart-center .chart-center-details dt, body.dark-mode .astrology-chart-center .chart-center-disclaimer { color: #c2c0d0; }
+body.dark-mode .astrology-chart-center .chart-center-name, body.dark-mode .astrology-chart-center .chart-center-details dd { color: var(--ink); }
+body.dark-mode .astrology-chart-center .chart-center-details > div { border-color: #45435c; }
 body.dark-mode .chat-window { background: linear-gradient(120deg, #252342, #191827); }
 body.dark-mode .message-bubble { background: #f4f3f8; color: #282735; }
 body.dark-mode .message-bubble p { color: #4c4a59; }
