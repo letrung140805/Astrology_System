@@ -306,7 +306,7 @@ public class BirthChartPersistenceService {
 		});
 	}
 
-	private static String hashAccessToken(UUID accessToken) {
+	static String hashAccessToken(UUID accessToken) {
 		try {
 			byte[] digest = MessageDigest.getInstance("SHA-256")
 					.digest(accessToken.toString().getBytes(StandardCharsets.UTF_8));

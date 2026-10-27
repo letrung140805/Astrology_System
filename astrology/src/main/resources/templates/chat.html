@@ -1,26 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Trợ lý AI Đàm Đạo Lá Số | Tử Vi AI</title>
-    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <link rel="stylesheet" th:href="@{/css/site.css}" />
+    <script th:src="@{/js/marked.min.js}"></script>
     <script th:src="@{/js/site.js}" defer></script>
-</head>
-<body>
-<div th:replace="~{fragments/layout :: header('chat')}"></div>
-<main class="chat-page">
-    <section class="chat-window">
-        <header class="chat-header"><span class="icon-tile gold">⊙</span><div><h1>Trợ lý AI Đàm Đạo Lá Số <span class="live-pill">● Trực tuyến 24/7</span></h1><p>Đang đối chiếu 12 cung số theo thời gian thực — <b>Nguyễn Thị Lan</b> (Ất Dậu • Mạng Thủy • Thân Cư Quan Lộc)</p></div><div class="chat-header-actions"><button type="button" data-toast="Cuộc trò chuyện mới đã sẵn sàng.">◴ Làm mới</button><button type="button" data-print>⇩ Tải lịch sử</button></div></header>
-        <div class="chat-messages" data-chat-messages>
-            <article class="message assistant"><span class="chat-avatar">AI</span><div><div class="message-bubble">Chào Lan! Tôi đã nạp toàn bộ cấu trúc 12 cung thiên bàn, tam phương tứ chính và chu kỳ ngũ hành vận khí của bạn (<em>Cung Mệnh ngự Tử Vi - Thiên Phủ tại Thìn</em>, cung Thân đồng cư Quan Lộc đắc Thiên Đồng).<p>Bạn đang muốn đào sâu về định hướng công danh sự nghiệp, đường tình duyên gia đạo hay vận trình tiểu hạn năm nay?</p></div><small>Tử Vi AI • Vừa xong</small></div></article>
-            <article class="message user-message"><div><div class="message-bubble">Năm 2025 này tôi có dự định mở rộng kinh doanh hoặc học thêm kỹ năng mới thì góc độ sao chiếu như thế nào? Cần lưu ý điều gì?</div><small>Bạn • 2 phút trước</small></div><span class="chat-avatar">Lan</span></article>
-            <article class="message assistant"><span class="chat-avatar">AI</span><div><div class="message-bubble"><div class="message-tags"><span>♧ Cung Quan Lộc • Thiên Đồng (V)</span><span>▦ Đại Vận 22 – 31 tuổi (Cơ Lương)</span><span>Lưu Niên Ất Tỵ, 2025</span></div><p>Trong năm Ất Tỵ 2025, trực vận của bạn chuyển động qua cung Dậu (Nô Bộc), tam chiếu hội tụ với Quan Lộc và Phu Thê. Bộ sao <b>Thiên Đồng đắc địa ngộ Hóa Lộc</b> báo hiệu đây là một năm hanh thông cho trao đổi tri thức, tiếp cận công nghệ mới và mở rộng mạng lưới tri thức.</p><div class="answer-tip">♧ Kim chỉ nam hành động từ lá số: chia nhỏ kế hoạch, thử nghiệm có kiểm soát và duy trì quỹ dự phòng trước khi mở rộng.</div></div><small>Tử Vi AI • Vừa xong</small></div></article>
+  </head>
+  <body>
+    <div th:replace="~{fragments/layout :: header('chat')}"></div>
+    <main class="chat-page">
+      <section class="chat-window">
+        <header class="chat-header">
+          <span class="icon-tile gold">⊙</span>
+          <div>
+            <h1>Trợ lý AI Tử Vi</h1>
+            <p
+              th:text="|Đang phân tích lá số của ${chartName} · dữ liệu từ lá số đã lưu|"
+            >
+              Lá số đã lưu
+            </p>
+          </div>
+          <div class="chat-header-actions">
+            <a
+              class="button button-light"
+              th:href="@{/result/{accessToken}(accessToken=${accessToken})}"
+              >← Mở lá số</a
+            ><button type="button" data-print>⇩ Tải lịch sử</button>
+          </div>
+        </header>
+        <section
+          class="card result-notice result-input-warning"
+          role="alert"
+          th:if="${chatError != null}"
+        >
+          <p th:text="${chatError}">Chưa thể tạo câu trả lời.</p>
+        </section>
+        <section
+          class="card result-notice"
+          role="status"
+          th:if="${chatWarning != null}"
+        >
+          <p th:text="${chatWarning}">Câu trả lời chưa được lưu.</p>
+        </section>
+        <div class="chat-messages" data-chat-messages id="chatMessages">
+          <article class="message assistant" th:if="${messages.isEmpty()}">
+            <span class="chat-avatar">AI</span>
+            <div>
+              <div class="message-bubble" data-raw-content="Xin chào! Tôi là **Trợ lý AI Tử Vi**, được trang bị cơ sở tri thức chiêm tinh học cổ truyền và dữ liệu cấu trúc 12 cung cùng các sao trong lá số này.
+
+Hãy hỏi tôi về **tính cách, đường công danh, tài lộc, tình duyên** hoặc các **cách cục sao** của bạn!">
+                Xin chào! Tôi là Trợ lý AI Tử Vi, được trang bị cơ sở tri thức chiêm tinh học cổ truyền và dữ liệu cấu trúc 12 cung cùng các sao trong lá số này. Hãy hỏi tôi về tính cách, đường công danh, tài lộc, tình duyên hoặc các cách cục sao của bạn!
+              </div>
+              <small>Tử Vi AI</small>
+            </div>
+          </article>
+          <article
+            class="message"
+            th:each="item : ${messages}"
+            th:classappend="${item.senderType == 'USER' ? 'user-message' : 'assistant'}"
+          >
+            <span class="chat-avatar" th:if="${item.senderType != 'USER'}"
+              >AI</span
+            >
+            <div>
+              <div class="message-bubble" th:attr="data-raw-content=${item.content}" th:text="${item.content}">
+                Nội dung
+              </div>
+              <small th:text="${item.senderType == 'USER' ? 'Bạn' : 'Tử Vi AI'}"
+                >Người gửi</small
+              >
+            </div>
+            <span class="chat-avatar" th:if="${item.senderType == 'USER'}"
+              >Bạn</span
+            >
+          </article>
+          <article class="message user-message" th:if="${chatQuestion != null}">
+            <div>
+              <div class="message-bubble" th:text="${chatQuestion}">
+                Câu hỏi
+              </div>
+              <small>Bạn</small>
+            </div>
+            <span class="chat-avatar">Bạn</span>
+          </article>
+          <article class="message assistant" th:if="${chatAnswer != null}">
+            <span class="chat-avatar">AI</span>
+            <div>
+              <div class="message-bubble" th:attr="data-raw-content=${chatAnswer}" th:text="${chatAnswer}">
+                Câu trả lời
+              </div>
+              <small>Tử Vi AI</small>
+            </div>
+          </article>
         </div>
-        <div class="quick-prompts"><small>✧ GỢI Ý CÂU HỎI NHANH DÀNH RIÊNG CHO BẢN MỆNH CỦA BẠN:</small><div><button type="button" data-prompt="Cung Phu Thê có đào hoa hay trắc trở không?">🎯 Cung Phu Thê có đào hoa hay trắc trở không?</button><button type="button" data-prompt="Nên làm độc lập hay hợp tác chung?">▣ Nên làm độc lập hay hợp tác chung?</button><button type="button" data-prompt="Tháng nào cần cẩn trọng tài chính năm 2025?">◉ Tháng nào cần cẩn trọng tài chính năm 2025?</button><button type="button" data-prompt="Cách phát huy thế cục Đế Tọa Triều Cương?">✦ Cách phát huy thế cục Đế Tọa Triều Cương?</button></div></div>
-        <form class="chat-form" data-chat-form><input aria-label="Tin nhắn" placeholder="Hỏi bất kỳ điều gì về cung mệnh, đại vận, công danh, tài bạch của bạn..."><button class="pin-button" type="button" data-toast="Cung Mệnh • Tử Vi - Thiên Phủ đã được ghim.">♧ Ghim Cung</button><button class="button chat-send" type="submit">Đàm đạo ➤</button></form>
-        <div class="chat-footnote"><span>♙ Tử Vi AI phân tích dựa trên dịch lý và dữ liệu chiêm tinh cá nhân hóa của bạn. Không lưu trữ thông tin nhạy cảm.</span><span>Mô hình giải đoán AI Chiêm Tinh v4.2</span></div>
-    </section>
-</main>
-<div th:replace="~{fragments/layout :: footer}"></div>
-</body>
+        <div class="quick-prompts">
+          <small>GỢI Ý CÂU HỎI</small>
+          <div>
+            <button
+              type="button"
+              data-prompt="Cung Mệnh của tôi có những sao nào và ý nghĩa cách cục ra sao?"
+            >
+              Các sao ở cung Mệnh</button
+            ><button
+              type="button"
+              data-prompt="Dữ liệu hiện có nói gì về cung Quan Lộc và đường sự nghiệp của tôi?"
+            >
+              Xem cung Quan Lộc</button
+            ><button
+              type="button"
+              data-prompt="Cung Tài Bạch của tôi thế nào, cách kiếm tiền và tụ tài ra sao?"
+            >
+              Xem cung Tài Bạch</button
+            ><button
+              type="button"
+              data-prompt="Những phần nào trong lá số của tôi chưa được tính hoặc chưa được xác minh?"
+            >
+              Các giới hạn của lá số
+            </button>
+          </div>
+        </div>
+        <form
+          class="chat-form"
+          method="post"
+          th:action="@{/chat/{accessToken}(accessToken=${accessToken})}"
+          data-chat-form
+          th:data-access-token="${accessToken}"
+          th:data-stream-url="@{/chat/{accessToken}/stream(accessToken=${accessToken})}"
+        >
+          <input
+            type="hidden"
+            th:if="${_csrf != null}"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+            id="chatCsrfToken"
+          />
+          <input
+            type="hidden"
+            name="conversationId"
+            id="chatConversationId"
+            th:if="${conversationId != null}"
+            th:value="${conversationId}"
+          />
+          <input
+            name="message"
+            id="chatInput"
+            aria-label="Tin nhắn"
+            maxlength="2000"
+            required
+            th:value="${chatDraft}"
+            placeholder="Hỏi về cung, sao hoặc thông tin trong lá số..."
+          />
+          <button class="button chat-send" type="submit" id="chatSendButton">Gửi câu hỏi ➤</button>
+        </form>
+        <div class="chat-footnote">
+          <span
+            >Dữ liệu lá số và câu hỏi được hỗ trợ tra cứu RAG và AI để giải thích. Không nhập thông tin nhạy cảm cá nhân.</span
+          ><span>Diễn giải chiêm tinh mang tính tham khảo, minh triết tự định hướng bản thân.</span>
+        </div>
+      </section>
+    </main>
+    <div th:replace="~{fragments/layout :: footer}"></div>
+  </body>
 </html>

@@ -111,6 +111,9 @@ class BirthChartPersistenceServiceTests {
 		assertNotNull(chart.getGeneratedAt());
 		assertNotNull(chart.getRawCalculationData());
 		assertEquals(64, chart.getAccessTokenHash().length());
+		assertEquals("Asia/Ho_Chi_Minh", saved.input().birthplace() == null
+				? null
+				: birthProfileRepository.findAll().get(0).getTimezone());
 		assertTrue(!chart.getAccessTokenHash().equals(accessToken.toString()));
 		assertEquals(1, persistenceService.history(null, java.util.List.of(accessToken)).size());
 	}

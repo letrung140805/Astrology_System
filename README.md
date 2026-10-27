@@ -65,21 +65,25 @@ Cấu hình:
 
 Thay `YOUR_PASSWORD` bằng password MySQL trên máy của bạn.
 
-### Cấu hình OpenAI API
+### Cấu hình OpenRouter API
 
 Trong `application.properties`:
 
-    spring.ai.openai.api-key=${OPENAI_API_KEY}
-    spring.ai.openai.chat.model=<YOUR_MODEL>
+    spring.ai.openai.base-url=https://openrouter.ai/api
+    spring.ai.openai.api-key=${OPENROUTER_API_KEY}
+    spring.ai.openai.chat.model=${OPENROUTER_MODEL:openai/gpt-4o}
 
 Windows PowerShell:
 
-    $env:OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
+    $env:OPENROUTER_API_KEY="YOUR_OPENROUTER_API_KEY"
 
 Kiểm tra:
 
-    echo $env:OPENAI_API_KEY
+    Test-Path Env:OPENROUTER_API_KEY
 
+Chat AI chỉ mở từ lá số đã lưu. Nội dung lá số và câu hỏi được gửi tới OpenRouter;
+câu trả lời dùng dữ liệu cung/sao đã lưu, nêu giới hạn phép tính và không thay
+thế tư vấn chuyên môn. Cần cấu hình `OPENROUTER_API_KEY` trước khi gửi câu hỏi.
 
 ### Cài Dependencies
 
@@ -149,8 +153,9 @@ File `application.properties` chứa các cấu hình chính:
 
     spring.thymeleaf.cache=false
 
-    spring.ai.openai.api-key=${OPENAI_API_KEY}
-    spring.ai.openai.chat.model=<YOUR_MODEL>
+    spring.ai.openai.base-url=https://openrouter.ai/api
+    spring.ai.openai.api-key=${OPENROUTER_API_KEY}
+    spring.ai.openai.chat.model=${OPENROUTER_MODEL:openai/gpt-4o}
 
 ## Luồng hoạt động
 
@@ -176,16 +181,16 @@ lưu hồ sơ cùng chart hoàn tất. Lịch sử khách lấy từ các token 
 duyệt hiện tại; ai có liên kết riêng tư đều có thể mở chart đó. Nếu request có
 principal đã xác thực và tài khoản tồn tại trong `users`, chart được gắn với user
 đó, và trang lịch sử truy vấn theo owner. Trang `/login` hiện chưa tự tạo phiên đăng nhập.
-      ↓
-    AI Orchestrator
-      ↓
-    Context Retrieval
-      ↓
-    OpenAI / LLM
-      ↓
-    AI Interpretation
-      ↓
-    Conversation History
+↓
+AI Orchestrator
+↓
+Context Retrieval
+↓
+OpenRouter / LLM
+↓
+AI Interpretation
+↓
+Conversation History
 
 ## Mô hình dữ liệu JPA
 

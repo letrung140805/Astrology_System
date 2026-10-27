@@ -402,7 +402,7 @@ CREATE TABLE IF NOT EXISTS astrology_readings (
 CREATE TABLE IF NOT EXISTS conversations (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    user_id BIGINT NOT NULL,
+    user_id BIGINT NULL,
 
     chart_id BIGINT,
 
@@ -429,6 +429,9 @@ CREATE TABLE IF NOT EXISTS conversations (
     INDEX idx_conversations_chart (chart_id),
     INDEX idx_conversations_updated (updated_at)
 ) ENGINE=InnoDB;
+
+ALTER TABLE conversations
+    MODIFY COLUMN user_id BIGINT NULL;
 
 
 -- ============================================================

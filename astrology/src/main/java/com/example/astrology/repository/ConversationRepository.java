@@ -11,5 +11,7 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
 
 	Optional<Conversation> findByIdAndUser_Id(Long id, Long userId);
 
+	Optional<Conversation> findByIdAndChart_Id(Long id, Long chartId);
+
 	List<Conversation> findAllByUser_IdOrderByUpdatedAtDesc(Long userId);
 }
