@@ -222,11 +222,6 @@ public class WebController {
 		return "about";
 	}
 
-	@GetMapping("/chat")
-	public String chat() {
-		return "chat";
-	}
-
 	@GetMapping("/login")
 	public String login() {
 		return "login";

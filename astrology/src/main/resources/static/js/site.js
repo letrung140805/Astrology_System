@@ -127,36 +127,182 @@
         });
     });
 
+    // AI Chat Interaction & Real-time Streaming
     const chatForm = document.querySelector('[data-chat-form]');
-    if (chatForm) {
-        const messages = document.querySelector('[data-chat-messages]');
-        const sendMessage = (text) => {
-            const cleanText = text.trim();
-            if (!cleanText) return;
-            const message = document.createElement('article');
-            message.className = 'message user-message';
-            const content = document.createElement('div');
-            const bubble = document.createElement('div');
-            bubble.className = 'message-bubble';
-            bubble.textContent = cleanText;
-            const timestamp = document.createElement('small');
-            timestamp.textContent = 'Bạn • Vừa xong';
-            content.append(bubble, timestamp);
-            const avatar = document.createElement('span');
-            avatar.className = 'chat-avatar';
-            avatar.textContent = 'Lan';
-            message.append(content, avatar);
-            messages.append(message);
-            chatForm.querySelector('input').value = '';
-            messages.scrollTop = messages.scrollHeight;
-            showToast('Đây là bản xem trước; trợ lý AI chưa kết nối dịch vụ trả lời.');
-        };
-        chatForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            sendMessage(chatForm.querySelector('input').value);
+    const chatMessages = document.querySelector('[data-chat-messages]');
+
+    const renderMarkdown = (text) => {
+        if (!text) return '';
+        if (window.marked && typeof window.marked.parse === 'function') {
+            try {
+                return window.marked.parse(text, { breaks: true, gfm: true });
+            } catch (e) {
+                console.warn('Marked parse error', e);
+            }
+        }
+        const escaped = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        return escaped
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n/g, '<br>');
+    };
+
+    if (chatMessages) {
+        document.querySelectorAll('.message.assistant .message-bubble').forEach((bubble) => {
+            const raw = bubble.dataset.rawContent || bubble.textContent;
+            if (raw && raw.trim()) {
+                bubble.innerHTML = renderMarkdown(raw.trim());
+            }
         });
+    }
+
+    if (chatForm && chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const chatInput = chatForm.querySelector('input[name="message"]');
+        const sendButton = chatForm.querySelector('button[type="submit"]');
+        const convInput = chatForm.querySelector('input[name="conversationId"]');
+        const csrfInput = chatForm.querySelector('input[name="_csrf"]');
+        const streamUrl = chatForm.dataset.streamUrl || (chatForm.action + '/stream');
+
         document.querySelectorAll('[data-prompt]').forEach((button) => {
-            button.addEventListener('click', () => sendMessage(button.dataset.prompt));
+            button.addEventListener('click', () => {
+                if (chatInput) {
+                    chatInput.value = button.dataset.prompt;
+                    chatInput.focus();
+                }
+            });
+        });
+
+        chatForm.addEventListener('submit', async (event) => {
+            const message = chatInput ? chatInput.value.trim() : '';
+            if (!message) return;
+
+            if (!window.ReadableStream || !window.fetch) {
+                return;
+            }
+
+            event.preventDefault();
+
+            chatInput.value = '';
+            chatInput.disabled = true;
+            if (sendButton) sendButton.disabled = true;
+
+            const userArticle = document.createElement('article');
+            userArticle.className = 'message user-message';
+            userArticle.innerHTML = `
+                <div>
+                    <div class="message-bubble"></div>
+                    <small>Bạn</small>
+                </div>
+                <span class="chat-avatar">Bạn</span>
+            `;
+            userArticle.querySelector('.message-bubble').textContent = message;
+            chatMessages.appendChild(userArticle);
+
+            const aiArticle = document.createElement('article');
+            aiArticle.className = 'message assistant';
+            aiArticle.innerHTML = `
+                <span class="chat-avatar">AI</span>
+                <div>
+                    <div class="message-bubble"><div class="bubble-content"></div><span class="typing-cursor"></span></div>
+                    <small>Tử Vi AI</small>
+                </div>
+            `;
+            chatMessages.appendChild(aiArticle);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const bubbleContent = aiArticle.querySelector('.bubble-content');
+            const bubbleEl = aiArticle.querySelector('.message-bubble');
+            const cursor = aiArticle.querySelector('.typing-cursor');
+            let accumulatedMarkdown = '';
+
+            const params = new URLSearchParams();
+            params.append('message', message);
+            if (convInput && convInput.value) {
+                params.append('conversationId', convInput.value);
+            }
+            if (csrfInput && csrfInput.value) {
+                params.append('_csrf', csrfInput.value);
+            }
+
+            try {
+                const response = await fetch(streamUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: params.toString()
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Máy chủ phản hồi mã lỗi ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed.startsWith('data:')) continue;
+
+                        const dataStr = trimmed.substring(5).trim();
+                        if (!dataStr) continue;
+
+                        try {
+                            const data = JSON.parse(dataStr);
+                            if (data.token) {
+                                accumulatedMarkdown += data.token;
+                                bubbleContent.innerHTML = renderMarkdown(accumulatedMarkdown);
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }
+                            if (data.error) {
+                                bubbleEl.classList.add('error-bubble');
+                                bubbleContent.textContent = data.error;
+                            }
+                            if (data.conversationId && convInput) {
+                                convInput.value = data.conversationId;
+                                const url = new URL(window.location);
+                                url.searchParams.set('conversationId', data.conversationId);
+                                window.history.replaceState({}, '', url.toString());
+                            }
+                            if (data.warning) {
+                                showToast(data.warning);
+                            }
+                        } catch (e) {
+                            accumulatedMarkdown += dataStr;
+                            bubbleContent.innerHTML = renderMarkdown(accumulatedMarkdown);
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Chat stream error:', err);
+                bubbleEl.classList.add('error-bubble');
+                bubbleContent.textContent = 'Lỗi kết nối khi gửi câu hỏi: ' + err.message + '. Vui lòng kiểm tra lại.';
+            } finally {
+                if (cursor) cursor.remove();
+                if (accumulatedMarkdown) {
+                    bubbleContent.innerHTML = renderMarkdown(accumulatedMarkdown);
+                }
+                chatInput.disabled = false;
+                if (sendButton) sendButton.disabled = false;
+                chatInput.focus();
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
         });
     }
 })();

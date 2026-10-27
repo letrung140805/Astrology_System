@@ -524,7 +524,7 @@ h1 { color: var(--ink); }
 .chat-avatar { width: 32px; height: 32px; display: grid; flex: 0 0 32px; place-items: center; border-radius: 50%; background: #ffdda8; color: var(--ink); font-weight: 700; font-size: 11px; }
 .user-message .chat-avatar { background: #5b559b; color: white; }
 .message > div { max-width: 92%; }
-.message-bubble { padding: 15px; border-radius: 14px; background: #f4f3f8; color: #34323d; font-size: 12px; line-height: 1.65; }
+.message-bubble { padding: 15px; border-radius: 14px; background: #ffffff; color: #24292f; font-size: 13.5px; line-height: 1.7; }
 .message-bubble em { color: var(--violet); }
 .message-bubble p { margin: 7px 0 0; font-size: 11px; }
 .user-message .message-bubble { background: #e6e2ff; color: var(--ink); }
@@ -786,4 +786,215 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
     body { background: white; }
     .page-main { max-width: none; padding: 0; }
     .card { box-shadow: none; break-inside: avoid; }
+}
+
+
+/* AI Chat Streaming Cursor and Message Container */
+.typing-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    margin-left: 3px;
+    background-color: #5b559b;
+    animation: blink-cursor 0.7s infinite;
+    vertical-align: middle;
+}
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+.chat-messages {
+    max-height: 540px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-right: 4px;
+}
+.message-bubble.error-bubble {
+    background: #ffebe8;
+    color: #c92a2a;
+    border: 1px solid #ffc9c9;
+}
+
+/* ==========================================================================
+   ChatGPT-Style Rich Markdown Formatting for Chat Messages
+   ========================================================================== */
+.message-bubble {
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #24292f;
+    font-size: 13.5px;
+    line-height: 1.72;
+    border: 1px solid #e2e0ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    word-break: break-word;
+}
+.user-message .message-bubble {
+    background: #5046e5;
+    color: #ffffff;
+    border-color: #5046e5;
+    white-space: pre-wrap;
+    box-shadow: 0 2px 8px rgba(80, 70, 229, 0.25);
+}
+.user-message .message-bubble p {
+    color: #ffffff;
+    margin: 4px 0;
+}
+
+.message-bubble h1,
+.message-bubble h2,
+.message-bubble h3,
+.message-bubble h4 {
+    margin: 16px 0 8px;
+    font-weight: 700;
+    line-height: 1.45;
+    color: #1e1b4b;
+}
+.message-bubble h1:first-child,
+.message-bubble h2:first-child,
+.message-bubble h3:first-child,
+.message-bubble h4:first-child {
+    margin-top: 0;
+}
+.message-bubble h1 { font-size: 17px; border-bottom: 1px solid #edeaf8; padding-bottom: 6px; }
+.message-bubble h2 { font-size: 15.5px; border-bottom: 1px solid #edeaf8; padding-bottom: 5px; }
+.message-bubble h3 { font-size: 14.5px; color: #312e81; }
+.message-bubble h4 { font-size: 13.5px; color: #4338ca; }
+
+.message-bubble p {
+    margin: 8px 0;
+    font-size: 13.5px;
+    line-height: 1.72;
+}
+.message-bubble p:first-child { margin-top: 0; }
+.message-bubble p:last-child { margin-bottom: 0; }
+
+.message-bubble strong,
+.message-bubble b {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.message-bubble em,
+.message-bubble i {
+    font-style: italic;
+    color: #4b5563;
+}
+
+.message-bubble ul,
+.message-bubble ol {
+    margin: 8px 0 12px;
+    padding-left: 22px;
+}
+.message-bubble li {
+    margin: 5px 0;
+    line-height: 1.68;
+}
+.message-bubble li::marker {
+    color: #6366f1;
+}
+
+.message-bubble blockquote {
+    margin: 10px 0;
+    padding: 8px 14px;
+    border-left: 3px solid #6366f1;
+    background: #f5f3ff;
+    border-radius: 0 8px 8px 0;
+    color: #4b5563;
+    font-style: italic;
+}
+
+.message-bubble code {
+    background: #f1f3f9;
+    color: #b91c1c;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 12.5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.message-bubble pre {
+    background: #1e1e2e;
+    color: #f8f8f2;
+    padding: 12px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+.message-bubble pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: 12.5px;
+}
+
+.message-bubble hr {
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+    margin: 14px 0;
+}
+
+.message-bubble table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+}
+.message-bubble th,
+.message-bubble td {
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+    text-align: left;
+}
+.message-bubble th {
+    background: #f8fafc;
+    font-weight: 600;
+}
+
+/* Dark mode styling for ChatGPT Markdown */
+body.dark-mode .message-bubble {
+    background: #201f33;
+    color: #e2e1ec;
+    border-color: #34324f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+body.dark-mode .message-bubble h1,
+body.dark-mode .message-bubble h2,
+body.dark-mode .message-bubble h3,
+body.dark-mode .message-bubble h4 {
+    color: #ffd8a8;
+}
+body.dark-mode .message-bubble h3 {
+    color: #c7d2fe;
+}
+body.dark-mode .message-bubble h4 {
+    color: #a5b4fc;
+}
+body.dark-mode .message-bubble p {
+    color: #e2e1ec;
+}
+body.dark-mode .message-bubble strong,
+body.dark-mode .message-bubble b {
+    color: #ffffff;
+}
+body.dark-mode .message-bubble blockquote {
+    background: #282542;
+    border-left-color: #818cf8;
+    color: #cbd5e1;
+}
+body.dark-mode .message-bubble code {
+    background: #2b2846;
+    color: #f472b6;
+}
+body.dark-mode .message-bubble th {
+    background: #282640;
+    color: #f1f5f9;
+}
+body.dark-mode .message-bubble th,
+body.dark-mode .message-bubble td {
+    border-color: #3f3c5f;
+}
+body.dark-mode .user-message .message-bubble {
+    background: #4f46e5;
+    color: #ffffff;
 }
