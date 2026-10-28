@@ -177,6 +177,17 @@
             });
         });
 
+        const pinBtn = document.getElementById('pinPalaceBtn');
+        if (pinBtn && chatInput) {
+            pinBtn.addEventListener('click', () => {
+                const tag = '[Ghim Cung Mệnh] ';
+                if (!chatInput.value.includes(tag)) {
+                    chatInput.value = tag + chatInput.value;
+                }
+                chatInput.focus();
+            });
+        }
+
         chatForm.addEventListener('submit', async (event) => {
             const message = chatInput ? chatInput.value.trim() : '';
             if (!message) return;

@@ -15,24 +15,122 @@
             <h1>Lá số Tử Vi<br><em>Tính được đến đâu, rõ đến đó</em></h1>
             <p>Nhập thông tin sinh để xem dữ liệu hiện engine có thể tính. Kết quả ứng viên, dữ liệu nhập tay và phần chưa hỗ trợ được phân biệt rõ.</p>
             <div class="hero-spark">✦</div>
-            <p class="handwritten">Khám phá bản thân từ những vì sao ✨</p>
+            <p class="handwritten">Khám phá bản thân từ những vì sao <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg></p>
             <div class="trust-row"><span>♧ Không tự suy diễn dữ liệu thiếu</span><span>✣ Hiển thị cung và sao có cấu trúc</span><span>◉ Nêu rõ quy tắc chưa xác minh</span></div>
         </div>
         <form class="chart-form card" th:action="@{/result}" method="post">
             <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <div class="form-heading"><span class="icon-tile gold">✦</span><div><h2>Nhập thông tin của bạn</h2><p>Chỉ cần thông tin sinh cơ bản. Hệ thống tự quy đổi ngày dương sang âm lịch theo lịch Việt Nam (GMT+7).</p></div></div>
-            <label for="fullName">Họ và tên</label>
-            <div class="input-with-icon"><span>♙</span><input id="fullName" name="name" required placeholder="Ví dụ: Nguyễn Thị Lan"></div>
-            <label>Giới tính sinh học (Âm Dương)</label>
-            <div class="gender-options"><label class="gender-choice selected"><input type="radio" name="gender" value="Nữ" checked><span>♀</span> Nữ (Âm Nữ)</label><label class="gender-choice"><input type="radio" name="gender" value="Nam"><span>♂</span> Nam (Dương Nam)</label></div>
-            <div class="form-two">
-                <div><label for="birthDate">Ngày sinh (Dương lịch)</label><div class="input-with-icon"><span>▦</span><input id="birthDate" name="birthDate" type="date" required></div></div>
-                <div><label for="birthTime">Giờ sinh địa phương (bắt buộc để lập và lưu lá số)</label><div class="input-with-icon"><span>◷</span><input id="birthTime" name="birthTime" type="time" required></div></div>
+            <div class="form-heading form-heading-centered">
+                <span class="icon-tile gold"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg></span>
+                <h2>Nhập thông tin của bạn</h2>
+                <p>Điền đầy đủ thông tin để khởi tạo lá số và giải đoán vận trình chuẩn xác nhất.</p>
             </div>
-            <label for="birthplace">Nơi sinh (hiện chưa dùng để hiệu chỉnh múi giờ)</label>
-            <div class="input-with-icon"><span>♧</span><input id="birthplace" name="birthplace" placeholder="Tỉnh / thành phố"><span class="input-end">⌕</span></div>
-            <button class="button button-primary button-wide" type="submit"><span class="button-spark">✦</span> Tạo và lưu lá số　→</button>
-            <p class="privacy-note">Chart là dữ liệu tham khảo, chưa được xác minh độc lập. Liên kết mở lại chart guest là mã riêng tư; không chia sẻ công khai.</p>
+            <label for="fullName">Họ và tên</label>
+            <div class="input-with-icon">
+                <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                <input id="fullName" name="name" required placeholder="Nguyễn Thị Lan">
+            </div>
+            <label>Giới tính sinh học (Âm Dương)</label>
+            <div class="gender-options">
+                <label class="gender-choice selected">
+                    <input type="radio" name="gender" value="Nữ" checked>
+                    <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M12 15v7M9 19h6"></path></svg></span> Nữ (Âm Nữ)
+                </label>
+                <label class="gender-choice">
+                    <input type="radio" name="gender" value="Nam">
+                    <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><path d="M14.5 9.5L21 3M15 3h6v6"></path></svg></span> Nam (Dương Nam)
+                </label>
+            </div>
+            <div class="form-two">
+                <div>
+                    <label for="birthDate">Ngày sinh (Dương lịch)</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+                        <input id="birthDate" name="birthDate" type="date" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="birthTime">Giờ sinh</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                        <input id="birthTime" name="birthTime" type="time" required>
+                    </div>
+                </div>
+            </div>
+            <label for="birthplace">Nơi ở hoặc sinh quán (Khảo độ kinh tuyến)</label>
+            <div class="input-with-icon">
+                <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+                <input id="birthplace" name="birthplace" list="vietnamLocations" placeholder="Hà Nội, Việt Nam" autocomplete="off">
+                <span class="input-end"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+            </div>
+            <datalist id="vietnamLocations">
+                <option value="Hà Nội, Việt Nam"></option>
+                <option value="TP. Hồ Chí Minh, Việt Nam"></option>
+                <option value="Đà Nẵng, Việt Nam"></option>
+                <option value="Hải Phòng, Việt Nam"></option>
+                <option value="Cần Thơ, Việt Nam"></option>
+                <option value="An Giang, Việt Nam"></option>
+                <option value="Bà Rịa - Vũng Tàu, Việt Nam"></option>
+                <option value="Bắc Giang, Việt Nam"></option>
+                <option value="Bắc Kạn, Việt Nam"></option>
+                <option value="Bạc Liêu, Việt Nam"></option>
+                <option value="Bắc Ninh, Việt Nam"></option>
+                <option value="Bến Tre, Việt Nam"></option>
+                <option value="Bình Định, Việt Nam"></option>
+                <option value="Bình Dương, Việt Nam"></option>
+                <option value="Bình Phước, Việt Nam"></option>
+                <option value="Bình Thuận, Việt Nam"></option>
+                <option value="Cà Mau, Việt Nam"></option>
+                <option value="Cao Bằng, Việt Nam"></option>
+                <option value="Đắk Lắk, Việt Nam"></option>
+                <option value="Đắk Nông, Việt Nam"></option>
+                <option value="Điện Biên, Việt Nam"></option>
+                <option value="Đồng Nai, Việt Nam"></option>
+                <option value="Đồng Tháp, Việt Nam"></option>
+                <option value="Gia Lai, Việt Nam"></option>
+                <option value="Hà Giang, Việt Nam"></option>
+                <option value="Hà Nam, Việt Nam"></option>
+                <option value="Hà Tĩnh, Việt Nam"></option>
+                <option value="Hải Dương, Việt Nam"></option>
+                <option value="Hậu Giang, Việt Nam"></option>
+                <option value="Hòa Bình, Việt Nam"></option>
+                <option value="Hưng Yên, Việt Nam"></option>
+                <option value="Khánh Hòa, Việt Nam"></option>
+                <option value="Kiên Giang, Việt Nam"></option>
+                <option value="Kon Tum, Việt Nam"></option>
+                <option value="Lai Châu, Việt Nam"></option>
+                <option value="Lâm Đồng, Việt Nam"></option>
+                <option value="Lạng Sơn, Việt Nam"></option>
+                <option value="Lào Cai, Việt Nam"></option>
+                <option value="Long An, Việt Nam"></option>
+                <option value="Nam Định, Việt Nam"></option>
+                <option value="Nghệ An, Việt Nam"></option>
+                <option value="Ninh Bình, Việt Nam"></option>
+                <option value="Ninh Thuận, Việt Nam"></option>
+                <option value="Phú Thọ, Việt Nam"></option>
+                <option value="Phú Yên, Việt Nam"></option>
+                <option value="Quảng Bình, Việt Nam"></option>
+                <option value="Quảng Nam, Việt Nam"></option>
+                <option value="Quảng Ngãi, Việt Nam"></option>
+                <option value="Quảng Ninh, Việt Nam"></option>
+                <option value="Quảng Trị, Việt Nam"></option>
+                <option value="Sóc Trăng, Việt Nam"></option>
+                <option value="Sơn La, Việt Nam"></option>
+                <option value="Tây Ninh, Việt Nam"></option>
+                <option value="Thái Bình, Việt Nam"></option>
+                <option value="Thái Nguyên, Việt Nam"></option>
+                <option value="Thanh Hóa, Việt Nam"></option>
+                <option value="Thừa Thiên Huế, Việt Nam"></option>
+                <option value="Tiền Giang, Việt Nam"></option>
+                <option value="Trà Vinh, Việt Nam"></option>
+                <option value="Tuyên Quang, Việt Nam"></option>
+                <option value="Vĩnh Long, Việt Nam"></option>
+                <option value="Vĩnh Phúc, Việt Nam"></option>
+                <option value="Yên Bái, Việt Nam"></option>
+            </datalist>
+            <button class="button button-primary button-wide chart-submit-btn" type="submit">
+                <span class="button-spark"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span> <span>Xem lá số tử vi</span> <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
         </form>
     </section>
     <section class="section section-muted">

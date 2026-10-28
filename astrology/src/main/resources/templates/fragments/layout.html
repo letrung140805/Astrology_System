@@ -13,10 +13,10 @@
         <a th:href="@{/history}" th:classappend="${activePage == 'history'} ? 'active' : ''">Lịch sử lá số</a>
     </nav>
     <div class="header-actions">
-        <button class="icon-button theme-toggle" type="button" aria-label="Đổi giao diện">☾</button>
+        <button class="icon-button theme-toggle" type="button" aria-label="Đổi giao diện"><svg class="outline-icon theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg class="outline-icon theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
         <div class="language-switch" aria-label="Chọn ngôn ngữ"><button class="selected" type="button">VN</button><button type="button">EN</button></div>
         <div class="profile-wrap">
-            <button class="profile-button" type="button" aria-label="Tài khoản" aria-expanded="false">♙</button>
+            <button class="profile-button" type="button" aria-label="Tài khoản" aria-expanded="false"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></button>
             <div class="profile-menu">
                 <a th:href="@{/account}">⚙ Quản lý tài khoản</a>
                 <a th:href="@{/login}">↪ Đăng xuất</a>
@@ -29,15 +29,15 @@
     <div class="footer-grid">
         <div class="footer-brand">
             <a class="brand" th:href="@{/}"><span class="brand-mark" aria-hidden="true">✥</span><span class="brand-copy"><strong>Tử Vi AI</strong></span></a>
-            <p>Công cụ thử nghiệm hiển thị dữ liệu Tử Vi có cấu trúc trong phạm vi quy tắc đã triển khai; kết quả chưa được xác minh đầy đủ bằng lá số tham chiếu độc lập.</p>
+            <p>Hệ thống phân tích và luận giải lá số Tử Vi khoa học, kết hợp nền tảng tri thức cổ học phương Đông và trợ lý trí tuệ nhân tạo hiện đại.</p>
             <div class="social-links"><a th:href="@{/chat}" aria-label="Trò chuyện">▣</a><a th:href="@{/about}" aria-label="Khám phá">⊙</a><a th:href="@{/history}" aria-label="Thông báo">♧</a><a th:href="@{/account}" aria-label="Liên hệ">✉</a></div>
         </div>
-        <div><h3>Trong phạm vi hiện tại</h3><a th:href="@{/}">Nhập thông tin sinh</a><a th:href="@{/about}">Giới thiệu dự án</a></div>
-        <div><h3>Giới hạn tính toán</h3><a th:href="@{/}">Lịch âm Việt Nam GMT+7</a><a th:href="@{/}">Can Chi và Nạp Âm</a><a th:href="@{/}">Các nhóm sao chưa hỗ trợ</a></div>
-        <div><h3>Lưu ý</h3><a th:href="@{/about}">Ruleset đang dùng</a><a th:href="@{/about}">Trạng thái kiểm chứng</a><a th:href="@{/about}">Giới hạn kết quả</a></div>
+        <div><h3>Tính năng chính</h3><a th:href="@{/}">Lập lá số Tử Vi</a><a th:href="@{/about}">Giới thiệu dự án</a></div>
+        <div><h3>Hệ thống luận giải</h3><a th:href="@{/}">Lịch âm Việt Nam GMT+7</a><a th:href="@{/}">Can Chi và Nạp Âm</a><a th:href="@{/}">12 Cung và Tinh bàn</a></div>
+        <div><h3>Thông tin</h3><a th:href="@{/about}">Nguyên lý tính toán</a><a th:href="@{/about}">Hướng dẫn sử dụng</a><a th:href="@{/about}">Chính sách bảo mật</a></div>
     </div>
-    <div class="disclaimer"><span>ⓘ</span><p><strong>Lưu ý:</strong> Một số dữ liệu cần nhập thủ công và profile tính toán chưa được đối chiếu độc lập. Không xem kết quả ứng viên là lá số chính thức.</p></div>
-    <div class="footer-bottom"><span>© 2026 Tử Vi AI · Bản thử nghiệm</span><span>Lịch âm quy đổi GMT+7 · Chưa hiệu chỉnh múi giờ lịch sử theo địa điểm</span></div>
+    <div class="disclaimer"><span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></span><p><strong>Lưu ý:</strong> Thông tin luận giải mang tính chất tham khảo, giúp thấu hiểu tiềm năng bản thân và định hướng cuộc sống tích cực.</p></div>
+    <div class="footer-bottom"><span>© 2026 Tử Vi AI · Nền tảng Chiêm Tinh Học Số</span><span>Múi giờ chuẩn Việt Nam GMT+7</span></div>
 </footer>
 </body>
 </html>

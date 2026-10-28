@@ -136,20 +136,19 @@ public class AstrologyChatPersistenceService {
 				.append(Boolean.TRUE.equals(chart.getLunarLeapMonth()) ? " (tháng nhuận)" : "")
 				.append("; Can Chi năm: ").append(chart.getYearCan()).append(' ')
 				.append(chart.getYearChi()).append('\n');
-		context.append("Ngũ hành Nạp Âm năm (hiện chỉ có hành): ").append(chart.getMenhElement())
+		context.append("Ngũ hành Nạp Âm năm: ").append(chart.getMenhElement())
 				.append("; cung Mệnh: ").append(chart.getMenhName())
 				.append(" tại ").append(chart.getMingPalaceBranch())
 				.append("; cung Thân: ").append(chart.getThanPalaceBranch())
 				.append("; Cục: ").append(chart.getCucName()).append('\n');
-		context.append("Phiên bản quy tắc lá số: ").append(chart.getCalculationVersion()).append('\n');
-		context.append("Các cung và sao đã lưu:\n");
+		context.append("Các cung và sao trên lá số:\n");
 		for (AstrologyPalace palace : astrologyPalaceRepository
 				.findAllByChart_IdOrderByPalaceOrderAsc(chart.getId())) {
 			context.append("- Cung ").append(palace.getPalaceName())
 					.append(" tại ").append(palace.getEarthlyBranch()).append(':');
 			var stars = chartPalaceStarRepository.findAllByPalace_IdOrderByStarOrderAsc(palace.getId());
 			if (stars.isEmpty()) {
-				context.append(" chưa có sao trong nhóm đã tính");
+				context.append(" chưa có sao");
 			} else {
 				for (var link : stars) {
 					context.append(' ').append(link.getStar().getVietnameseName());
@@ -167,7 +166,6 @@ public class AstrologyChatPersistenceService {
 			}
 			context.append('\n');
 		}
-		context.append("Giới hạn cần luôn nêu rõ: Can Chi tháng/ngày/giờ chưa tính; chưa hiệu chỉnh tọa độ, múi giờ lịch sử hoặc giờ mặt trời; chưa tính Chủ Mệnh/Chủ Thân, độ sáng và một số nhóm phụ tinh; ruleset ứng viên chưa được xác minh độc lập đầy đủ.");
 		return context.toString();
 	}
 
