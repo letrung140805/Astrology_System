@@ -51,9 +51,9 @@ class AstrologyApplicationTests {
 
 		mockMvc.perform(get(creation.getResponse().getRedirectedUrl()))
 				.andExpect(status().isOk())
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Địa chi giờ tính được")))
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Ngày âm lịch tự quy đổi")))
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Lá số theo ruleset ứng viên")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Dương lịch")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Âm lịch")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Bản Mệnh")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("đã lưu và được tải từ cơ sở dữ liệu")));
 	}
 
@@ -69,7 +69,7 @@ class AstrologyApplicationTests {
 
 		mockMvc.perform(get(creation.getResponse().getRedirectedUrl()))
 				.andExpect(status().isOk())
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Lá số theo ruleset ứng viên")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Lá Số Tử Vi Trọn Đời")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Cung Mệnh")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Tử Vi")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("element-")))
@@ -77,8 +77,7 @@ class AstrologyApplicationTests {
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("palace-thien_di")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("astrology-chart-center")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("LÁ SỐ CÁ NHÂN")))
-				.andExpect(content().string(org.hamcrest.Matchers.containsString(
-						"chưa được xác minh bằng fixture lá số thực")));
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Chủ Thân")));
 	}
 
 	@Test

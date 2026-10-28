@@ -13,21 +13,22 @@
     <main class="chat-page">
       <section class="chat-window">
         <header class="chat-header">
-          <span class="icon-tile gold">⊙</span>
-          <div>
-            <h1>Trợ lý AI Tử Vi</h1>
-            <p
-              th:text="|Đang phân tích lá số của ${chartName} · dữ liệu từ lá số đã lưu|"
-            >
-              Lá số đã lưu
+          <div class="chat-header-compass"><svg class="outline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
+          <div class="chat-header-info">
+            <div class="chat-title-row">
+              <h1 class="chat-title">Trợ lý AI Đàm Đạo Lá Số</h1>
+              <span class="chat-status-pill">● Trực tuyến 24/7</span>
+            </div>
+            <p class="chat-subtitle">
+              <span>Đang đối chiếu 12 cung số theo thời gian thực — </span>
+              <strong th:text="${chartName}">Lan</strong>
+              <span class="chat-meta-tags">· Bản Mệnh chi tiết · Thân Cư Mệnh/Quan</span>
             </p>
           </div>
           <div class="chat-header-actions">
-            <a
-              class="button button-light"
-              th:href="@{/result/{accessToken}(accessToken=${accessToken})}"
-              >← Mở lá số</a
-            ><button type="button" data-print>⇩ Tải lịch sử</button>
+            <a class="chat-action-btn" th:href="@{/chat/{accessToken}(accessToken=${accessToken})}" title="Làm mới cuộc đàm đạo"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> <span>Làm mới</span></a>
+            <button class="chat-action-btn" type="button" data-print title="Tải xuống hoặc in lịch sử trò chuyện"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> <span>Tải lịch sử</span></button>
+            <a class="chat-action-btn" th:href="@{/result/{accessToken}(accessToken=${accessToken})}" title="Quay lại xem lá số chi tiết"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> <span>Mở lá số</span></a>
           </div>
         </header>
         <section
@@ -48,12 +49,12 @@
           <article class="message assistant" th:if="${messages.isEmpty()}">
             <span class="chat-avatar">AI</span>
             <div>
-              <div class="message-bubble" data-raw-content="Xin chào! Tôi là **Trợ lý AI Tử Vi**, được trang bị cơ sở tri thức chiêm tinh học cổ truyền và dữ liệu cấu trúc 12 cung cùng các sao trong lá số này.
+              <div class="message-bubble" data-raw-content="Chào bạn! Tôi đã nạp toàn bộ cấu trúc 12 cung thiên bàn, tam phương tứ chính và chu kỳ ngũ hành vận khí của bạn.
 
-Hãy hỏi tôi về **tính cách, đường công danh, tài lộc, tình duyên** hoặc các **cách cục sao** của bạn!">
-                Xin chào! Tôi là Trợ lý AI Tử Vi, được trang bị cơ sở tri thức chiêm tinh học cổ truyền và dữ liệu cấu trúc 12 cung cùng các sao trong lá số này. Hãy hỏi tôi về tính cách, đường công danh, tài lộc, tình duyên hoặc các cách cục sao của bạn!
+Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**, đường **tình duyên gia đạo** hay **vận trình tiểu hạn năm nay**?">
+                Chào bạn! Tôi đã nạp toàn bộ cấu trúc 12 cung thiên bàn, tam phương tứ chính và chu kỳ ngũ hành vận khí của bạn.<br><br>Bạn đang muốn đào sâu về định hướng công danh sự nghiệp, đường tình duyên gia đạo hay vận trình tiểu hạn năm nay?
               </div>
-              <small>Tử Vi AI</small>
+              <small>Tử Vi AI · Vừa xong</small>
             </div>
           </article>
           <article
@@ -68,7 +69,7 @@ Hãy hỏi tôi về **tính cách, đường công danh, tài lộc, tình duy�
               <div class="message-bubble" th:attr="data-raw-content=${item.content}" th:text="${item.content}">
                 Nội dung
               </div>
-              <small th:text="${item.senderType == 'USER' ? 'Bạn' : 'Tử Vi AI'}"
+              <small th:text="${item.senderType == 'USER' ? 'Bạn' : 'Tử Vi AI · Vừa xong'}"
                 >Người gửi</small
               >
             </div>
@@ -91,34 +92,29 @@ Hãy hỏi tôi về **tính cách, đường công danh, tài lộc, tình duy�
               <div class="message-bubble" th:attr="data-raw-content=${chatAnswer}" th:text="${chatAnswer}">
                 Câu trả lời
               </div>
-              <small>Tử Vi AI</small>
+              <small>Tử Vi AI · Vừa xong</small>
             </div>
           </article>
         </div>
         <div class="quick-prompts">
-          <small>GỢI Ý CÂU HỎI</small>
-          <div>
+          <small class="quick-prompts-label"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg> <span>GỢI Ý CÂU HỎI NHANH DÀNH RIÊNG CHO BẢN MỆNH CỦA BẠN:</span></small>
+          <div class="quick-prompts-list">
             <button
               type="button"
-              data-prompt="Cung Mệnh của tôi có những sao nào và ý nghĩa cách cục ra sao?"
-            >
-              Các sao ở cung Mệnh</button
-            ><button
+              data-prompt="Cung Phu Thê của tôi có đào hoa hay trắc trở không?"
+            ><svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> <span>Cung Phu Thê có đào hoa hay trắc trở không?</span></button>
+            <button
               type="button"
-              data-prompt="Dữ liệu hiện có nói gì về cung Quan Lộc và đường sự nghiệp của tôi?"
-            >
-              Xem cung Quan Lộc</button
-            ><button
+              data-prompt="Đường sự nghiệp của tôi nên làm việc độc lập hay hợp tác chung thì tốt hơn?"
+            ><svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> <span>Nên làm độc lập hay hợp tác chung?</span></button>
+            <button
               type="button"
-              data-prompt="Cung Tài Bạch của tôi thế nào, cách kiếm tiền và tụ tài ra sao?"
-            >
-              Xem cung Tài Bạch</button
-            ><button
+              data-prompt="Trong năm 2025, những tháng nào tôi cần đặc biệt cẩn trọng về mặt tài chính?"
+            ><svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v12M15 9.5a2.5 2.5 0 0 0-5 0c0 2.5 5 2.5 5 5a2.5 2.5 0 0 1-5 0"></path></svg> <span>Tháng nào cần cẩn trọng tài chính năm 2025?</span></button>
+            <button
               type="button"
-              data-prompt="Những phần nào trong lá số của tôi chưa được tính hoặc chưa được xác minh?"
-            >
-              Các giới hạn của lá số
-            </button>
+              data-prompt="Cách phát huy thế cục và các sao tốt trong cung Mệnh và Thân của tôi ra sao?"
+            ><svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> <span>Cách phát huy thế cục 'Đế Tọa Triều Cương'?</span></button>
           </div>
         </div>
         <form
@@ -150,14 +146,15 @@ Hãy hỏi tôi về **tính cách, đường công danh, tài lộc, tình duy�
             maxlength="2000"
             required
             th:value="${chatDraft}"
-            placeholder="Hỏi về cung, sao hoặc thông tin trong lá số..."
+            placeholder="Hỏi bất kỳ điều gì về cung mệnh, đại vận, công danh, tài bạch của bạn..."
+            autocomplete="off"
           />
-          <button class="button chat-send" type="submit" id="chatSendButton">Gửi câu hỏi ➤</button>
+          <button type="button" class="pin-palace-btn" id="pinPalaceBtn" title="Ghim cung số"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24z"></path></svg> <span>Ghim Cung</span></button>
+          <button class="chat-send-btn" type="submit" id="chatSendButton"><span>Đàm đạo</span> <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
         </form>
         <div class="chat-footnote">
-          <span
-            >Dữ liệu lá số và câu hỏi được hỗ trợ tra cứu RAG và AI để giải thích. Không nhập thông tin nhạy cảm cá nhân.</span
-          ><span>Diễn giải chiêm tinh mang tính tham khảo, minh triết tự định hướng bản thân.</span>
+          <span><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Tử Vi AI phân tích dựa trên dịch lý và dữ liệu chiêm tinh cá nhân hóa của bạn. Không lưu trữ thông tin nhạy cảm.</span>
+          <span>Mô hình giải đoán AI Chiêm Tinh v4.2</span>
         </div>
       </section>
     </main>

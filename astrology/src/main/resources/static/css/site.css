@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
-
 :root {
     color-scheme: light;
     --ink: #191943;
@@ -13,7 +11,7 @@
     --violet: #6158a8;
     --gold: #f2bd6a;
     --shadow: 0 12px 28px rgba(27, 25, 51, .08);
-    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: var(--ink);
     background: var(--paper);
     font-synthesis: none;
@@ -22,12 +20,12 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-size: 14px; }
+body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-size: 14px; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif; }
 a { color: inherit; text-decoration: none; }
-button, input, select { font: inherit; }
+button, input, select { font: inherit; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif; }
 button { color: inherit; }
-p { color: var(--muted); line-height: 1.7; }
-h1, h2, h3, blockquote { font-family: 'Playfair Display', Georgia, serif; }
+p { color: var(--muted); line-height: 1.7; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif; }
+h1, h2, h3, blockquote { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 700; }
 h1, h2, h3, p { margin-top: 0; }
 h1 { color: var(--ink); }
 
@@ -35,7 +33,7 @@ h1 { color: var(--ink); }
 .brand { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid #d9d4e8; color: #e3a928; border-radius: 50%; background: radial-gradient(circle, #fff 37%, #f2efff 39%, #fff 70%); font-size: 24px; line-height: 1; }
 .brand-copy { display: grid; gap: 1px; }
-.brand-copy strong { font: 700 20px 'Playfair Display', Georgia, serif; color: var(--ink); }
+.brand-copy strong { font: 700 20px 'Segoe UI', sans-serif; color: var(--ink); }
 .brand-copy small { color: var(--muted); font-size: 10px; letter-spacing: .01em; }
 .main-nav { display: flex; align-items: center; gap: 32px; margin-left: auto; margin-right: auto; }
 .main-nav a { padding: 9px 0; color: #53515d; font-size: 14px; transition: color .2s; }
@@ -64,11 +62,15 @@ h1 { color: var(--ink); }
 .hero-copy > p:not(.handwritten) { max-width: 530px; font-size: 15px; }
 .hero-spark { display: flex; align-items: center; gap: 14px; margin: 25px 0; color: var(--gold); }
 .hero-spark:before, .hero-spark:after { content: ""; width: 58px; height: 1px; background: #d9d4cf; }
-.handwritten { margin-bottom: 8px; color: var(--violet); font: italic 26px 'Playfair Display', Georgia, serif; }
+.handwritten { margin-bottom: 8px; color: var(--violet); font: italic 24px 'Segoe UI', sans-serif; }
 .trust-row { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 32px; font-size: 11px; font-weight: 600; }
 .card { background: var(--surface); border: 1px solid rgba(29, 28, 61, .04); border-radius: 16px; box-shadow: 0 6px 20px rgba(33, 30, 58, .035); }
-.chart-form { padding: 28px; box-shadow: 0 18px 40px rgba(33, 30, 58, .09); }
+.chart-form { padding: 34px 30px; border-radius: 22px; box-shadow: 0 20px 48px rgba(33, 30, 58, .08); border: 1px solid rgba(29, 28, 61, .05); background: #ffffff; }
 .form-heading { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+.form-heading-centered { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 24px; gap: 4px; }
+.form-heading-centered .icon-tile { width: 46px; height: 46px; border-radius: 12px; background: #fbf6ec; color: #e59c2f; font-size: 20px; margin-bottom: 8px; border: 1px solid #f6ecdc; display: grid; place-items: center; flex: 0 0 46px; }
+.form-heading-centered h2 { margin: 0; color: #1a1648; font-size: 20.5px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }
+.form-heading-centered p { margin: 4px auto 0; color: #716d89; font-size: 11.5px; line-height: 1.55; max-width: 320px; font-family: 'Segoe UI', sans-serif; }
 .form-heading h2 { margin: 1px 0 3px; font-size: 19px; }
 .form-heading p { margin: 0; max-width: 285px; font-size: 11px; line-height: 1.55; }
 .icon-tile { flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px; display: inline-grid; place-items: center; font-size: 18px; }
@@ -76,17 +78,19 @@ h1 { color: var(--ink); }
 .icon-tile.lilac { background: #eeebff; color: var(--ink-soft); }
 .icon-tile.lavender { background: #e3dfff; color: var(--violet); }
 .icon-tile.neutral { background: #eeece8; color: var(--ink); }
-.chart-form > label, .form-two label, .account-form label { display: block; margin: 13px 0 7px; color: #282735; font-size: 12px; font-weight: 600; }
-.input-with-icon { height: 44px; display: flex; align-items: center; gap: 11px; padding: 0 13px; border: 1px solid transparent; border-radius: 12px; background: #f5f4f2; color: #73717d; }
-.input-with-icon:focus-within { border-color: #a39bd4; box-shadow: 0 0 0 3px #6158a81a; }
-.input-with-icon input { width: 100%; min-width: 0; height: 100%; border: 0; outline: 0; color: var(--ink); background: transparent; }
-.input-with-icon input::placeholder { color: #9896a0; }
-.input-with-icon input[type="date"], .input-with-icon input[type="time"] { font-size: 12px; }
-.input-end { font-size: 20px; }
-.gender-options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
-.gender-choice { height: 38px; display: flex; justify-content: center; align-items: center; gap: 7px; border-radius: 10px; background: #f5f4f2; cursor: pointer; color: #52505c; font-size: 12px; font-weight: 600; }
+.chart-form > label, .form-two label, .account-form label { display: block; margin: 15px 0 7px; color: #242047; font-size: 12.5px; font-weight: 600; font-family: 'Segoe UI', sans-serif; }
+.input-with-icon { height: 46px; display: flex; align-items: center; gap: 11px; padding: 0 14px; border: 1px solid #ebe8e4; border-radius: 12px; background: #fbfaf8; color: #73717d; transition: all 0.2s; }
+.input-with-icon:focus-within { border-color: #6358a8; background: #ffffff; box-shadow: 0 0 0 3px rgba(99, 88, 168, 0.12); }
+.input-with-icon input { width: 100%; min-width: 0; height: 100%; border: 0; outline: 0; color: #1a1648; background: transparent; font-size: 13.5px; font-family: 'Segoe UI', sans-serif; }
+.input-with-icon input::placeholder { color: #9b98ab; font-family: 'Segoe UI', sans-serif; }
+.input-with-icon input[type="date"], .input-with-icon input[type="time"] { font-size: 12.5px; }
+.field-icon { font-size: 14.5px; color: #78748f; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.input-end { font-size: 14.5px; color: #78748f; margin-left: auto; cursor: pointer; flex-shrink: 0; }
+.gender-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 3px; }
+.gender-choice { height: 44px; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 12px; background: #f5f4f1; cursor: pointer; color: #434053; font-size: 12.5px; font-weight: 600; font-family: 'Segoe UI', sans-serif; border: 1px solid #e2dfda; transition: all 0.2s ease; }
+.gender-choice:hover { background: #eceae5; border-color: #d0ccc3; }
 .gender-choice input { position: absolute; opacity: 0; pointer-events: none; }
-.gender-choice.selected { color: white; background: #302f68; }
+.gender-choice.selected { color: #ffffff; background: #24214f; box-shadow: 0 4px 14px rgba(36, 33, 79, .25); border-color: #24214f; }
 .form-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-two label { margin-top: 14px; }
 .button { min-height: 42px; padding: 0 17px; border: 0; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; font-weight: 600; transition: transform .15s, box-shadow .2s, background .2s; }
@@ -94,7 +98,8 @@ h1 { color: var(--ink); }
 .button-primary { background: var(--ink); color: white; box-shadow: 0 6px 13px rgba(24, 23, 63, .17); }
 .button-primary:hover { background: #29275e; }
 .button-wide { width: 100%; }
-.chart-form .button-wide { margin-top: 18px; min-height: 50px; background: linear-gradient(100deg, #171643, #5e56a5); }
+.chart-submit-btn { margin-top: 22px; min-height: 48px; border-radius: 12px; background: linear-gradient(135deg, #1d1945 0%, #3e3579 100%); color: #ffffff; font-size: 14px; font-weight: 600; font-family: 'Segoe UI', sans-serif; box-shadow: 0 8px 20px rgba(29, 25, 69, .25); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s, box-shadow .2s; border: 0; cursor: pointer; }
+.chart-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(29, 25, 69, .35); }
 .button-spark { color: var(--gold); }
 .privacy-note { margin: 14px 0 0; text-align: center; font-size: 10px; color: #92909c; }
 .button-light { color: var(--ink); background: #f2f1ef; box-shadow: none; }
@@ -117,13 +122,13 @@ h1 { color: var(--ink); }
 .benefit-card { min-height: 185px; padding: 24px 17px; text-align: center; background: #fff; border: 1px solid #f1efec; border-radius: 15px; }
 .benefit-icon { width: 48px; height: 48px; margin: 0 auto 15px; display: grid; place-items: center; border-radius: 50%; font-size: 21px; }
 .benefit-icon.purple { background: #eeebff; color: var(--violet); }.benefit-icon.green { background: #e8f6ee; color: #288653; }.benefit-icon.blue { background: #e8efff; color: #3c65c7; }.benefit-icon.orange { background: #fff0e7; color: #c76722; }.benefit-icon.pink { background: #f8e9f5; color: #9d438c; }
-.benefit-card h3 { margin: 0 0 6px; font: 600 14px 'DM Sans', sans-serif; }
+.benefit-card h3 { margin: 0 0 6px; font: 600 14px 'Segoe UI', sans-serif; }
 .benefit-card p { margin: 0; font-size: 11px; line-height: 1.6; }
 
 .site-footer { padding: 48px max(5.5vw, calc((100vw - 1390px) / 2)) 22px; background: #f3f1ee; }
 .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1.15fr 1fr; gap: 44px; }
 .footer-brand > p { max-width: 360px; margin: 12px 0; font-size: 12px; }
-.site-footer h3 { margin: 2px 0 10px; font: 700 15px 'DM Sans', sans-serif; }
+.site-footer h3 { margin: 2px 0 10px; font: 700 15px 'Segoe UI', sans-serif; }
 .site-footer .footer-grid > div:not(:first-child) { display: flex; align-items: flex-start; flex-direction: column; gap: 8px; }
 .site-footer .footer-grid > div > a:not(.brand) { color: var(--muted); font-size: 12px; }
 .social-links { display: flex; gap: 8px; }
@@ -163,7 +168,7 @@ h1 { color: var(--ink); }
 .promise-pills span { padding: 10px 13px; border-radius: 10px; background: #f0eeeb; font-size: 11px; font-weight: 600; }
 .mandala-card { min-height: 230px; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-radius: 18px; background: rgba(255,255,255,.9); box-shadow: var(--shadow); }
 .mandala-ring { width: 70px; height: 70px; margin-bottom: 13px; display: grid; place-items: center; border: 1px dashed #b8b2df; border-radius: 50%; color: var(--violet); font-size: 38px; }
-.mandala-card strong { font: 700 18px 'Playfair Display', Georgia, serif; }
+.mandala-card strong { font: 700 18px 'Segoe UI', sans-serif; }
 .mandala-card p { max-width: 245px; margin: 5px auto 12px; font-size: 11px; }
 .mandala-stats { display: flex; gap: 25px; }
 .mandala-stats span { display: grid; color: var(--muted); font-size: 10px; }
@@ -181,7 +186,7 @@ h1 { color: var(--ink); }
 .values-grid article { min-height: 194px; padding: 20px; border-radius: 14px; background: #f0efed; }
 .values-grid article > span { display: grid; width: 34px; height: 34px; margin-bottom: 14px; place-items: center; background: white; border-radius: 9px; }
 .values-grid small { color: var(--violet); font-size: 9px; }
-.values-grid h3 { margin: 7px 0; font: 700 13px 'DM Sans', sans-serif; }
+.values-grid h3 { margin: 7px 0; font: 700 13px 'Segoe UI', sans-serif; }
 .values-grid p { margin: 0; font-size: 10px; }
 .quote-banner { padding: 48px 10vw; display: flex; align-items: center; flex-direction: column; background: #191943; color: white; text-align: center; }
 .quote-banner > span { color: #a49ee2; font-size: 32px; }
@@ -195,10 +200,16 @@ h1 { color: var(--ink); }
 .result-titlebar h1 { margin: 8px 0 0; font-size: 31px; }
 .title-actions { display: flex; gap: 9px; }
 .title-actions .button { min-height: 38px; padding: 0 13px; font-size: 11px; }
-.birth-summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; padding: 16px; margin-bottom: 23px; }
-.birth-summary > div { min-height: 82px; padding: 10px; display: grid; align-content: start; gap: 4px; border-radius: 11px; background: #f5f4f1; }
-.birth-summary small { color: var(--muted); font-size: 10px; }
-.birth-summary strong { font-size: 13px; color: var(--ink); }
+
+.birth-summary { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 26px; }
+@media (max-width: 1100px) { .birth-summary { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .birth-summary { grid-template-columns: repeat(2, 1fr); } }
+.summary-card { background: #f7f6f4; border: 1px solid #ebe8e4; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.summary-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+.summary-card-header { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #55526d; font-weight: 500; font-family: 'Segoe UI', sans-serif; }
+.summary-icon { font-size: 13px; }
+.summary-val { font-size: 15.5px; font-weight: 700; color: #171536; margin: 6px 0 2px; line-height: 1.3; font-family: 'Segoe UI', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.summary-sub { font-size: 11.5px; color: #6d6a86; line-height: 1.4; font-family: 'Segoe UI', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .result-notice { margin: 0 0 18px; padding: 18px 20px; }
 .result-notice h2 { margin: 0 0 8px; font-size: 17px; }
 .result-notice p { margin: 0; font-size: 12px; line-height: 1.6; }
@@ -225,7 +236,7 @@ h1 { color: var(--ink); }
 .astrology-chart-grid {
     width: min(100%, 1020px);
     min-width: 760px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.02 / 1;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -271,7 +282,7 @@ h1 { color: var(--ink); }
 }
 .chart-palace .palace-result-heading h3 {
     color: #61431e;
-    font: 700 clamp(10px, 1.15vw, 14px) 'DM Sans', 'Segoe UI', sans-serif;
+    font: 700 clamp(10px, 1.15vw, 14px) 'Segoe UI', sans-serif;
     line-height: 1.25;
 }
 .chart-palace .palace-result-heading h3.element-metal { color: #777; }
@@ -322,9 +333,9 @@ h1 { color: var(--ink); }
 .astrology-chart-center .chart-center-brand { display: flex; align-items: center; justify-content: center; gap: 9px; color: #6b501b; }
 .astrology-chart-center .chart-center-mark { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #bd9c51; border-radius: 50%; font-size: 19px; }
 .astrology-chart-center .chart-center-brand div { display: grid; text-align: left; }
-.astrology-chart-center .chart-center-brand strong { font: 700 15px 'Playfair Display', Georgia, serif; letter-spacing: .05em; }
+.astrology-chart-center .chart-center-brand strong { font: 700 15px 'Segoe UI', sans-serif; letter-spacing: .05em; }
 .astrology-chart-center .chart-center-brand small { margin-top: 2px; color: #88734e; font-size: 8px; letter-spacing: .16em; }
-.astrology-chart-center .chart-center-name { margin: 17px 0 10px; color: #4f3023; font: 700 clamp(16px, 2vw, 23px) 'Playfair Display', Georgia, serif; }
+.astrology-chart-center .chart-center-name { margin: 17px 0 10px; color: #4f3023; font: 700 clamp(16px, 2vw, 23px) 'Segoe UI', sans-serif; }
 .astrology-chart-center .chart-center-details { max-width: 370px; width: 100%; margin: 0 auto; display: grid; gap: 5px; text-align: left; }
 .astrology-chart-center .chart-center-details > div { display: grid; grid-template-columns: minmax(86px, .9fr) minmax(0, 1.3fr); gap: 8px; padding-bottom: 4px; border-bottom: 1px dotted rgba(113, 90, 55, .2); font-size: clamp(9px, .95vw, 11px); }
 .astrology-chart-center .chart-center-details dt { color: #76664f; }
@@ -356,7 +367,7 @@ h1 { color: var(--ink); }
 .palace-card small { display: flex; justify-content: space-between; gap: 3px; color: #5954a1; font-size: 9px; }
 .palace-card.selected small { color: #dedbff; }
 .palace-card small i { color: #6c62b8; font-style: normal; }
-.palace-card strong { font: 700 11px 'Playfair Display', Georgia, serif; line-height: 1.35; }
+.palace-card strong { font: 700 11px 'Segoe UI', sans-serif; line-height: 1.35; }
 .palace-card span { color: var(--muted); font-size: 9px; line-height: 1.45; }
 .palace-card.selected span { color: #d2d0e5; }
 .p1 { grid-area: 2 / 1; }.p2 { grid-area: 1 / 1; }.p3 { grid-area: 1 / 2; }.p4 { grid-area: 1 / 3; }.p5 { grid-area: 1 / 4; }.p6 { grid-area: 2 / 4; }.p7 { grid-area: 3 / 4; }.p8 { grid-area: 4 / 4; }.p9 { grid-area: 4 / 3; }.p10 { grid-area: 4 / 2; }.p11 { grid-area: 4 / 1; }.p12 { grid-area: 3 / 1; }
@@ -385,7 +396,7 @@ h1 { color: var(--ink); }
 .insight-line b { text-align: right; }
 .radar-card > small { color: var(--muted); font-size: 10px; }
 .radar-card svg { display: block; width: 100%; max-height: 230px; margin: 10px auto; }
-.radar-card svg text { fill: var(--ink); font: 9px 'DM Sans', sans-serif; }
+.radar-card svg text { fill: var(--ink); font: 9px 'Segoe UI', sans-serif; }
 .radar-note { margin: 4px 0 0; padding: 12px; border-radius: 10px; background: #f5f4f2; text-align: center; font-size: 10px; }
 .readings-section { margin-top: 30px; }
 .readings-section .subsection-title { align-items: center; margin-bottom: 14px; }
@@ -417,7 +428,7 @@ h1 { color: var(--ink); }
 .daily-card { padding: 23px; display: grid; grid-template-columns: minmax(265px, .75fr) 1.55fr; gap: 24px; background: linear-gradient(110deg, #fff 35%, #fffdfa); }
 .daily-date { padding: 20px; border-radius: 13px; background: #f5f4f2; }
 .daily-date .eyebrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 10px; }
-.gold-tag { padding: 4px 8px; background: #ffe5bd; border-radius: 12px; color: #76501f; font: 600 10px 'DM Sans', sans-serif; white-space: nowrap; }
+.gold-tag { padding: 4px 8px; background: #ffe5bd; border-radius: 12px; color: #76501f; font: 600 10px 'Segoe UI', sans-serif; white-space: nowrap; }
 .daily-date h2 { margin: 15px 0 3px; font-size: 23px; }
 .daily-date > p { margin: 0 0 14px; font-size: 12px; }
 .daily-fact { display: flex; align-items: center; gap: 10px; margin: 8px 0; padding: 10px; border-radius: 10px; background: #fff; }
@@ -447,7 +458,7 @@ h1 { color: var(--ink); }
 .timeline-section .section-heading h2 { max-width: 560px; margin: 7px 0 0; font-size: 31px; }
 .timeline-card { padding: 22px; }
 .timeline-profile { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
-.avatar-initial { width: 48px; height: 48px; display: grid; flex: 0 0 48px; place-items: center; background: #e6e1ff; border-radius: 12px; font: 16px 'Playfair Display', Georgia, serif; }
+.avatar-initial { width: 48px; height: 48px; display: grid; flex: 0 0 48px; place-items: center; background: #e6e1ff; border-radius: 12px; font: 16px 'Segoe UI', sans-serif; }
 .timeline-profile b { font-size: 13px; }
 .timeline-profile small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
 .age-pill { margin-left: 8px; padding: 4px 7px; border-radius: 14px; background: #d9f7ec; color: #11764f; font-size: 9px; white-space: nowrap; }
@@ -458,7 +469,7 @@ h1 { color: var(--ink); }
 .timeline-cards article.current { min-height: 235px; color: white; background: var(--ink); box-shadow: 0 8px 14px #1b194333; }
 .timeline-cards article > small { color: var(--muted); font-size: 9px; }
 .timeline-cards article.current > small { color: #e4e1ff; }
-.timeline-cards article h3 { margin: 10px 0 4px; font: 700 14px 'DM Sans', sans-serif; line-height: 1.45; }
+.timeline-cards article h3 { margin: 10px 0 4px; font: 700 14px 'Segoe UI', sans-serif; line-height: 1.45; }
 .timeline-cards article p { margin: 0 0 8px; font-size: 10px; line-height: 1.5; }
 .timeline-cards article.current p { color: #d0cfe0; }
 .timeline-cards article > span:not(.now-label) { margin-top: auto; padding: 5px; border-radius: 6px; background: #eae8e5; color: var(--ink); font-size: 9px; }
@@ -482,13 +493,13 @@ h1 { color: var(--ink); }
 .account-content { display: grid; gap: 22px; }
 .account-profile { padding: 22px; }
 .account-user { display: flex; align-items: center; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-.portrait { width: 65px; height: 65px; display: grid; flex: 0 0 65px; place-items: center; border-radius: 50%; background: linear-gradient(140deg, #f7d9c1, #c8c2ed); color: var(--ink); font: 700 21px 'Playfair Display', Georgia, serif; }
+.portrait { width: 65px; height: 65px; display: grid; flex: 0 0 65px; place-items: center; border-radius: 50%; background: linear-gradient(140deg, #f7d9c1, #c8c2ed); color: var(--ink); font: 700 21px 'Segoe UI', sans-serif; }
 .account-user h2 { margin: 0 0 5px; font-size: 19px; }
 .account-user .gold-tag { margin-left: 7px; font-size: 9px; }
 .account-user p { margin: 0; font-size: 10px; }
 .account-user .button { margin-left: auto; min-height: 34px; }
 .chart-count { margin-top: 16px; padding: 13px; display: grid; border-radius: 10px; background: #f2f1ef; }
-.chart-count small { color: var(--muted); font-size: 10px; }.chart-count strong { margin: 2px 0; font: 700 20px 'Playfair Display', Georgia, serif; }
+.chart-count small { color: var(--muted); font-size: 10px; }.chart-count strong { margin: 2px 0; font: 700 20px 'Segoe UI', sans-serif; }
 .personal-card { padding: 22px; }
 .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
 .card-heading h2 { margin: 0 0 3px; font-size: 18px; }
@@ -509,46 +520,364 @@ h1 { color: var(--ink); }
 .family-list a { padding: 12px; display: flex; align-items: center; gap: 12px; border-radius: 10px; background: #f6f4f1; }
 .family-list a > span:nth-child(2) { display: grid; gap: 3px; }.family-list small { color: var(--muted); }.family-list a > span:last-child { margin-left: auto; color: var(--violet); font-size: 11px; }
 
-.chat-page { min-height: 760px; padding: 64px max(5.5vw, calc((100vw - 1390px) / 2)); background: radial-gradient(ellipse at 10% 60%, #efecfa 0, transparent 30%), radial-gradient(ellipse at 90% 60%, #fff1df 0, transparent 30%); }
-.chat-window { max-width: 1450px; min-height: 690px; margin: 0 auto; padding: 26px; display: flex; flex-direction: column; border-radius: 24px; background: linear-gradient(120deg, #29275f, #171643); color: white; box-shadow: 0 22px 40px #17164333; }
-.chat-header { display: flex; align-items: center; gap: 14px; padding-bottom: 17px; border-bottom: 1px solid #ffffff2a; }
-.chat-header h1 { margin: 0 0 3px; color: white; font-size: 19px; }
-.chat-header p { margin: 0; color: #aaa8cd; font-size: 10px; }
-.chat-header p b { color: #ffe0b1; }
-.live-pill { display: inline-block; padding: 4px 8px; border-radius: 12px; background: #ffffff20; color: #ffdda8; font: 500 9px 'DM Sans', sans-serif; vertical-align: middle; }
-.chat-header-actions { display: flex; gap: 7px; margin-left: auto; }
-.chat-header-actions button { padding: 7px 10px; border: 0; border-radius: 16px; background: #ffffff18; color: white; cursor: pointer; font-size: 10px; }
-.chat-messages { display: grid; gap: 15px; padding: 19px 0 12px; }
-.message { display: flex; align-items: flex-start; gap: 11px; }
-.message.user-message { justify-content: flex-end; }
-.chat-avatar { width: 32px; height: 32px; display: grid; flex: 0 0 32px; place-items: center; border-radius: 50%; background: #ffdda8; color: var(--ink); font-weight: 700; font-size: 11px; }
-.user-message .chat-avatar { background: #5b559b; color: white; }
-.message > div { max-width: 92%; }
-.message-bubble { padding: 15px; border-radius: 14px; background: #ffffff; color: #24292f; font-size: 13.5px; line-height: 1.7; }
-.message-bubble em { color: var(--violet); }
-.message-bubble p { margin: 7px 0 0; font-size: 11px; }
-.user-message .message-bubble { background: #e6e2ff; color: var(--ink); }
-.message > div > small { display: block; margin: 5px 4px 0; color: #a8a5cd; font-size: 9px; }
-.user-message > div > small { text-align: right; }
-.message-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 9px; }
-.message-tags span { padding: 4px 8px; border-radius: 12px; background: #eeecea; color: var(--ink-soft); font-size: 9px; }
-.answer-tip { margin-top: 10px; padding: 9px; border-radius: 8px; background: #f4f2ed; color: #6a542a; font-size: 10px; }
-.quick-prompts { margin-top: auto; }
-.quick-prompts > small { color: #ffdda8; font-size: 10px; }
-.quick-prompts > div { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
-.quick-prompts button { padding: 8px 11px; border: 0; border-radius: 16px; background: #ffffff1a; color: white; cursor: pointer; font-size: 10px; }
-.quick-prompts button:hover { background: #ffffff30; }
-.chat-form { display: flex; align-items: center; gap: 8px; margin-top: 19px; padding: 5px; border-radius: 15px; background: white; }
-.chat-form input { flex: 1; min-width: 0; height: 40px; padding: 0 12px; border: 0; outline: 0; color: var(--ink); }
-.pin-button { padding: 7px 10px; border: 0; border-radius: 8px; background: #f0efed; color: var(--ink); cursor: pointer; white-space: nowrap; font-size: 10px; }
-.chat-send { min-height: 46px; border-radius: 12px; background: #ffdda8; color: #2a2116; white-space: nowrap; }
-.chat-footnote { display: flex; justify-content: space-between; gap: 12px; margin-top: 17px; color: #a5a2c7; font-size: 9px; }
+.chat-page {
+    min-height: calc(100vh - 76px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    background: radial-gradient(ellipse at 15% 30%, #eeeafd 0%, #f7f5f2 50%, #fdfbf9 100%);
+}
+.chat-window {
+    max-width: 1040px;
+    width: 100%;
+    min-height: 720px;
+    height: 840px;
+    max-height: calc(100vh - 64px);
+    margin: 0 auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 22px;
+    background: #171536;
+    border: 1px solid #2e2a5a;
+    color: #ffffff;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #282454;
+    flex-shrink: 0;
+}
+.chat-header-compass {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f3cf8c 0%, #d49e52 100%);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(212, 158, 82, 0.25);
+}
+.chat-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.chat-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.chat-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 18.5px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: -0.01em;
+}
+.chat-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #232049;
+    border: 1px solid #3d376f;
+    color: #ffdda8;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+}
+.chat-subtitle {
+    margin: 0;
+    color: #9c99bf;
+    font-size: 11px;
+    line-height: 1.4;
+    font-family: 'Segoe UI', sans-serif;
+}
+.chat-subtitle strong {
+    color: #ffdda8;
+    font-weight: 600;
+}
+.chat-meta-tags {
+    color: #7d79a2;
+    margin-left: 2px;
+}
+.chat-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+.chat-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border: 1px solid #363266;
+    border-radius: 16px;
+    background: #221f47;
+    color: #dedcee;
+    cursor: pointer;
+    font-size: 11.5px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.chat-action-btn:hover {
+    background: #312c66;
+    border-color: #554d96;
+    color: #ffffff;
+}
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px 8px 14px 0;
+    margin-bottom: 10px;
+    scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #353066;
+    border-radius: 4px;
+}
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #4d468e;
+}
+.message {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 100%;
+}
+.message.user-message {
+    justify-content: flex-end;
+}
+.chat-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: #e2b474;
+    color: #171536;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 2px 8px rgba(226, 180, 116, 0.3);
+}
+.user-message .chat-avatar {
+    background: #504886;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(80, 72, 134, 0.3);
+}
+.message > div {
+    max-width: 82%;
+    display: flex;
+    flex-direction: column;
+}
+.user-message > div {
+    align-items: flex-end;
+}
+.message > div > small {
+    display: block;
+    margin: 4px 6px 0;
+    color: #78749a;
+    font-size: 10px;
+    font-family: 'Segoe UI', sans-serif;
+}
+.user-message > div > small {
+    text-align: right;
+}
+.quick-prompts {
+    margin-top: auto;
+    padding-top: 8px;
+    flex-shrink: 0;
+}
+.quick-prompts-label {
+    display: block;
+    color: #c4c0e0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    font-family: 'Segoe UI', sans-serif;
+}
+.quick-prompts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+.quick-prompts-list button {
+    border: 1px solid #363268;
+    border-radius: 18px;
+    background: #232049;
+    color: #dedcee;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Segoe UI', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.quick-prompts-list button:hover {
+    background: #312c66;
+    border-color: #5a52a3;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+.chat-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 5px 6px 5px 18px;
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid #dedede;
+    flex-shrink: 0;
+}
+.chat-form input {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: #1e1b4b;
+    font-size: 13.5px;
+    font-family: 'Segoe UI', sans-serif;
+}
+.chat-form input::placeholder {
+    color: #8b88a4;
+    font-family: 'Segoe UI', sans-serif;
+}
+.pin-palace-btn {
+    border: 1px solid #dddbe6;
+    border-radius: 16px;
+    background: #f2f1f6;
+    color: #433e66;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.pin-palace-btn:hover {
+    background: #e6e4ee;
+    color: #1e1b4b;
+}
+.chat-send-btn {
+    min-height: 42px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #fcd89a, #f7c36a);
+    color: #2c2007;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'Segoe UI', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(247, 195, 106, 0.35);
+    flex-shrink: 0;
+}
+.chat-send-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(247, 195, 106, 0.5);
+    background: linear-gradient(135deg, #ffe0a8, #f7cb77);
+}
+.chat-footnote {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    color: #767299;
+    font-size: 10.5px;
+    font-family: 'Segoe UI', sans-serif;
+    flex-shrink: 0;
+}
+
+/* Pinned Floating Action Button on Result Page */
+.chat-fab-pinned {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    z-index: 99;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 12px;
+    background: #514b8d;
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(81, 75, 141, 0.4);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Segoe UI', sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.chat-fab-pinned:hover {
+    background: #6258a8;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(81, 75, 141, 0.55);
+    color: #ffffff;
+}
+.chat-fab-pinned:hover {
+    background: #25234e;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(10, 8, 35, 0.6);
+    color: #ffffff;
+}
+
+.chat-fab-icon {
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+}
+.chat-fab-text {
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
 
 .toast { position: fixed; z-index: 20; right: 22px; bottom: 22px; max-width: min(390px, calc(100vw - 36px)); padding: 13px 17px; border-radius: 12px; background: var(--ink); color: #fff; box-shadow: var(--shadow); font-size: 12px; animation: toast-in .2s ease-out; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 body.dark-mode { color-scheme: dark; --ink: #f0efff; --ink-soft: #d8d5fb; --muted: #c2c0d0; --line: #45435c; --paper: #141321; --surface: #211f31; --surface-muted: #302d43; --lavender: #454067; --violet: #b7b0ff; --shadow: 0 12px 28px #0005; background: var(--paper); color: var(--ink); }
-body.dark-mode .site-header, body.dark-mode .section-muted, body.dark-mode .site-footer, body.dark-mode .daily-date, body.dark-mode .chart-count, body.dark-mode .account-notice, body.dark-mode .reading-note, body.dark-mode .radar-note, body.dark-mode .progress-row > div, body.dark-mode .birth-summary > div, body.dark-mode .timeline-cards article, body.dark-mode .disclaimer, body.dark-mode .input-with-icon, body.dark-mode .gender-choice, body.dark-mode .account-form input, body.dark-mode .account-form select, body.dark-mode .sidebar-menu button:not(.active), body.dark-mode .promise-pills span, body.dark-mode .values-grid article, body.dark-mode .palace-card { background-color: var(--surface-muted); color: var(--ink); }
+body.dark-mode .site-header, body.dark-mode .section-muted, body.dark-mode .site-footer, body.dark-mode .daily-date, body.dark-mode .chart-count, body.dark-mode .account-notice, body.dark-mode .reading-note, body.dark-mode .radar-note, body.dark-mode .progress-row > div, body.dark-mode .birth-summary > div, body.dark-mode .timeline-cards article, body.dark-mode .disclaimer, body.dark-mode .input-with-icon, body.dark-mode .account-form input, body.dark-mode .account-form select, body.dark-mode .sidebar-menu button:not(.active), body.dark-mode .promise-pills span, body.dark-mode .values-grid article, body.dark-mode .palace-card { background-color: var(--surface-muted); color: var(--ink); }
 body.dark-mode .card, body.dark-mode .step-card, body.dark-mode .benefit-card, body.dark-mode .mission-card, body.dark-mode .mandala-card, body.dark-mode .auth-card, body.dark-mode .profile-menu, body.dark-mode .family-list a, body.dark-mode .daily-fact { background-color: var(--surface); }
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode .brand-copy strong, body.dark-mode .chart-form > label, body.dark-mode .form-two label, body.dark-mode .account-form label, body.dark-mode .birth-summary strong { color: var(--ink); }
 body.dark-mode .hero, body.dark-mode .about-hero, body.dark-mode .chat-page { background-color: var(--paper); background-image: none; }
@@ -578,6 +907,33 @@ body.dark-mode .timeline-cards article.current { background: #514b8d; color: #ff
 body.dark-mode .timeline-cards article > span:not(.now-label) { background: #403d56; color: var(--ink); }
 body.dark-mode .timeline-cards article.current > span:not(.now-label) { background: #625ca1; color: #fff; }
 body.dark-mode .chat-window { color: #fff; }
+body.dark-mode .form-heading-centered h2 { color: #f0efff; }
+body.dark-mode .form-heading-centered p { color: #a5a2be; }
+body.dark-mode .form-heading-centered .icon-tile { background: #383020; color: #ffd27d; border-color: #55482e; }
+/* High-Contrast Gender Selection in Dark Mode */
+body.dark-mode .gender-choice {
+    background: #2b2746 !important;
+    border: 1px solid #4d4676 !important;
+    color: #d5d1ed !important;
+}
+body.dark-mode .gender-choice:hover {
+    background: #37315a !important;
+    border-color: #7267b8 !important;
+    color: #ffffff !important;
+}
+body.dark-mode .gender-choice.selected {
+    background: #685ec4 !important;
+    border: 1px solid #8e84e2 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(104, 94, 196, 0.45) !important;
+    font-weight: 700;
+}
+body.dark-mode .gender-choice.selected .outline-icon {
+    stroke: #ffffff;
+}
+body.dark-mode .gender-choice:not(.selected) .outline-icon {
+    stroke: #d5d1ed;
+}
 body.dark-mode .reading-card { background: var(--surface); border-color: var(--line); }
 body.dark-mode .reading-card summary b, body.dark-mode .reading-card > p, body.dark-mode .reading-note { color: var(--ink); }
 body.dark-mode .reading-card summary small { color: #c5bfff; }
@@ -630,22 +986,6 @@ body.dark-mode .astrology-chart-center .chart-center-details dd.element-wood { c
 body.dark-mode .astrology-chart-center .chart-center-details dd.element-water { color: #e5e7eb; }
 body.dark-mode .astrology-chart-center .chart-center-details dd.element-fire { color: #ff6b6b; }
 body.dark-mode .astrology-chart-center .chart-center-details dd.element-earth { color: #ffad33; }
-body.dark-mode .chat-window { background: linear-gradient(120deg, #252342, #191827); }
-body.dark-mode .message-bubble { background: #f4f3f8; color: #282735; }
-body.dark-mode .message-bubble p { color: #4c4a59; }
-body.dark-mode .message-bubble em { color: #51478f; }
-body.dark-mode .message-bubble b { color: #282735; }
-body.dark-mode .user-message .message-bubble { background: #4a4578; color: #fff; }
-body.dark-mode .user-message .message-bubble p, body.dark-mode .user-message .message-bubble b { color: #fff; }
-body.dark-mode .message-tags span { background: #e7e3f4; color: #37334f; }
-body.dark-mode .answer-tip { background: #fff4dc; color: #594018; }
-body.dark-mode .chat-form { background: #fff; }
-body.dark-mode .chat-form input { background: transparent; color: #282735; }
-body.dark-mode .chat-form input::placeholder { color: #686776; opacity: 1; }
-body.dark-mode .pin-button { background: #e8e6f0; color: #302f68; }
-body.dark-mode .message > div > small { color: #d0cde8; }
-body.dark-mode .user-message > div > small { color: #d0cde8; }
-body.dark-mode .chat-footnote { color: #d0cde8; }
 
 @media (max-width: 1000px) {
     .site-header { padding: 0 24px; }
@@ -803,12 +1143,6 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
-.chat-messages {
-    max-height: 540px;
-    overflow-y: auto;
-    scroll-behavior: smooth;
-    padding-right: 4px;
-}
 .message-bubble.error-bubble {
     background: #ffebe8;
     color: #c92a2a;
@@ -818,36 +1152,50 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
 /* ==========================================================================
    ChatGPT-Style Rich Markdown Formatting for Chat Messages
    ========================================================================== */
+
+/* --- Assistant Message Bubble (Light Mode: Clean White Card with High-Contrast Navy Ink) --- */
 .message-bubble {
     padding: 16px 20px;
     border-radius: 16px;
     background: #ffffff;
-    color: #24292f;
+    border: 1px solid #dedbf0;
+    color: #1e1b4b;
     font-size: 13.5px;
     line-height: 1.72;
-    border: 1px solid #e2e0ed;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
     word-break: break-word;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
-.user-message .message-bubble {
-    background: #5046e5;
-    color: #ffffff;
-    border-color: #5046e5;
-    white-space: pre-wrap;
-    box-shadow: 0 2px 8px rgba(80, 70, 229, 0.25);
+.message-bubble p {
+    margin: 8px 0;
+    font-size: 13.5px;
+    line-height: 1.72;
+    color: #1e1b4b;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
-.user-message .message-bubble p {
-    color: #ffffff;
-    margin: 4px 0;
+.message-bubble p:first-child { margin-top: 0; }
+.message-bubble p:last-child { margin-bottom: 0; }
+
+.message-bubble strong,
+.message-bubble b {
+    font-weight: 700;
+    color: #0f0d2e;
+}
+
+.message-bubble em,
+.message-bubble i {
+    font-style: italic;
+    color: #4c3f91;
 }
 
 .message-bubble h1,
 .message-bubble h2,
 .message-bubble h3,
 .message-bubble h4 {
-    margin: 16px 0 8px;
+    margin: 14px 0 6px;
     font-weight: 700;
-    line-height: 1.45;
+    line-height: 1.4;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
     color: #1e1b4b;
 }
 .message-bubble h1:first-child,
@@ -858,28 +1206,8 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
 }
 .message-bubble h1 { font-size: 17px; border-bottom: 1px solid #edeaf8; padding-bottom: 6px; }
 .message-bubble h2 { font-size: 15.5px; border-bottom: 1px solid #edeaf8; padding-bottom: 5px; }
-.message-bubble h3 { font-size: 14.5px; color: #312e81; }
+.message-bubble h3 { font-size: 14.5px; color: #3730a3; }
 .message-bubble h4 { font-size: 13.5px; color: #4338ca; }
-
-.message-bubble p {
-    margin: 8px 0;
-    font-size: 13.5px;
-    line-height: 1.72;
-}
-.message-bubble p:first-child { margin-top: 0; }
-.message-bubble p:last-child { margin-bottom: 0; }
-
-.message-bubble strong,
-.message-bubble b {
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.message-bubble em,
-.message-bubble i {
-    font-style: italic;
-    color: #4b5563;
-}
 
 .message-bubble ul,
 .message-bubble ol {
@@ -889,6 +1217,8 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
 .message-bubble li {
     margin: 5px 0;
     line-height: 1.68;
+    color: #1e1b4b;
+    font-family: 'Segoe UI', sans-serif;
 }
 .message-bubble li::marker {
     color: #6366f1;
@@ -900,13 +1230,14 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
     border-left: 3px solid #6366f1;
     background: #f5f3ff;
     border-radius: 0 8px 8px 0;
-    color: #4b5563;
+    color: #2e2a52;
     font-style: italic;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .message-bubble code {
-    background: #f1f3f9;
-    color: #b91c1c;
+    background: #f1f0f8;
+    color: #be123c;
     padding: 2px 6px;
     border-radius: 5px;
     font-size: 12.5px;
@@ -914,10 +1245,11 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
 }
 
 .message-bubble pre {
-    background: #1e1e2e;
+    background: #1e1b38;
     color: #f8f8f2;
     padding: 12px 16px;
     border-radius: 8px;
+    border: 1px solid #332f63;
     overflow-x: auto;
     margin: 10px 0;
 }
@@ -930,7 +1262,7 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
 
 .message-bubble hr {
     border: 0;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #edeaf8;
     margin: 14px 0;
 }
 
@@ -939,24 +1271,58 @@ body.dark-mode .chat-footnote { color: #d0cde8; }
     border-collapse: collapse;
     margin: 12px 0;
     font-size: 13px;
+    font-family: 'Segoe UI', sans-serif;
 }
 .message-bubble th,
 .message-bubble td {
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e2e0ed;
     padding: 8px 12px;
     text-align: left;
 }
 .message-bubble th {
-    background: #f8fafc;
+    background: #f5f4fb;
+    color: #1e1b4b;
     font-weight: 600;
 }
+.message-bubble td {
+    color: #1e1b4b;
+}
 
-/* Dark mode styling for ChatGPT Markdown */
+/* --- User Message Bubble (Light Mode: Rich Indigo Card with Pure White Text) --- */
+.user-message .message-bubble {
+    background: #3a3372;
+    border: 1px solid #4f4794;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(58, 51, 114, 0.3);
+}
+.user-message .message-bubble p {
+    color: #ffffff;
+    margin: 4px 0;
+}
+.user-message .message-bubble strong,
+.user-message .message-bubble b {
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   Dark Mode Overrides (Crisp High-Contrast Text on Slate/Navy Cards)
+   ========================================================================== */
 body.dark-mode .message-bubble {
-    background: #201f33;
-    color: #e2e1ec;
-    border-color: #34324f;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    background: #201d40;
+    border: 1px solid #3c366e;
+    color: #f1effb;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+body.dark-mode .message-bubble p {
+    color: #eae7f8;
+}
+body.dark-mode .message-bubble strong,
+body.dark-mode .message-bubble b {
+    color: #ffffff;
+}
+body.dark-mode .message-bubble em,
+body.dark-mode .message-bubble i {
+    color: #c7bfff;
 }
 body.dark-mode .message-bubble h1,
 body.dark-mode .message-bubble h2,
@@ -964,37 +1330,1003 @@ body.dark-mode .message-bubble h3,
 body.dark-mode .message-bubble h4 {
     color: #ffd8a8;
 }
+body.dark-mode .message-bubble h1 {
+    border-bottom: 1px solid #363066;
+}
+body.dark-mode .message-bubble h2 {
+    border-bottom: 1px solid #363066;
+}
 body.dark-mode .message-bubble h3 {
     color: #c7d2fe;
 }
 body.dark-mode .message-bubble h4 {
     color: #a5b4fc;
 }
-body.dark-mode .message-bubble p {
-    color: #e2e1ec;
+body.dark-mode .message-bubble li {
+    color: #eae7f8;
 }
-body.dark-mode .message-bubble strong,
-body.dark-mode .message-bubble b {
-    color: #ffffff;
+body.dark-mode .message-bubble li::marker {
+    color: #a5b4fc;
 }
 body.dark-mode .message-bubble blockquote {
-    background: #282542;
-    border-left-color: #818cf8;
-    color: #cbd5e1;
+    background: #2a2553;
+    border-left: 3px solid #818cf8;
+    color: #e2e0f0;
 }
 body.dark-mode .message-bubble code {
-    background: #2b2846;
+    background: #2c2752;
     color: #f472b6;
 }
-body.dark-mode .message-bubble th {
-    background: #282640;
-    color: #f1f5f9;
+body.dark-mode .message-bubble pre {
+    background: #111026;
+    border-color: #332f63;
+}
+body.dark-mode .message-bubble hr {
+    border-top: 1px solid #363066;
 }
 body.dark-mode .message-bubble th,
 body.dark-mode .message-bubble td {
-    border-color: #3f3c5f;
+    border-color: #3d3969;
 }
+body.dark-mode .message-bubble th {
+    background: #282452;
+    color: #ffd8a8;
+}
+body.dark-mode .message-bubble td {
+    color: #eae7f8;
+}
+
+/* User Message in Dark Mode */
 body.dark-mode .user-message .message-bubble {
-    background: #4f46e5;
+    background: #483f94;
+    border: 1px solid #5d53b5;
     color: #ffffff;
+    box-shadow: 0 4px 14px rgba(72, 63, 148, 0.4);
+}
+body.dark-mode .user-message .message-bubble p {
+    color: #ffffff;
+}
+body.dark-mode .user-message .message-bubble strong,
+body.dark-mode .user-message .message-bubble b {
+    color: #ffffff;
+}
+
+body.dark-mode .summary-card {
+    background: #252338;
+    border-color: #383552;
+}
+body.dark-mode .summary-card-header {
+    color: #a5a2be;
+}
+body.dark-mode .summary-val {
+    color: #f0efff;
+}
+body.dark-mode .summary-sub {
+    color: #bbb8d3;
+}
+
+/* --- Outline Monochrome SVG Icons --- */
+.outline-icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    stroke: currentColor;
+    fill: none;
+    transition: stroke 0.2s ease;
+}
+.gender-choice span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.summary-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-spark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.chat-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.pin-palace-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.chat-send-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.quick-prompts-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.quick-prompts-list button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.chat-footnote span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ==========================================================================
+   TRADITIONAL TỬ VI 12-PALACE CHART (Matching TracuuTuVi Standard)
+   ========================================================================== */
+.chart-scroll-frame {
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 0 24px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.astrology-chart-grid {
+    width: 100%;
+    max-width: 860px; min-width: 720px;
+    aspect-ratio: 1.04 / 1;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, minmax(155px, 1fr));
+    grid-template-areas:
+        "thien_di tat_ach tai_bach tu_tuc"
+        "no_boc center center phu_the"
+        "quan_loc center center huynh_de"
+        "dien_trach phuc_duc phu_mau menh";
+    border: 2px solid #5a4b35;
+    background: #d4c8b3;
+    gap: 1.5px;
+    box-shadow: 0 10px 32px rgba(45, 35, 20, 0.16);
+    position: relative;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Palace Cell Structure */
+.chart-palace {
+    background: #fdfbf7;
+    background-image: radial-gradient(circle at 50% 50%, rgba(240, 230, 208, 0.28) 0%, transparent 80%);
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.chart-palace:hover {
+    background-color: #fffefb;
+}
+
+/* Cell Top Bar */
+.palace-cell-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    border-bottom: 1.5px solid #ded5c4;
+    gap: 4px;
+}
+
+.palace-branch-code {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #4a3e2c;
+    flex-shrink: 0;
+}
+
+.palace-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+}
+
+.palace-cell-top h3 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #c52222;
+    white-space: nowrap;
+}
+
+/* Element color variations for Palace Name */
+.palace-cell-top h3.element-fire { color: #dc2626; }
+.palace-cell-top h3.element-water { color: #1e3a8a; }
+.palace-cell-top h3.element-wood { color: #15803d; }
+.palace-cell-top h3.element-metal { color: #475569; }
+.palace-cell-top h3.element-earth { color: #b45309; }
+
+.palace-than-badge {
+    font-size: 10px;
+    font-weight: 800;
+    color: #b91c1c;
+    background: #fee2e2;
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1px solid #fca5a5;
+    white-space: nowrap;
+}
+
+.palace-order-num {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #786953;
+    flex-shrink: 0;
+}
+
+/* Cell Body & Stars */
+.palace-cell-body {
+    flex: 1;
+    padding: 6px 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.chart-star-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chart-star-list li {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.35;
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.star-bullet {
+    font-weight: 700;
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.star-name {
+    font-weight: 700;
+}
+
+.star-brightness {
+    font-size: 9.5px;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+/* Star Ngũ Hành Colors (Light Mode) */
+.chart-star-list li.element-fire { color: #b91c1c; }
+.chart-star-list li.element-water { color: #1e293b; }
+.chart-star-list li.element-wood { color: #15803d; }
+.chart-star-list li.element-metal { color: #64748b; }
+.chart-star-list li.element-earth { color: #b45309; }
+
+.chart-palace .empty-palace {
+    margin: 8px 0;
+    color: #9c8e79;
+    font-size: 10px;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Cell Bottom Bar */
+.palace-cell-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 4px;
+    border-top: 1px solid #e7ded0;
+    font-size: 10px;
+    color: #6d5e4a;
+    font-weight: 600;
+}
+
+.palace-bottom-branch {
+    font-weight: 700;
+    color: #3b3022;
+}
+
+.palace-bottom-element.element-fire { color: #dc2626; }
+.palace-bottom-element.element-water { color: #1e3a8a; }
+.palace-bottom-element.element-wood { color: #15803d; }
+.palace-bottom-element.element-metal { color: #475569; }
+.palace-bottom-element.element-earth { color: #b45309; }
+
+.palace-bottom-stat {
+    color: #8c7d69;
+}
+
+/* ==========================================================================
+   CENTER 2x2 AREA (Thiên Bàn Bản Mệnh - TracuuTuVi Format)
+   ========================================================================== */
+.astrology-chart-center {
+    grid-area: center;
+    background: #fffefb;
+    background-image: 
+        radial-gradient(circle at center, rgba(235, 218, 185, 0.35) 0%, rgba(255, 254, 251, 0.9) 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200, 180, 140, 0.03) 2px, rgba(200, 180, 140, 0.03) 4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(14px, 2vw, 24px);
+    box-shadow: inset 0 0 25px rgba(180, 155, 110, 0.12);
+    border: 1px solid #dcd1be;
+    overflow: hidden;
+}
+
+.chart-center-header {
+    text-align: center;
+    border-bottom: 2px solid #b89855;
+    padding-bottom: 8px;
+    position: relative;
+}
+
+.center-badge-mark {
+    font-size: 26px;
+    color: #96722d;
+    line-height: 1;
+    margin-bottom: 3px;
+    display: inline-block;
+}
+
+.center-site-title {
+    margin: 0;
+    font-size: clamp(14px, 1.4vw, 17px);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    color: #8a2020;
+    text-transform: uppercase;
+}
+
+.center-subtitle {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #876935;
+    margin-top: 3px;
+    text-transform: uppercase;
+}
+
+.chart-center-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.center-info-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    font-size: clamp(10.5px, 1.05vw, 12px);
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+}
+
+.center-info-table td {
+    padding: 3px 6px;
+    vertical-align: middle;
+}
+
+.center-info-table .info-label {
+    width: 22%;
+    color: #5c4e3b;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.center-info-table .info-val {
+    width: 28%;
+    color: #261f18;
+    font-weight: 700;
+    text-align: left;
+}
+
+.center-info-table .info-val.strong {
+    font-size: clamp(12px, 1.2vw, 14.5px);
+    color: #8a2020;
+}
+
+.center-info-table .info-val.highlight {
+    font-weight: 800;
+}
+
+.center-info-table .info-val.element-fire { color: #dc2626; }
+.center-info-table .info-val.element-water { color: #1e3a8a; }
+.center-info-table .info-val.element-wood { color: #15803d; }
+.center-info-table .info-val.element-metal { color: #475569; }
+.center-info-table .info-val.element-earth { color: #b45309; }
+
+.chart-center-footer {
+    text-align: center;
+    border-top: 1px dashed #d5c8b2;
+    padding-top: 6px;
+    font-size: 10px;
+    color: #8c7a62;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   DARK MODE OVERRIDES: ABOUT PAGE, FORM INPUTS & TỬ VI CHART
+   ========================================================================== */
+
+/* 1. About Page Dark Mode Contrast Fix (Image 1) */
+body.dark-mode .mission-card,
+body.dark-mode .mission-card.warm {
+    background: #232038 !important;
+    background-image: none !important;
+    border: 1px solid #423c63 !important;
+    color: #f0efff !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+body.dark-mode .mission-card h3,
+body.dark-mode .mission-card.warm h3 {
+    color: #ffffff !important;
+}
+body.dark-mode .mission-card p,
+body.dark-mode .mission-card.warm p {
+    color: #d1cde8 !important;
+}
+body.dark-mode .mission-card ul,
+body.dark-mode .mission-card li {
+    color: #dedbff !important;
+}
+body.dark-mode .mission-card li:before {
+    color: #b7b0ff !important;
+}
+body.dark-mode .card-tag {
+    background: #39335e !important;
+    color: #dedbff !important;
+    border: 1px solid #564f8a !important;
+}
+body.dark-mode .mandala-card {
+    background: #232038 !important;
+    border: 1px solid #423c63 !important;
+    color: #f0efff !important;
+}
+body.dark-mode .mandala-card strong {
+    color: #ffffff !important;
+}
+body.dark-mode .mandala-card p {
+    color: #d1cde8 !important;
+}
+body.dark-mode .mandala-stats span {
+    background: #2b2746 !important;
+    color: #dedbff !important;
+    border: 1px solid #48416d !important;
+}
+body.dark-mode .mandala-stats b {
+    color: #ffd27d !important;
+}
+body.dark-mode .values-grid article {
+    background: #232038 !important;
+    border: 1px solid #423c63 !important;
+    color: #f0efff !important;
+}
+body.dark-mode .values-grid article h3 {
+    color: #ffffff !important;
+}
+body.dark-mode .values-grid article p {
+    color: #d1cde8 !important;
+}
+body.dark-mode .quote-banner {
+    background: #282444 !important;
+    border: 1px solid #47406e !important;
+    color: #f0efff !important;
+}
+body.dark-mode .quote-banner blockquote {
+    color: #ffffff !important;
+}
+body.dark-mode .quote-banner small {
+    color: #c7c2e8 !important;
+}
+
+/* 2. Form Input Contrast Fix in Dark Mode (Image 2) */
+body.dark-mode .chart-form {
+    background: #211f35 !important;
+    border: 1px solid #423c63 !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4) !important;
+}
+body.dark-mode .form-heading-centered h2 {
+    color: #ffffff !important;
+}
+body.dark-mode .form-heading-centered p {
+    color: #c5c1df !important;
+}
+body.dark-mode .chart-form > label,
+body.dark-mode .form-two label {
+    color: #f0efff !important;
+    font-weight: 600 !important;
+}
+body.dark-mode .input-with-icon {
+    background: #1b192c !important;
+    border: 1px solid #4e4776 !important;
+    color: #dcd8f4 !important;
+}
+body.dark-mode .input-with-icon:focus-within {
+    background: #232038 !important;
+    border-color: #8e84e2 !important;
+    box-shadow: 0 0 0 3px rgba(142, 132, 226, 0.28) !important;
+}
+body.dark-mode .input-with-icon input {
+    color: #ffffff !important;
+    color-scheme: dark !important;
+    font-weight: 500 !important;
+}
+body.dark-mode .input-with-icon input::placeholder {
+    color: #928cb2 !important;
+    opacity: 1 !important;
+}
+body.dark-mode .field-icon,
+body.dark-mode .input-end {
+    color: #b5b0d8 !important;
+}
+
+/* 3. Pinned FAB Button in Dark Mode */
+body.dark-mode .chat-fab-pinned {
+    background: #6358a8;
+    border-color: #8378d4;
+    box-shadow: 0 8px 26px rgba(99, 88, 168, 0.55);
+}
+
+/* 4. Tử Vi Chart in Dark Mode */
+body.dark-mode .astrology-chart-grid {
+    border-color: #584f7e;
+    background: #393356;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .chart-palace {
+    background: #1e1b30;
+    background-image: radial-gradient(circle at 50% 50%, rgba(68, 60, 105, 0.25) 0%, transparent 80%);
+    color: #f0efff;
+}
+
+body.dark-mode .chart-palace:hover {
+    background-color: #24213a;
+}
+
+body.dark-mode .palace-cell-top {
+    border-bottom-color: #3b3559;
+}
+
+body.dark-mode .palace-branch-code {
+    color: #e5e2fb;
+}
+
+body.dark-mode .palace-cell-top h3 {
+    color: #ff6b6b;
+}
+
+body.dark-mode .palace-cell-top h3.element-fire { color: #ff6b6b; }
+body.dark-mode .palace-cell-top h3.element-water { color: #93c5fd; }
+body.dark-mode .palace-cell-top h3.element-wood { color: #4ade80; }
+body.dark-mode .palace-cell-top h3.element-metal { color: #e2e8f0; }
+body.dark-mode .palace-cell-top h3.element-earth { color: #ffd166; }
+
+body.dark-mode .palace-than-badge {
+    color: #fecaca;
+    background: #7f1d1d;
+    border-color: #b91c1c;
+}
+
+body.dark-mode .palace-order-num {
+    color: #beb9dc;
+}
+
+body.dark-mode .chart-star-list li.element-fire { color: #ff6b6b; }
+body.dark-mode .chart-star-list li.element-water { color: #e2e8f0; }
+body.dark-mode .chart-star-list li.element-wood { color: #4ade80; }
+body.dark-mode .chart-star-list li.element-metal { color: #cbd5e1; }
+body.dark-mode .chart-star-list li.element-earth { color: #ffd166; }
+
+body.dark-mode .chart-palace .empty-palace {
+    color: #8c86aa;
+}
+
+body.dark-mode .palace-cell-bottom {
+    border-top-color: #3b3559;
+    color: #b8b3d6;
+}
+
+body.dark-mode .palace-bottom-branch {
+    color: #ffffff;
+}
+
+body.dark-mode .palace-bottom-element.element-fire { color: #ff6b6b; }
+body.dark-mode .palace-bottom-element.element-water { color: #93c5fd; }
+body.dark-mode .palace-bottom-element.element-wood { color: #4ade80; }
+body.dark-mode .palace-bottom-element.element-metal { color: #e2e8f0; }
+body.dark-mode .palace-bottom-element.element-earth { color: #ffd166; }
+
+body.dark-mode .palace-bottom-stat {
+    color: #9b95be;
+}
+
+/* Center Dark Mode */
+body.dark-mode .astrology-chart-center {
+    background: #171526;
+    background-image: 
+        radial-gradient(circle at center, rgba(82, 73, 128, 0.3) 0%, rgba(23, 21, 38, 0.95) 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100, 90, 150, 0.05) 2px, rgba(100, 90, 150, 0.05) 4px);
+    border-color: #433c66;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .chart-center-header {
+    border-bottom-color: #b89855;
+}
+
+body.dark-mode .center-badge-mark {
+    color: #ffd166;
+}
+
+body.dark-mode .center-site-title {
+    color: #ffd166;
+}
+
+body.dark-mode .center-subtitle {
+    color: #c7bfff;
+}
+
+body.dark-mode .center-info-table .info-label {
+    color: #b5b0d4;
+}
+
+body.dark-mode .center-info-table .info-val {
+    color: #ffffff;
+}
+
+body.dark-mode .center-info-table .info-val.strong {
+    color: #ffd166;
+}
+
+body.dark-mode .center-info-table .info-val.element-fire { color: #ff6b6b; }
+body.dark-mode .center-info-table .info-val.element-water { color: #93c5fd; }
+body.dark-mode .center-info-table .info-val.element-wood { color: #4ade80; }
+body.dark-mode .center-info-table .info-val.element-metal { color: #e2e8f0; }
+body.dark-mode .center-info-table .info-val.element-earth { color: #ffd166; }
+
+body.dark-mode .chart-center-footer {
+    border-top-color: #3b3559;
+    color: #928bb8;
+}
+
+/* ==========================================================================
+   THEME TOGGLE: SUN IN LIGHT MODE, MOON IN DARK MODE
+   ========================================================================== */
+body:not(.dark-mode) .theme-toggle .theme-icon-moon {
+    display: none !important;
+}
+body:not(.dark-mode) .theme-toggle .theme-icon-sun {
+    display: inline-block !important;
+}
+
+body.dark-mode .theme-toggle .theme-icon-sun {
+    display: none !important;
+}
+body.dark-mode .theme-toggle .theme-icon-moon {
+    display: inline-block !important;
+}
+
+/* ==========================================================================
+   PALACE <THÂN> TAG (No box, inherits exact palace color)
+   ========================================================================== */
+.palace-than-tag,
+.palace-than-badge {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    margin-left: 4px !important;
+    display: inline !important;
+    box-shadow: none !important;
+}
+
+/* ==========================================================================
+   CENTER AREA: 1 UNIFIED VERTICAL COLUMN
+   ========================================================================== */
+.center-info-list {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 2px 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5px;
+}
+.center-info-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: clamp(10px, 0.95vw, 11px);
+    line-height: 1.35;
+    padding-bottom: 2px;
+    border-bottom: 1px dotted rgba(175, 155, 120, 0.3);
+}
+.center-info-list .info-label {
+    color: #5c4e3b;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: left;
+}
+.center-info-list .info-val {
+    color: #261f18;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.center-info-list .info-val.strong {
+    color: #8a2020;
+    font-weight: 800;
+    font-size: clamp(11.5px, 1.1vw, 12.5px);
+}
+.center-info-list .info-val.highlight {
+    font-weight: 800;
+}
+
+body.dark-mode .center-info-list li {
+    border-bottom-color: rgba(90, 80, 130, 0.35);
+}
+body.dark-mode .center-info-list .info-label {
+    color: #b5b0d4;
+}
+body.dark-mode .center-info-list .info-val {
+    color: #ffffff;
+}
+body.dark-mode .center-info-list .info-val.strong {
+    color: #ffd166;
+}
+
+/* ==========================================================================
+   NGŨ HÀNH COLOR SYNCHRONIZATION (Stars, Palaces, Legend Swatch & Text)
+   ========================================================================== */
+/* Light Mode */
+.element-metal,
+.chart-star-list li.element-metal,
+.five-element-legend li.element-metal,
+.center-info-list li .info-val.element-metal {
+    color: #64748b !important;
+}
+.element-wood,
+.chart-star-list li.element-wood,
+.five-element-legend li.element-wood,
+.center-info-list li .info-val.element-wood {
+    color: #15803d !important;
+}
+.element-water,
+.chart-star-list li.element-water,
+.five-element-legend li.element-water,
+.center-info-list li .info-val.element-water {
+    color: #0f172a !important;
+}
+.element-fire,
+.chart-star-list li.element-fire,
+.five-element-legend li.element-fire,
+.center-info-list li .info-val.element-fire {
+    color: #dc2626 !important;
+}
+.element-earth,
+.chart-star-list li.element-earth,
+.five-element-legend li.element-earth,
+.center-info-list li .info-val.element-earth {
+    color: #b45309 !important;
+}
+
+.five-element-legend li span {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: currentColor !important;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* Dark Mode */
+body.dark-mode .element-metal,
+body.dark-mode .chart-star-list li.element-metal,
+body.dark-mode .five-element-legend li.element-metal,
+body.dark-mode .center-info-list li .info-val.element-metal {
+    color: #cbd5e1 !important;
+}
+body.dark-mode .element-wood,
+body.dark-mode .chart-star-list li.element-wood,
+body.dark-mode .five-element-legend li.element-wood,
+body.dark-mode .center-info-list li .info-val.element-wood {
+    color: #4ade80 !important;
+}
+body.dark-mode .element-water,
+body.dark-mode .chart-star-list li.element-water,
+body.dark-mode .five-element-legend li.element-water,
+body.dark-mode .center-info-list li .info-val.element-water {
+    color: #e2e8f0 !important;
+}
+body.dark-mode .element-fire,
+body.dark-mode .chart-star-list li.element-fire,
+body.dark-mode .five-element-legend li.element-fire,
+body.dark-mode .center-info-list li .info-val.element-fire {
+    color: #ff6b6b !important;
+}
+body.dark-mode .element-earth,
+body.dark-mode .chart-star-list li.element-earth,
+body.dark-mode .five-element-legend li.element-earth,
+body.dark-mode .center-info-list li .info-val.element-earth {
+    color: #ffd166 !important;
+}
+
+
+/* ==========================================================================
+   CENTER 2x2 AREA (Thiên Bàn Bản Mệnh - Compact & Perfectly Fitted)
+   ========================================================================== */
+.astrology-chart-center {
+    grid-area: center;
+    background: #fffefb;
+    background-image: 
+        radial-gradient(circle at center, rgba(235, 218, 185, 0.35) 0%, rgba(255, 254, 251, 0.9) 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200, 180, 140, 0.03) 2px, rgba(200, 180, 140, 0.03) 4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 14px 7px;
+    box-shadow: inset 0 0 25px rgba(180, 155, 110, 0.12);
+    border: 1px solid #dcd1be;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.chart-center-header {
+    text-align: center;
+    border-bottom: 1.5px solid #b89855;
+    padding-bottom: 4px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.center-badge-mark {
+    font-size: 19px;
+    color: #96722d;
+    line-height: 1;
+    margin-bottom: 1px;
+    display: inline-block;
+}
+
+.center-site-title {
+    margin: 0;
+    font-size: clamp(12.5px, 1.25vw, 15px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: #8a2020;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.center-subtitle {
+    display: block;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #876935;
+    margin-top: 1px;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.chart-center-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 0;
+    min-height: 0;
+}
+
+.center-info-list {
+    width: 100%;
+    max-width: 310px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.center-info-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: clamp(9.5px, 0.92vw, 10.5px);
+    line-height: 1.32;
+    padding-bottom: 1px;
+    border-bottom: 1px dotted rgba(175, 155, 120, 0.3);
+}
+.center-info-list .info-label {
+    color: #5c4e3b;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: left;
+}
+.center-info-list .info-val {
+    color: #261f18;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.center-info-list .info-val.strong {
+    color: #8a2020;
+    font-weight: 800;
+    font-size: clamp(11px, 1.05vw, 12px);
+}
+.center-info-list .info-val.highlight {
+    font-weight: 800;
+}
+
+.chart-center-footer {
+    text-align: center;
+    border-top: 1px dashed #d5c8b2;
+    padding-top: 3px;
+    font-size: 8.5px;
+    line-height: 1.2;
+    color: #8c7a62;
+    font-style: italic;
+    flex-shrink: 0;
+}
+
+
+/* ==========================================================================
+   MỆNH THỦY: XANH DƯƠNG (BLUE) Ở CẢ 2 CHẾ ĐỘ SÁNG VÀ TỐI
+   ========================================================================== */
+/* Light Mode: Xanh Dương Hoàng Gia Sắc Nét */
+.element-water,
+.palace-cell-top h3.element-water,
+.palace-bottom-element.element-water,
+.chart-star-list li.element-water,
+.five-element-legend li.element-water,
+.center-info-list li .info-val.element-water,
+.astrology-chart-center .chart-center-details dd.element-water {
+    color: #2563eb !important;
+}
+.five-element-legend li.element-water span {
+    background-color: #2563eb !important;
+}
+
+/* Dark Mode: Xanh Dương Tươi Sáng Luminous */
+body.dark-mode .element-water,
+body.dark-mode .palace-cell-top h3.element-water,
+body.dark-mode .palace-bottom-element.element-water,
+body.dark-mode .chart-star-list li.element-water,
+body.dark-mode .five-element-legend li.element-water,
+body.dark-mode .center-info-list li .info-val.element-water,
+body.dark-mode .astrology-chart-center .chart-center-details dd.element-water {
+    color: #38bdf8 !important;
+}
+body.dark-mode .five-element-legend li.element-water span {
+    background-color: #38bdf8 !important;
 }

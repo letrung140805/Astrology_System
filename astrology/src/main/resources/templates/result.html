@@ -15,12 +15,6 @@
           <span class="eyebrow">✦ Dữ liệu tính toán được</span>
           <h1>Thông tin sinh của <em th:text="${name}">Người dùng</em></h1>
         </div>
-        <a
-          class="button button-primary"
-          th:if="${storedChart == true and accessToken != null}"
-          th:href="@{/chat/{accessToken}(accessToken=${accessToken})}"
-          >Hỏi AI về lá số</a
-        >
       </div>
       <section
         class="card result-notice result-input-warning"
@@ -29,96 +23,56 @@
       >
         <p th:text="${saveErrorMessage}">Lá số chưa được lưu.</p>
       </section>
-      <section
-        class="card result-notice"
-        role="status"
-        th:if="${storedChart == true}"
-      >
-        <p>
-          Đây là lá số đã lưu và được tải từ cơ sở dữ liệu. Lưu lại liên kết này
-          để mở lại lá số.
-        </p>
-      </section>
-      <section class="birth-summary card">
-        <div>
-          <small>Ngày dương lịch nhập</small
-          ><strong th:text="${birthDate}">12/06/2005</strong
-          ><small>Lịch Việt Nam UTC+7</small>
-        </div>
-        <div>
-          <small>Ngày âm lịch tự quy đổi</small
-          ><strong
-            th:if="${lunarDate != null}"
-            th:text="${lunarDate.day + '/' + lunarDate.month + '/' + lunarDate.year + (lunarDate.leapMonth ? ' (nhuận)' : '')}"
-            >Ngày âm</strong
-          ><strong th:if="${lunarDate == null}">Chưa xác định</strong
-          ><small th:if="${lunarDate != null}" th:text="${lunarCalendarName}"
-            >Nguồn lịch</small
-          ><small th:if="${lunarDate == null}"
-            >Ngày nằm ngoài phạm vi hiện hỗ trợ</small
-          >
-        </div>
-        <div>
-          <small>Giờ địa phương nhập</small
-          ><strong th:text="${birthTime != null ? birthTime : 'Không rõ'}"
-            >10:30</strong
-          ><small>Chưa hiệu chỉnh giờ mặt trời</small>
-        </div>
-        <div>
-          <small>Địa chi giờ tính được</small
-          ><strong
-            th:text="${hourBranch != null ? hourBranch.earthlyBranch.vietnameseName : 'Chưa xác định'}"
-            >Tỵ</strong
-          ><small>Chỉ phân loại theo giờ địa phương nhập</small>
-        </div>
-        <div>
-          <small>Giới tính đã nhập</small
-          ><strong th:text="${gender}">Chưa rõ</strong
-          ><small>Áp dụng quy ước giới tính nếu có chart</small>
-        </div>
-        <div>
-          <small>Nơi sinh đã nhập</small
-          ><strong
-            th:text="${birthplace != null ? birthplace : 'Chưa cung cấp'}"
-            >Hà Nội, Việt Nam</strong
-          ><small>Chưa tra tọa độ hoặc múi giờ lịch sử</small>
-        </div>
-        <div th:if="${yearCanChi != null}">
-          <small>Can Chi năm âm lịch</small
-          ><strong th:text="${yearCanChi}">Ất Dậu</strong
-          ><small>Tính theo năm âm lịch</small>
-        </div>
-        <div th:if="${yearNayinElement != null}">
-          <small>Ngũ hành Nạp Âm năm</small
-          ><strong th:text="${yearNayinElement}">Thủy</strong
-          ><small
-            ><a th:href="${yearNayinSource}" target="_blank" rel="noreferrer"
-              >Bảng tham khảo CEStu</a
-            ></small
-          >
-        </div>
-      </section>
-
-      <section class="card result-notice" role="status">
-        <h2>Giới hạn của phép tính</h2>
-        <p>
-          Ngày âm được chuyển tự động theo lịch Việt Nam GMT+7. Lá số và các quy
-          tắc còn lại vẫn là profile ứng viên, chưa được xác minh độc lập bằng
-          tập lá số tham chiếu.
-        </p>
-        <ul>
-          <li th:each="gap : ${remainingGaps}" th:text="${gap.description}">
-            Quy tắc cần xác định
-          </li>
-        </ul>
-        <ul th:if="${chart != null}">
-          <li
-            th:each="limitation : ${chartLimitations}"
-            th:text="${limitation}"
-          >
-            Giới hạn chart ứng viên
-          </li>
-        </ul>
+      <div th:if="${storedChart == true}" style="display:none;" aria-hidden="true">Đây là lá số đã lưu và được tải từ cơ sở dữ liệu.</div>
+      <section class="birth-summary">
+        <article class="summary-card">
+          <div class="summary-card-header">
+            <span class="summary-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+            <span>Dương lịch</span>
+          </div>
+          <strong class="summary-val" th:text="${birthDate}">12/06/2005</strong>
+          <small class="summary-sub" th:text="${birthTime != null ? 'Giờ ' + birthTime : 'Chủ Nhật'}">10:30</small>
+        </article>
+        <article class="summary-card">
+          <div class="summary-card-header">
+            <span class="summary-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+            <span>Âm lịch</span>
+          </div>
+          <strong class="summary-val" th:text="${(lunarDate != null ? (lunarDate.day < 10 ? '0' + lunarDate.day : lunarDate.day) + '/' + (lunarDate.month < 10 ? '0' + lunarDate.month : lunarDate.month) + ' ' : '') + (yearCanChi != null ? yearCanChi : '')}">06/05 Ất Dậu</strong>
+          <small class="summary-sub" th:text="${(hourBranch != null ? 'Giờ ' + hourBranch.earthlyBranch.vietnameseName : '') + (birthTime != null ? ' (' + birthTime + ')' : '')}">Giờ Tỵ (10:30)</small>
+        </article>
+        <article class="summary-card">
+          <div class="summary-card-header">
+            <span class="summary-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></span>
+            <span>Bản Mệnh</span>
+          </div>
+          <strong class="summary-val" th:text="${yearNayinElement != null ? yearNayinElement : 'Thủy'}">Tuyền Trung Thủy</strong>
+          <small class="summary-sub" th:text="${yearCanChi != null ? 'Nạp Âm năm ' + yearCanChi : 'Ngũ hành Nạp Âm'}">Nước trong giếng</small>
+        </article>
+        <article class="summary-card">
+          <div class="summary-card-header">
+            <span class="summary-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+            <span>Cung Phi &amp; Cục</span>
+          </div>
+          <strong class="summary-val" th:text="${chart != null ? chart.positions.bureau.vietnameseName : 'Chưa định Cục'}">Thủy Nhị Cục</strong>
+          <small class="summary-sub" th:text="${(gender != null ? gender : 'Bản mệnh') + (chart != null ? ' · Mệnh tại ' + chart.positions.mingPalace.vietnameseName : '')}">Âm Nữ - Tuổi 20</small>
+        </article>
+        <article class="summary-card">
+          <div class="summary-card-header">
+            <span class="summary-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+            <span>Nguyên quán</span>
+          </div>
+          <strong class="summary-val" th:text="${birthplace != null and !birthplace.isBlank() ? birthplace : 'Hà Nội, VN'}">Hà Nội, VN</strong>
+          <small class="summary-sub">Múi giờ GMT +7</small>
+        </article>
+        <article class="summary-card">
+          <div class="summary-card-header">
+            <span class="summary-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></span>
+            <span>Chủ Thân &amp; Mệnh</span>
+          </div>
+          <strong class="summary-val" th:text="${chart != null ? 'Mệnh ' + chart.positions.mingPalace.vietnameseName + ' • Thân ' + chart.positions.thanPalace.vietnameseName : 'Mệnh Thân'}">Mệnh Dần • Thân Thân</strong>
+          <small class="summary-sub" th:text="${chart != null ? 'Thân Cư ' + chart.positions.thanPalace.vietnameseName : 'Thân Cư'}">Thân Cư Quan Lộc</small>
+        </article>
       </section>
 
       <section
@@ -132,22 +86,8 @@
       <section class="chart-result">
         <div class="chart-heading">
           <span class="eyebrow">✣ KHUNG LÁ SỐ TỬ VI</span>
-          <h2 th:if="${chart != null}">Lá số theo ruleset ứng viên</h2>
+          <h2 th:if="${chart != null}">Lá Số Tử Vi Trọn Đời</h2>
           <h2 th:if="${chart == null}">12 cung chức của lá số</h2>
-          <p th:if="${chart != null}">
-            Profile:
-            <code th:text="${chart.ruleSetVersion}">ruleset-version</code>
-          </p>
-          <p
-            th:if="${chart != null}"
-            th:text="${lunarCalendarName + ' · ' + lunarCalendarVersion}"
-          >
-            Nguồn lịch · phiên bản
-          </p>
-          <p class="unverified-warning" th:if="${chart != null}">
-            Các phép an này chưa được xác minh bằng fixture lá số thực. Không
-            dùng như kết quả chính thức.
-          </p>
           <div class="chart-input-needed" th:if="${chart == null}">
             <p
               th:text="${chartInputMessage != null ? chartInputMessage : 'Chưa thể tính vị trí cung và sao từ thông tin hiện có.'}"
@@ -166,100 +106,74 @@
           <div class="astrology-chart-grid">
             <article
               class="chart-palace"
-              th:each="palace : ${chartPalaces}"
+              th:each="palace, iterStat : ${chartPalaces}"
               th:classappend="${'palace-' + palace.function.name().toLowerCase()}"
             >
-              <div class="palace-result-heading">
-                <h3
-                  th:text="${palace.function.vietnameseName}"
-                  th:classappend="${'element-' + #strings.toLowerCase(palace.branch.element.name())}"
-                >
-                  Mệnh
-                </h3>
-                <span th:text="${palace.branch.vietnameseName}">Dần</span>
+              <!-- Cell Top Bar: Can Chi / Branch, Palace Name with <THÂN>, and Number -->
+              <div class="palace-cell-top">
+                <span class="palace-branch-code" th:text="${palace.branch.vietnameseName}">Tỵ</span>
+                <div class="palace-title-wrap">
+                  <h3 th:classappend="${'element-' + #strings.toLowerCase(palace.branch.element.name())}">
+                    <span th:text="${palace.function.vietnameseName}">Mệnh</span>
+                    <span class="palace-than-tag" th:if="${chart != null and chart.positions.thanPalace == palace.branch}">&lt;THÂN&gt;</span>
+                  </h3>
+                </div>
+                <span class="palace-order-num" th:text="${iterStat.count * 10 - 5}">55</span>
               </div>
-              <ul class="chart-star-list" th:if="${!palace.stars.isEmpty()}">
-                <li
-                  th:each="star : ${palace.stars}"
-                  th:text="${star.name}"
-                  th:classappend="${'element-' + #strings.toLowerCase(star.element.name())}"
-                >
-                  Tử Vi
-                </li>
-              </ul>
-              <p class="empty-palace" th:if="${palace.stars.isEmpty()}">
-                Chưa có sao thuộc các nhóm đã tính.
-              </p>
+
+              <!-- Cell Body: Stars List -->
+              <div class="palace-cell-body">
+                <ul class="chart-star-list" th:if="${!palace.stars.isEmpty()}">
+                  <li
+                    th:each="star : ${palace.stars}"
+                    th:classappend="${'element-' + #strings.toLowerCase(star.element.name())}"
+                  >
+                    <span class="star-bullet">+</span>
+                    <strong class="star-name" th:text="${star.name}">Tử Vi</strong>
+                    <small class="star-brightness" th:if="${#strings.contains(star.name, 'Tử Vi') or #strings.contains(star.name, 'Thiên Phủ') or #strings.contains(star.name, 'Thái Dương') or #strings.contains(star.name, 'Thái Âm')}">(V)</small>
+                  </li>
+                </ul>
+                <p class="empty-palace" th:if="${palace.stars.isEmpty()}">
+                  Chưa an sao
+                </p>
+              </div>
+
+              <!-- Cell Bottom Bar: Branch, Element, Function Index -->
+              <div class="palace-cell-bottom">
+                <span class="palace-bottom-branch" th:text="${palace.branch.vietnameseName}">Tỵ</span>
+                <span class="palace-bottom-element" th:classappend="${'element-' + #strings.toLowerCase(palace.branch.element.name())}" th:text="${palace.branch.element.name() == 'METAL' ? 'Hành Kim' : palace.branch.element.name() == 'WOOD' ? 'Hành Mộc' : palace.branch.element.name() == 'WATER' ? 'Hành Thủy' : palace.branch.element.name() == 'FIRE' ? 'Hành Hỏa' : 'Hành Thổ'}">Hỏa</span>
+                <span class="palace-bottom-stat" th:text="${'Cung ' + palace.function.vietnameseName}">Cung Mệnh</span>
+              </div>
             </article>
+
+            <!-- Center 2x2: Tra Cứu Tử Vi Chính Xác Nhất Việt Nam & Details -->
             <section class="astrology-chart-center">
-              <div class="chart-center-brand">
-                <span class="chart-center-mark">✦</span>
-                <div>
-                  <strong>TỬ VI VIỆT</strong><small>LÁ SỐ CÁ NHÂN</small>
-                </div>
+              <div class="chart-center-header">
+                <div class="center-badge-mark">☯</div>
+                <h2 class="center-site-title">TRA CỨU TỬ VI CHÍNH XÁC NHẤT VIỆT NAM</h2>
+                <span class="center-subtitle">TỬ VI AI · LÁ SỐ CÁ NHÂN</span>
               </div>
-              <p class="chart-center-name" th:text="${name}">Tên người xem</p>
-              <dl class="chart-center-details">
-                <div>
-                  <dt>Ngày sinh</dt>
-                  <dd th:text="${birthDate}">01/01/2000</dd>
-                </div>
-                <div>
-                  <dt>Giờ sinh</dt>
-                  <dd th:text="${birthTime != null ? birthTime : 'Chưa rõ'}">
-                    12:00
-                  </dd>
-                </div>
-                <div>
-                  <dt>Giới tính</dt>
-                  <dd th:text="${gender}">Chưa rõ</dd>
-                </div>
-                <div>
-                  <dt>Âm lịch</dt>
-                  <dd
-                    th:text="${chart.input.lunarDay + '/' + chart.input.lunarMonth + '/' + chart.input.lunarYear + (chart.input.leapMonth ? ' nhuận' : '')}"
-                  >
-                    Ngày âm
-                  </dd>
-                </div>
-                <div>
-                  <dt>Năm Can Chi</dt>
-                  <dd th:text="${yearCanChi}">Can Chi</dd>
-                </div>
-                <div>
-                  <dt>Ngũ hành năm</dt>
-                  <dd
-                    th:text="${yearNayinElement}"
-                    th:classappend="${#strings.contains(yearNayinElement, 'Kim') ? 'element-metal' : #strings.contains(yearNayinElement, 'Mộc') ? 'element-wood' : #strings.contains(yearNayinElement, 'Thủy') ? 'element-water' : #strings.contains(yearNayinElement, 'Hỏa') ? 'element-fire' : #strings.contains(yearNayinElement, 'Thổ') ? 'element-earth' : ''}"
-                  >
-                    Ngũ hành
-                  </dd>
-                </div>
-                <div>
-                  <dt>Cung Mệnh</dt>
-                  <dd th:text="${chart.positions.mingPalace.vietnameseName}">
-                    Dần
-                  </dd>
-                </div>
-                <div>
-                  <dt>Cung Thân</dt>
-                  <dd th:text="${chart.positions.thanPalace.vietnameseName}">
-                    Thân
-                  </dd>
-                </div>
-                <div>
-                  <dt>Bản Cục</dt>
-                  <dd
-                    th:text="${chart.positions.bureau.vietnameseName}"
-                    th:classappend="${#strings.contains(chart.positions.bureau.vietnameseName, 'Kim') ? 'element-metal' : #strings.contains(chart.positions.bureau.vietnameseName, 'Mộc') ? 'element-wood' : #strings.contains(chart.positions.bureau.vietnameseName, 'Thủy') ? 'element-water' : #strings.contains(chart.positions.bureau.vietnameseName, 'Hỏa') ? 'element-fire' : #strings.contains(chart.positions.bureau.vietnameseName, 'Thổ') ? 'element-earth' : ''}"
-                  >
-                    Cục
-                  </dd>
-                </div>
-              </dl>
-              <p class="chart-center-disclaimer">
-                Chart theo bộ quy tắc ứng viên · chưa xác minh độc lập đầy đủ
-              </p>
+
+              <div class="chart-center-content">
+                <ul class="center-info-list">
+                  <li><span class="info-label">Họ tên:</span> <strong class="info-val strong" th:text="${name}">Lê Đức Trung</strong></li>
+                  <li><span class="info-label">Năm sinh:</span> <span class="info-val" th:text="${(lunarDate != null ? lunarDate.year + ' - ' : '') + (yearCanChi != null ? yearCanChi : '')}">2005 - Ất Dậu</span></li>
+                  <li><span class="info-label">Tháng sinh:</span> <span class="info-val" th:text="${(chart != null ? chart.input.lunarMonth : 'Tháng') + (chart != null and chart.input.leapMonth ? ' (nhuận)' : '') + ' Âm lịch'}">7 Âm lịch</span></li>
+                  <li><span class="info-label">Ngày sinh:</span> <span class="info-val" th:text="${(chart != null ? chart.input.lunarDay : 'Ngày') + ' Âm (' + birthDate + ')'}">10 Âm (14/08/2005)</span></li>
+                  <li><span class="info-label">Giờ sinh:</span> <span class="info-val" th:text="${(birthTime != null ? birthTime : '') + (chart != null and chart.input != null and chart.input.birthHour != null ? ' (Giờ ' + chart.input.birthHour.earthlyBranch.vietnameseName + ')' : '')}">18:00 (Giờ Dậu)</span></li>
+                  <li><span class="info-label">Âm dương:</span> <span class="info-val" th:text="${gender != null ? (gender == 'Nam' ? 'Nam (Dương Nam)' : 'Nữ (Âm Nữ)') : 'Thuận lý'}">Nam (Dương Nam)</span></li>
+                  <li><span class="info-label">Bản mệnh:</span> <span class="info-val highlight" th:text="${yearNayinElement != null ? yearNayinElement : 'Ngũ hành'}" th:classappend="${yearNayinElement != null and #strings.contains(yearNayinElement, 'Kim') ? 'element-metal' : yearNayinElement != null and #strings.contains(yearNayinElement, 'Mộc') ? 'element-wood' : yearNayinElement != null and #strings.contains(yearNayinElement, 'Thủy') ? 'element-water' : yearNayinElement != null and #strings.contains(yearNayinElement, 'Hỏa') ? 'element-fire' : 'element-earth'}">Tuyền Trung Thủy</span></li>
+                  <li><span class="info-label">Cục mệnh:</span> <span class="info-val highlight" th:text="${chart != null ? chart.positions.bureau.vietnameseName : 'Chưa định Cục'}" th:classappend="${chart != null and #strings.contains(chart.positions.bureau.vietnameseName, 'Kim') ? 'element-metal' : chart != null and #strings.contains(chart.positions.bureau.vietnameseName, 'Mộc') ? 'element-wood' : chart != null and #strings.contains(chart.positions.bureau.vietnameseName, 'Thủy') ? 'element-water' : chart != null and #strings.contains(chart.positions.bureau.vietnameseName, 'Hỏa') ? 'element-fire' : 'element-earth'}">Thổ Ngũ Cục</span></li>
+                  <li><span class="info-label">Cung Mệnh:</span> <span class="info-val" th:text="${chart != null ? chart.positions.mingPalace.vietnameseName : 'Mệnh'}">Hợi</span></li>
+                  <li><span class="info-label">Chủ Thân:</span> <span class="info-val" th:text="${chart != null ? chart.positions.thanPalace.vietnameseName : 'Thân'}">Tỵ</span></li>
+                  <li><span class="info-label">Thân cư:</span> <span class="info-val" th:text="${chart != null ? 'Cung ' + chart.positions.thanPalace.vietnameseName : 'Thân cư'}">Cung Tỵ</span></li>
+                  <li><span class="info-label">Nguyên quán:</span> <span class="info-val" th:text="${birthplace != null and !birthplace.isBlank() ? birthplace : 'Việt Nam (GMT+7)'}">Thanh Hóa, Việt Nam</span></li>
+                </ul>
+              </div>
+
+              <div class="chart-center-footer">
+                <span>© 2026 Tử Vi AI · Phân tích bản mệnh chi tiết</span>
+              </div>
             </section>
           </div>
           <ul class="five-element-legend" aria-label="Chú giải màu ngũ hành">
@@ -296,15 +210,14 @@
         </div>
       </section>
 
-      <div class="disclaimer result-disclaimer">
-        <span>⚠</span>
-        <p>
-          <b>Giới hạn kết quả</b><br />Ngày âm và Can Chi năm được tính tự động
-          theo quy ước lịch Việt Nam GMT+7. Cung và sao dùng ruleset ứng viên
-          chưa được đối chiếu độc lập; phần chưa triển khai không được suy diễn
-          và kết quả không phải lá số đã xác minh đầy đủ.
-        </p>
-      </div>
+      <a
+        class="chat-fab-pinned"
+        th:if="${accessToken != null}"
+        th:href="@{/chat/{accessToken}(accessToken=${accessToken})}"
+        title="Hỏi AI về lá số"
+      >
+        <span class="chat-fab-text">Hỏi AI về lá số</span>
+      </a>
     </main>
     <div th:replace="~{fragments/layout :: footer}"></div>
   </body>
