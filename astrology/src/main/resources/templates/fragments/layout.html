@@ -3,7 +3,7 @@
 <body>
 <header class="site-header" th:fragment="header(activePage)">
     <a class="brand" th:href="@{/}" aria-label="Tử Vi AI - Trang chủ">
-        <span class="brand-mark" aria-hidden="true">✥</span>
+        <span class="brand-mark"><img class="brand-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo" /></span>
         <span class="brand-copy"><strong>Tử Vi AI</strong><small>Hiểu mình · Đón vận · Kiến tạo tương lai</small></span>
     </a>
     <button class="mobile-menu" type="button" aria-label="Mở menu" aria-expanded="false">☰</button>
@@ -28,7 +28,7 @@
 <footer class="site-footer" th:fragment="footer">
     <div class="footer-grid">
         <div class="footer-brand">
-            <a class="brand" th:href="@{/}"><span class="brand-mark" aria-hidden="true">✥</span><span class="brand-copy"><strong>Tử Vi AI</strong></span></a>
+            <a class="brand" th:href="@{/}"><span class="brand-mark"><img class="brand-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo" /></span><span class="brand-copy"><strong>Tử Vi AI</strong></span></a>
             <p>Hệ thống phân tích và luận giải lá số Tử Vi khoa học, kết hợp nền tảng tri thức cổ học phương Đông và trợ lý trí tuệ nhân tạo hiện đại.</p>
             <div class="social-links"><a th:href="@{/chat}" aria-label="Trò chuyện">▣</a><a th:href="@{/about}" aria-label="Khám phá">⊙</a><a th:href="@{/history}" aria-label="Thông báo">♧</a><a th:href="@{/account}" aria-label="Liên hệ">✉</a></div>
         </div>
