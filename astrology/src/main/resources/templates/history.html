@@ -29,7 +29,10 @@
                 <p>Ngày sinh: <span th:text="${item.birthDate}">Ngày sinh</span></p>
                 <p th:if="${item.menhName != null}">Cung Mệnh: <span th:text="${item.menhName}">Mệnh</span></p>
                 <p th:if="${item.cucName != null}">Cục: <span th:text="${item.cucName}">Cục</span></p>
-                <a class="button button-light" th:href="${item.resultUrl}">Mở lá số đã lưu</a>
+                <div class="history-card-buttons">
+                    <a class="button button-light" th:href="${item.resultUrl}">Mở lá số đã lưu</a>
+                    <a class="button button-primary" th:if="${item.chatUrl != null}" th:href="${item.chatUrl}">💬 Đàm đạo AI &amp; Lịch sử</a>
+                </div>
             </article>
         </div>
         <div class="card" th:if="${historyItems.isEmpty()}">

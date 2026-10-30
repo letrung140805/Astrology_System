@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public record ChartHistoryItem(
 		String resultUrl,
+		String chatUrl,
 		String fullName,
 		LocalDate birthDate,
 		LocalDateTime generatedAt,

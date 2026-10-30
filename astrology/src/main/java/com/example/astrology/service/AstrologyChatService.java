@@ -1,11 +1,14 @@
 package com.example.astrology.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import com.example.astrology.model.ConversationHistoryItem;
 
 import reactor.core.publisher.Flux;
 
@@ -23,6 +26,14 @@ public class AstrologyChatService {
 			AstrologyAnswerGenerator answerGenerator) {
 		this.persistenceService = persistenceService;
 		this.answerGenerator = answerGenerator;
+	}
+
+	public List<ConversationHistoryItem> listConversations(UUID accessToken, String principalName) {
+		return persistenceService.listConversations(accessToken, principalName);
+	}
+
+	public void deleteConversation(UUID accessToken, Long conversationId, String principalName) {
+		persistenceService.deleteConversation(accessToken, conversationId, principalName);
 	}
 
 	public AstrologyChatPersistenceService.ChatSession load(

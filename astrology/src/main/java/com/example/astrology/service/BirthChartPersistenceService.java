@@ -199,11 +199,14 @@ public class BirthChartPersistenceService {
 
 		return charts.stream()
 				.map(chart -> {
+					UUID guestToken = guestTokensByHash.get(chart.getAccessTokenHash());
 					String resultUrl = principalName == null
-							? "/result/" + guestTokensByHash.get(chart.getAccessTokenHash())
+							? "/result/" + guestToken
 							: "/result/id/" + chart.getId();
+					String chatUrl = guestToken != null ? "/chat/" + guestToken : null;
 					return new ChartHistoryItem(
 							resultUrl,
+							chatUrl,
 							chart.getBirthProfile().getFullName(),
 							chart.getBirthProfile().getBirthDate(),
 							chart.getGeneratedAt(),

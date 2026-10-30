@@ -281,14 +281,29 @@
                                 chatMessages.scrollTop = chatMessages.scrollHeight;
                             }
                             if (data.error) {
-                                bubbleEl.classList.add('error-bubble');
-                                bubbleContent.textContent = data.error;
+                                if (accumulatedMarkdown) {
+                                    accumulatedMarkdown += `\n\n> ⚠️ *${escapeHtml(data.error)}*`;
+                                    bubbleContent.innerHTML = renderMarkdown(accumulatedMarkdown);
+                                } else {
+                                    bubbleEl.classList.add('error-bubble');
+                                    bubbleContent.textContent = data.error;
+                                }
                             }
-                            if (data.conversationId && convInput) {
-                                convInput.value = data.conversationId;
+                            if (data.conversationId) {
+                                let cInput = chatForm.querySelector('input[name="conversationId"]');
+                                if (!cInput) {
+                                    cInput = document.createElement('input');
+                                    cInput.type = 'hidden';
+                                    cInput.name = 'conversationId';
+                                    cInput.id = 'chatConversationId';
+                                    chatForm.appendChild(cInput);
+                                }
+                                cInput.value = data.conversationId;
                                 const url = new URL(window.location);
+                                url.searchParams.delete('newChat');
                                 url.searchParams.set('conversationId', data.conversationId);
                                 window.history.replaceState({}, '', url.toString());
+                                refreshChatHistory(data.conversationId);
                             }
                             if (data.warning) {
                                 showToast(data.warning);
@@ -308,6 +323,9 @@
                 if (cursor) cursor.remove();
                 if (accumulatedMarkdown) {
                     bubbleContent.innerHTML = renderMarkdown(accumulatedMarkdown);
+                } else if (!bubbleEl.classList.contains('error-bubble') && !bubbleContent.textContent.trim()) {
+                    bubbleEl.classList.add('error-bubble');
+                    bubbleContent.textContent = 'Mô hình AI chưa phản hồi kịp hoặc gặp sự cố kết nối. Vui lòng bấm thử lại hoặc gửi lại câu hỏi.';
                 }
                 chatInput.disabled = false;
                 if (sendButton) sendButton.disabled = false;
@@ -316,4 +334,193 @@
             }
         });
     }
+
+    const escapeHtml = (str) => {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    };
+
+    const refreshChatHistory = async (activeId) => {
+        if (!chatForm) return;
+        const accessToken = chatForm.dataset.accessToken;
+        if (!accessToken) return;
+        const convsUrl = chatForm.dataset.conversationsUrl || (`/chat/${accessToken}/conversations`);
+        const panelContent = document.querySelector('.chat-history-panel-content');
+        const countBadges = document.querySelectorAll('.chat-history-count-badge');
+        const csrfTokenEl = document.getElementById('chatCsrfToken');
+        const convInput = chatForm.querySelector('input[name="conversationId"]');
+        const currentActive = String(activeId || (convInput && convInput.value ? convInput.value : ''));
+
+        try {
+            const res = await fetch(convsUrl, {
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!res.ok) return;
+            const convs = await res.json();
+
+            countBadges.forEach((badge) => {
+                badge.textContent = convs ? convs.length : 0;
+            });
+
+            if (!panelContent) return;
+
+            if (!convs || convs.length === 0) {
+                panelContent.innerHTML = `
+                    <div class="chat-history-empty">
+                        <svg class="outline-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <p>Chưa có phiên đàm đạo nào được lưu.</p>
+                        <small>Hãy gửi câu hỏi đầu tiên để lưu lại cuộc đối thoại này!</small>
+                    </div>
+                `;
+                return;
+            }
+
+            const listEl = document.createElement('ul');
+            listEl.className = 'chat-history-list';
+
+            convs.forEach((c) => {
+                const isActive = String(c.id) === currentActive;
+                const li = document.createElement('li');
+                li.className = 'chat-history-item' + (isActive ? ' active' : '');
+
+                const csrfField = csrfTokenEl
+                    ? `<input type="hidden" name="${csrfTokenEl.name}" value="${csrfTokenEl.value}">`
+                    : '';
+
+                li.innerHTML = `
+                    <a class="chat-history-link" href="/chat/${accessToken}?conversationId=${c.id}">
+                        <div class="chat-history-item-top">
+                            <span class="chat-history-title">${escapeHtml(c.title || ('Cuộc đàm đạo #' + c.id))}</span>
+                            ${isActive ? '<span class="chat-history-current-tag">Đang xem</span>' : ''}
+                        </div>
+                        <div class="chat-history-meta">
+                            <span class="chat-history-date">
+                                <svg class="outline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span>${escapeHtml(c.formattedTime || '')}</span>
+                            </span>
+                            <span class="chat-history-count">${c.messageCount || 0} tin</span>
+                        </div>
+                    </a>
+                    <form class="chat-history-delete-form" method="post" action="/chat/${accessToken}/delete/${c.id}">
+                        ${csrfField}
+                        <button type="submit" class="chat-history-delete-btn" title="Xóa cuộc đàm đạo này">
+                            <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </form>
+                `;
+                listEl.appendChild(li);
+            });
+
+            panelContent.innerHTML = '';
+            panelContent.appendChild(listEl);
+        } catch (e) {
+            console.warn('Could not refresh chat history', e);
+        }
+    };
+
+    // Chat History Drawer toggle
+    const chatHistoryDrawer = document.getElementById('chatHistoryDrawer');
+    const openChatHistoryBtn = document.getElementById('openChatHistoryBtn');
+    const closeChatHistoryBtn = document.getElementById('chatHistoryCloseBtn');
+    const chatHistoryBackdrop = document.getElementById('chatHistoryBackdrop');
+
+    const toggleChatHistory = (show) => {
+        if (!chatHistoryDrawer) return;
+        const willOpen = typeof show === 'boolean' ? show : !chatHistoryDrawer.classList.contains('open');
+        chatHistoryDrawer.classList.toggle('open', willOpen);
+        chatHistoryDrawer.setAttribute('aria-hidden', String(!willOpen));
+        if (openChatHistoryBtn) {
+            openChatHistoryBtn.setAttribute('aria-expanded', String(willOpen));
+        }
+    };
+
+    if (openChatHistoryBtn) {
+        openChatHistoryBtn.addEventListener('click', () => {
+            const convInput = chatForm ? chatForm.querySelector('input[name="conversationId"]') : null;
+            refreshChatHistory(convInput ? convInput.value : null);
+            toggleChatHistory(true);
+        });
+    }
+    if (closeChatHistoryBtn) {
+        closeChatHistoryBtn.addEventListener('click', () => toggleChatHistory(false));
+    }
+    if (chatHistoryBackdrop) {
+        chatHistoryBackdrop.addEventListener('click', () => toggleChatHistory(false));
+    }
+
+    // Delete Confirmation Modal Logic
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    const deleteModalCancelBtn = document.getElementById('deleteModalCancelBtn');
+    const deleteModalConfirmBtn = document.getElementById('deleteModalConfirmBtn');
+    let pendingDeleteForm = null;
+
+    const openDeleteModal = (form) => {
+        if (!deleteModal) {
+            if (confirm('Bạn có chắc muốn xóa cuộc đàm đạo này?')) {
+                form.submit();
+            }
+            return;
+        }
+        pendingDeleteForm = form;
+        deleteModal.classList.add('open');
+        deleteModal.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeDeleteModal = () => {
+        if (!deleteModal) return;
+        deleteModal.classList.remove('open');
+        deleteModal.setAttribute('aria-hidden', 'true');
+        pendingDeleteForm = null;
+    };
+
+    if (deleteModalCancelBtn) {
+        deleteModalCancelBtn.addEventListener('click', closeDeleteModal);
+    }
+    if (deleteModal) {
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) closeDeleteModal();
+        });
+    }
+    if (deleteModalConfirmBtn) {
+        deleteModalConfirmBtn.addEventListener('click', () => {
+            if (pendingDeleteForm) {
+                deleteModalConfirmBtn.disabled = true;
+                deleteModalConfirmBtn.textContent = 'Đang xóa...';
+                pendingDeleteForm.submit();
+            }
+        });
+    }
+
+    // Intercept delete actions across both server-rendered and AJAX-rendered chat history
+    document.addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.chat-history-delete-btn');
+        if (deleteBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const form = deleteBtn.closest('form');
+            if (!form) return;
+            openDeleteModal(form);
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (deleteModal && deleteModal.classList.contains('open')) {
+                closeDeleteModal();
+                return;
+            }
+            if (chatHistoryDrawer && chatHistoryDrawer.classList.contains('open')) {
+                toggleChatHistory(false);
+            }
+        }
+    });
 })();
