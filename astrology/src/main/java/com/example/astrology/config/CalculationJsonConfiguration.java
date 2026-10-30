@@ -1,4 +1,4 @@
-package com.example.astrology;
+package com.example.astrology.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -12,3 +12,4 @@ public class CalculationJsonConfiguration {
 		return new ObjectMapper().findAndRegisterModules();
 	}
 }
+
