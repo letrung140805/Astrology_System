@@ -1,6 +1,7 @@
 package com.example.astrology.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.astrology.model.ConversationHistoryItem;
 import com.example.astrology.service.AstrologyChatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,14 +53,48 @@ public class AstrologyChatController {
 	public String chat(
 			@PathVariable UUID accessToken,
 			@RequestParam(required = false) Long conversationId,
+			@RequestParam(required = false, defaultValue = "false") boolean newChat,
 			Principal principal,
 			Model model) {
-		var session = astrologyChatService.load(accessToken, conversationId, principalName(principal));
+		String userPrincipal = principalName(principal);
+		var historyList = astrologyChatService.listConversations(accessToken, userPrincipal);
+
+		if (conversationId == null && !newChat && !historyList.isEmpty()) {
+			conversationId = historyList.get(0).id();
+		}
+
+		var session = astrologyChatService.load(accessToken, conversationId, userPrincipal);
 		model.addAttribute("accessToken", session.accessToken());
 		model.addAttribute("conversationId", session.conversationId());
 		model.addAttribute("chartName", session.chartName());
 		model.addAttribute("messages", session.messages());
+		model.addAttribute("conversations", historyList);
+		model.addAttribute("isNewChat", newChat || session.conversationId() == null);
 		return "chat";
+	}
+
+	@GetMapping(value = "/chat/{accessToken}/conversations", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<ConversationHistoryItem> getConversations(
+			@PathVariable UUID accessToken,
+			Principal principal) {
+		return astrologyChatService.listConversations(accessToken, principalName(principal));
+	}
+
+	@PostMapping("/chat/{accessToken}/delete/{conversationId}")
+	public String deleteConversation(
+			@PathVariable UUID accessToken,
+			@PathVariable Long conversationId,
+			Principal principal,
+			RedirectAttributes redirectAttributes) {
+		try {
+			astrologyChatService.deleteConversation(accessToken, conversationId, principalName(principal));
+			redirectAttributes.addFlashAttribute("chatNotice", "Đã xóa cuộc đàm đạo thành công.");
+		} catch (Exception ex) {
+			logger.warn("Could not delete conversation", ex);
+			redirectAttributes.addFlashAttribute("chatError", "Không thể xóa cuộc đàm đạo này.");
+		}
+		return "redirect:/chat/" + accessToken;
 	}
 
 	@PostMapping("/chat/{accessToken}")
@@ -154,32 +191,50 @@ public class AstrologyChatController {
 							}
 						}
 						// If partial content was already sent, stream interrupted mid-flight
-						sendEvent(emitter, Map.of("error", explainFailure(error)));
+						logger.info("Stream interrupted after partial tokens. Preserving partial response...");
+						String interruptNotice = "\n\n*(Lưu ý: Đoạn phản hồi này bị gián đoạn do kết nối máy chủ AI. Quý khách có thể gửi lại câu hỏi để nhận luận giải trọn vẹn)*";
+						String partialAnswer = fullContent.toString() + interruptNotice;
+						sendEvent(emitter, Map.of("token", interruptNotice));
+						try {
+							Long savedId = astrologyChatService.saveExchange(
+									accessToken, conversationId, userPrincipal, cleanQuestion, partialAnswer);
+							sendEvent(emitter, Map.of("done", true, "conversationId", savedId));
+						} catch (Exception saveEx) {
+							logger.warn("Could not persist partial interrupted stream", saveEx);
+							sendEvent(emitter, Map.of("done", true, "warning", explainFailure(error)));
+						}
 						emitter.complete();
 					},
 					() -> {
 						try {
 							String finalAnswer = fullContent.toString();
 							if (!finalAnswer.isBlank()) {
-								Long savedId = astrologyChatService.saveExchange(
-										accessToken, conversationId, userPrincipal, cleanQuestion, finalAnswer);
-								sendEvent(emitter, Map.of("done", true, "conversationId", savedId));
+								try {
+									Long savedId = astrologyChatService.saveExchange(
+											accessToken, conversationId, userPrincipal, cleanQuestion, finalAnswer);
+									sendEvent(emitter, Map.of("done", true, "conversationId", savedId));
+								} catch (Exception saveEx) {
+									logger.warn("Stream completed but persistence failed", saveEx);
+									sendEvent(emitter, Map.of("done", true, "warning",
+											"Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử."));
+								}
 							} else {
 								// Stream completed with no content (e.g. reasoning-only stream on free models)
 								logger.info("Stream completed with blank content. Attempting synchronous fallback...");
-								var reply = astrologyChatService.send(
-										accessToken, conversationId, userPrincipal, cleanQuestion);
-								sendEvent(emitter, Map.of("token", reply.answer()));
-								if (reply.persisted()) {
-									sendEvent(emitter, Map.of("done", true, "conversationId", reply.conversationId()));
-								} else {
-									sendEvent(emitter, Map.of("done", true));
+								try {
+									var reply = astrologyChatService.send(
+											accessToken, conversationId, userPrincipal, cleanQuestion);
+									sendEvent(emitter, Map.of("token", reply.answer()));
+									if (reply.persisted()) {
+										sendEvent(emitter, Map.of("done", true, "conversationId", reply.conversationId()));
+									} else {
+										sendEvent(emitter, Map.of("done", true));
+									}
+								} catch (Exception fallbackEx) {
+									logger.warn("Synchronous fallback also failed", fallbackEx);
+									sendEvent(emitter, Map.of("error", explainFailure(fallbackEx)));
 								}
 							}
-						} catch (Exception saveEx) {
-							logger.warn("Stream completed but persistence failed", saveEx);
-							sendEvent(emitter, Map.of("done", true, "warning",
-									"Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử."));
 						} finally {
 							emitter.complete();
 						}
@@ -232,27 +287,27 @@ public class AstrologyChatController {
 				|| message.contains("api_key") || message.contains("apikey") || message.contains("api key")
 				|| message.contains("invalid_api_key") || message.contains("incorrect api key")
 				|| message.contains("401") || message.contains("unauthorized")) {
-			return "Chưa cấu hình API Key OpenRouter hoặc API Key không hợp lệ. Vui lòng thiết lập biến môi trường OPENROUTER_API_KEY.";
+			return "Chưa cấu hình API Key Google Gemini (AI Studio) hoặc API Key không hợp lệ. Vui lòng thiết lập biến môi trường GEMINI_API_KEY.";
 		}
 		if (message.contains("insufficient_quota") || message.contains("billing")
 				|| message.contains("exceeded your current quota")) {
-			return "Tài khoản OpenRouter hết credit hoặc upstream chưa bật thanh toán. Kiểm tra Usage và Credits.";
+			return "Tài khoản Google AI Studio vượt quá hạn mức sử dụng (quota). Kiểm tra hạn mức trên Google AI Studio.";
 		}
 		if (message.contains("429") || message.contains("rate limit")) {
-			return "OpenRouter đang giới hạn tốc độ yêu cầu. Chờ một lúc rồi gửi lại.";
+			return "Google Gemini đang giới hạn tần suất yêu cầu. Vui lòng chờ một lúc rồi gửi lại.";
 		}
 		if (message.contains("model_not_found") || message.contains("model not found")
 				|| message.contains("does not exist") || message.contains("404")) {
-			return "Model không tồn tại hoặc API key không có quyền dùng model này. Kiểm tra OPENROUTER_MODEL.";
+			return "Model Gemini không tồn tại hoặc API key không có quyền dùng model này. Kiểm tra cấu hình GEMINI_MODEL.";
 		}
 		if (message.contains("stream failed") || message.contains("unexpected end of stream")
 				|| message.contains("connection reset") || message.contains("broken pipe")
 				|| message.contains("connect timed out") || message.contains("sockettimeout")
-				|| message.contains("timeout")) {
-			return "Kết nối tới mô hình AI bị gián đoạn (timeout hoặc nhà cung cấp OpenRouter quá tải). Vui lòng thử gửi lại câu hỏi hoặc chọn model khác.";
+				|| message.contains("timeout") || message.contains("503") || message.contains("unavailable")) {
+			return "Kết nối tới mô hình Google Gemini bị gián đoạn (timeout hoặc quá tải tạm thời). Vui lòng thử gửi lại câu hỏi.";
 		}
 		if (message.contains("unknownhost") || message.contains("connection refused")) {
-			return "Không kết nối được tới OpenRouter. Kiểm tra mạng, proxy hoặc firewall.";
+			return "Không kết nối được tới máy chủ Google AI Studio. Kiểm tra kết nối mạng, proxy hoặc firewall.";
 		}
 		return "Chưa tạo được câu trả lời. Xem terminal chạy Spring Boot để biết lỗi chi tiết: " + (exception.getMessage() != null ? exception.getMessage() : "");
 	}

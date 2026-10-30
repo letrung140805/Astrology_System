@@ -45,7 +45,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 
 	public OpenAiAstrologyAnswerGenerator(
 			ChatClient.Builder chatClientBuilder,
-			@Value("${spring.ai.openai.chat.options.model:${spring.ai.openai.chat.model:openrouter/free}}") String modelName,
+			@Value("${spring.ai.openai.chat.options.model:${spring.ai.openai.chat.model:gemini-3.5-flash-lite}}") String modelName,
 			@Value("${spring.ai.openai.api-key:}") String apiKey,
 			AstrologyRagService ragService) {
 		this.chatClient = chatClientBuilder.build();
@@ -65,7 +65,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 			String question) {
 		if (!isKeyConfigured()) {
 			throw new IllegalArgumentException(
-					"Chưa cấu hình API Key OpenRouter. Vui lòng thiết lập biến môi trường OPENROUTER_API_KEY trước khi hỏi AI.");
+					"Chưa cấu hình API Key Google Gemini (AI Studio). Vui lòng thiết lập api-key trong application.properties trước khi hỏi AI.");
 		}
 		List<Message> promptMessages = buildPromptMessages(chartContext, history, question);
 		return chatClient.prompt().messages(promptMessages).call().content();
@@ -78,7 +78,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 			String question) {
 		if (!isKeyConfigured()) {
 			return Flux.error(new IllegalArgumentException(
-					"Chưa cấu hình API Key OpenRouter. Vui lòng thiết lập biến môi trường OPENROUTER_API_KEY trước khi hỏi AI."));
+					"Chưa cấu hình API Key Google Gemini (AI Studio). Vui lòng thiết lập api-key trong application.properties trước khi hỏi AI."));
 		}
 		List<Message> promptMessages = buildPromptMessages(chartContext, history, question);
 		return chatClient.prompt().messages(promptMessages).stream().content();
@@ -103,8 +103,8 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 		promptMessages.add(new SystemMessage(systemContent.toString()));
 
 		if (history != null && !history.isEmpty()) {
-			// Limit to the most recent 6 turns (3 Q&A pairs) to prevent prompt token bloat on free OpenRouter models
-			int startIndex = Math.max(0, history.size() - 6);
+			// Limit to the most recent 10 turns (5 Q&A pairs) to provide good context for Gemini
+			int startIndex = Math.max(0, history.size() - 10);
 			for (int i = startIndex; i < history.size(); i++) {
 				AstrologyChatPersistenceService.ChatTurn turn = history.get(i);
 				String content = turn.content();

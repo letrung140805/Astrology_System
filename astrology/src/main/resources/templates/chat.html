@@ -27,11 +27,26 @@
             </p>
           </div>
           <div class="chat-header-actions">
-            <a class="chat-action-btn" th:href="@{/chat/{accessToken}(accessToken=${accessToken})}" title="Làm mới cuộc đàm đạo"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> <span>Làm mới</span></a>
+            <button class="chat-action-btn chat-history-btn" type="button" id="openChatHistoryBtn" title="Xem lịch sử các cuộc đàm đạo" aria-expanded="false">
+              <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Lịch sử</span>
+              <span class="chat-history-count-badge" th:text="${conversations != null ? conversations.size() : 0}">0</span>
+            </button>
+            <a class="chat-action-btn chat-new-btn" th:href="@{/chat/{accessToken}(accessToken=${accessToken}, newChat=true)}" title="Bắt đầu cuộc đàm đạo mới">
+              <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>Đàm đạo mới</span>
+            </a>
             <button class="chat-action-btn" type="button" data-print title="Tải xuống hoặc in lịch sử trò chuyện"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> <span>Tải lịch sử</span></button>
             <a class="chat-action-btn" th:href="@{/result/{accessToken}(accessToken=${accessToken})}" title="Quay lại xem lá số chi tiết"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> <span>Mở lá số</span></a>
           </div>
         </header>
+        <section
+          class="card result-notice result-notice-success"
+          role="status"
+          th:if="${chatNotice != null}"
+        >
+          <p th:text="${chatNotice}">Thông báo thao tác.</p>
+        </section>
         <section
           class="card result-notice result-input-warning"
           role="alert"
@@ -117,6 +132,7 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
           data-chat-form
           th:data-access-token="${accessToken}"
           th:data-stream-url="@{/chat/{accessToken}/stream(accessToken=${accessToken})}"
+          th:data-conversations-url="@{/chat/{accessToken}/conversations(accessToken=${accessToken})}"
         >
           <input
             type="hidden"
@@ -129,7 +145,6 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
             type="hidden"
             name="conversationId"
             id="chatConversationId"
-            th:if="${conversationId != null}"
             th:value="${conversationId}"
           />
           <input
@@ -150,6 +165,96 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
           <span>Mô hình giải đoán AI Chiêm Tinh v4.2</span>
         </div>
       </section>
+
+      <!-- Slide-out Drawer Lịch sử đàm đạo AI -->
+      <aside class="chat-history-drawer" id="chatHistoryDrawer" aria-hidden="true">
+        <div class="chat-history-backdrop" id="chatHistoryBackdrop"></div>
+        <div class="chat-history-panel">
+          <div class="chat-history-panel-header">
+            <div class="chat-history-header-title">
+              <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <h3>Lịch Sử Đàm Đạo AI</h3>
+            </div>
+            <button type="button" class="chat-history-close-btn" id="chatHistoryCloseBtn" aria-label="Đóng bảng lịch sử">
+              <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="chat-history-actions-bar">
+            <a class="chat-history-new-btn" th:href="@{/chat/{accessToken}(accessToken=${accessToken}, newChat=true)}">
+              <span>Bắt đầu phiên đàm đạo mới</span>
+            </a>
+          </div>
+
+          <div class="chat-history-panel-content">
+            <div class="chat-history-empty" th:if="${conversations == null || conversations.isEmpty()}">
+              <svg class="outline-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <p>Chưa có phiên đàm đạo nào được lưu.</p>
+              <small>Hãy gửi câu hỏi đầu tiên để lưu lại cuộc đối thoại này!</small>
+            </div>
+
+            <ul class="chat-history-list" th:if="${conversations != null && !conversations.isEmpty()}">
+              <li class="chat-history-item" th:each="c : ${conversations}" th:classappend="${conversationId != null && conversationId == c.id ? 'active' : ''}">
+                <a class="chat-history-link" th:href="@{/chat/{accessToken}(accessToken=${accessToken}, conversationId=${c.id})}">
+                  <div class="chat-history-item-top">
+                    <span class="chat-history-title" th:text="${c.title}">Tiêu đề đàm đạo</span>
+                    <span class="chat-history-current-tag" th:if="${conversationId != null && conversationId == c.id}">Đang xem</span>
+                  </div>
+                  <div class="chat-history-meta">
+                    <span class="chat-history-date">
+                      <svg class="outline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      <span th:text="${c.formattedTime}">14:20 30/10/2026</span>
+                    </span>
+                    <span class="chat-history-count" th:text="${c.messageCount + ' tin'}">3 tin</span>
+                  </div>
+                </a>
+                <form class="chat-history-delete-form" method="post" th:action="@{/chat/{accessToken}/delete/{conversationId}(accessToken=${accessToken}, conversationId=${c.id})}">
+                  <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                  <button type="submit" class="chat-history-delete-btn" title="Xóa cuộc đàm đạo này">
+                    <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Pop-up Modal Xác nhận xóa lịch sử chat -->
+      <div class="chat-modal-backdrop" id="deleteConfirmModal" aria-hidden="true">
+        <div class="chat-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+          <div class="chat-modal-icon-wrapper">
+            <svg class="outline-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          </div>
+          <h4 class="chat-modal-title" id="deleteModalTitle">Xác nhận xóa cuộc đàm đạo</h4>
+          <p class="chat-modal-desc">
+            Bạn có chắc chắn muốn xóa cuộc đàm đạo này không?
+          </p>
+          <p class="chat-modal-subdesc">
+            Toàn bộ tin nhắn trong phiên này sẽ bị xóa vĩnh viễn.
+          </p>
+          <div class="chat-modal-actions">
+            <button type="button" class="chat-modal-btn chat-modal-btn-cancel" id="deleteModalCancelBtn">Hủy</button>
+            <button type="button" class="chat-modal-btn chat-modal-btn-confirm" id="deleteModalConfirmBtn">Xác nhận xóa</button>
+          </div>
+        </div>
+      </div>
     </main>
     <div th:replace="~{fragments/layout :: footer}"></div>
   </body>

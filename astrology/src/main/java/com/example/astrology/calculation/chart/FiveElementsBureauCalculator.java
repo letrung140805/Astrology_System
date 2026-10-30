@@ -50,13 +50,9 @@ public class FiveElementsBureauCalculator {
 	}
 
 	private static int branchGroup(EarthlyBranch branch) {
-		return switch (branch) {
-			case TY, SUU -> 0;
-			case DAN, MAO -> 1;
-			case THIN, TI -> 2;
-			case NGO, MUI -> 3;
-			case THAN, DAU -> 4;
-			case TUAT, HOI -> 5;
-		};
+		if (branch == null) {
+			throw new IllegalArgumentException("Địa chi cung Mệnh không được để trống.");
+		}
+		return branch.ordinal() / 2;
 	}
 }

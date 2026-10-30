@@ -15,6 +15,7 @@ import com.example.astrology.entity.AstrologyPalace;
 import com.example.astrology.entity.BirthChart;
 import com.example.astrology.entity.ChatMessage;
 import com.example.astrology.entity.Conversation;
+import com.example.astrology.model.ConversationHistoryItem;
 import com.example.astrology.repository.AppUserRepository;
 import com.example.astrology.repository.AstrologyPalaceRepository;
 import com.example.astrology.repository.BirthChartRepository;
@@ -45,6 +46,20 @@ public class AstrologyChatPersistenceService {
 		this.chartPalaceStarRepository = chartPalaceStarRepository;
 		this.conversationRepository = conversationRepository;
 		this.chatMessageRepository = chatMessageRepository;
+	}
+
+	@Transactional(readOnly = true)
+	public List<ConversationHistoryItem> listConversations(UUID accessToken, String principalName) {
+		BirthChart chart = findChart(accessToken, principalName);
+		List<Conversation> conversations = conversationRepository.findAllByChart_IdOrderByUpdatedAtDesc(chart.getId());
+		return conversations.stream()
+				.map(c -> new ConversationHistoryItem(
+						c.getId(),
+						c.getTitle() != null && !c.getTitle().isBlank() ? c.getTitle() : "Cuộc đàm đạo #" + c.getId(),
+						c.getCreatedAt(),
+						c.getUpdatedAt(),
+						chatMessageRepository.countByConversation_Id(c.getId())))
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
@@ -96,6 +111,18 @@ public class AstrologyChatPersistenceService {
 		assistantMessage.setContextUsed("calculation_version=" + chart.getCalculationVersion());
 		chatMessageRepository.saveAllAndFlush(List.of(userMessage, assistantMessage));
 		return conversation.getId();
+	}
+
+	@Transactional
+	public void deleteConversation(UUID accessToken, Long conversationId, String principalName) {
+		BirthChart chart = findChart(accessToken, principalName);
+		Conversation conversation = conversationRepository.findByIdAndChart_Id(conversationId, chart.getId())
+				.orElseThrow(AstrologyChatPersistenceService::notFound);
+		if (!sameOwner(conversation, chart)) {
+			throw notFound();
+		}
+		chatMessageRepository.deleteAllByConversation_Id(conversationId);
+		conversationRepository.delete(conversation);
 	}
 
 	private List<ChatMessage> loadConversation(BirthChart chart, Long conversationId) {
