@@ -316,6 +316,6 @@ public class AstrologyChatController {
 		if (principal == null || "anonymousUser".equals(principal.getName())) {
 			return null;
 		}
-		return principal.getName();
+			return principal.getName();
 	}
 }

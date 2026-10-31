@@ -17,5 +17,7 @@ public interface BirthChartRepository extends JpaRepository<BirthChart, Long> {
 
 	List<BirthChart> findAllByUser_IdOrderByGeneratedAtDesc(Long userId);
 
+	long countByUser_Id(Long userId);
+
 	List<BirthChart> findAllByAccessTokenHashInAndUserIsNullOrderByGeneratedAtDesc(List<String> accessTokenHashes);
 }

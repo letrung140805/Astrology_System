@@ -9,6 +9,7 @@ import java.util.HexFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -166,16 +167,31 @@ public class BirthChartPersistenceService {
 		return toPageData(savedChart, accessToken);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public StoredBirthChartPageData loadOwnedChart(Long chartId, String principalName) {
-		AppUser owner = appUserRepository.findByEmail(principalName)
-				.orElseThrow(BirthChartPersistenceService::notFound);
+		AppUser owner = findOwner(principalName);
 		BirthChart chart = birthChartRepository.findByIdAndUser_Id(chartId, owner.getId())
 				.orElseThrow(BirthChartPersistenceService::notFound);
-		return toPageData(chart, null);
+		UUID accessToken = UUID.nameUUIDFromBytes(("chart:" + chart.getId() + ":" + owner.getId()).getBytes(StandardCharsets.UTF_8));
+		String tokenHash = hashAccessToken(accessToken);
+		if (!tokenHash.equals(chart.getAccessTokenHash())) {
+			chart.setAccessTokenHash(tokenHash);
+			birthChartRepository.save(chart);
+		}
+		return toPageData(chart, accessToken);
 	}
 
 	@Transactional(readOnly = true)
+	public long countCharts(String principalName) {
+		if (principalName == null || principalName.isBlank()) {
+			return 0L;
+		}
+		return appUserRepository.findByEmail(principalName)
+				.or(() -> appUserRepository.findByUsername(principalName))
+				.map(user -> birthChartRepository.countByUser_Id(user.getId()))
+				.orElse(0L);
+	}
+
 	public List<ChartHistoryItem> history(String principalName, List<UUID> guestTokens) {
 		List<BirthChart> charts;
 		Map<String, UUID> guestTokensByHash = new HashMap<>();
@@ -199,11 +215,16 @@ public class BirthChartPersistenceService {
 
 		return charts.stream()
 				.map(chart -> {
-					UUID guestToken = guestTokensByHash.get(chart.getAccessTokenHash());
-					String resultUrl = principalName == null
-							? "/result/" + guestToken
-							: "/result/id/" + chart.getId();
-					String chatUrl = guestToken != null ? "/chat/" + guestToken : null;
+					UUID token;
+					String resultUrl;
+					if (principalName == null) {
+						token = guestTokensByHash.get(chart.getAccessTokenHash());
+						resultUrl = "/result/" + token;
+					} else {
+						token = UUID.nameUUIDFromBytes(("chart:" + chart.getId() + ":" + chart.getUser().getId()).getBytes(StandardCharsets.UTF_8));
+						resultUrl = "/result/id/" + chart.getId();
+					}
+					String chatUrl = token != null ? "/chat/" + token : null;
 					return new ChartHistoryItem(
 							resultUrl,
 							chatUrl,
@@ -286,15 +307,28 @@ public class BirthChartPersistenceService {
 
 	private AppUser findOwner(String principalName) {
 		return appUserRepository.findByEmail(principalName)
+				.or(() -> appUserRepository.findByUsername(principalName))
 				.orElseThrow(() -> new UsernameNotFoundException(
 						"Không tìm thấy tài khoản ứng với principal hiện tại."));
 	}
 
 	private BirthChart loadOwnedChart(UUID accessToken, String principalName) {
-		AppUser owner = appUserRepository.findByEmail(principalName)
-				.orElseThrow(BirthChartPersistenceService::notFound);
+		AppUser owner = findOwner(principalName);
+		String tokenHash = hashAccessToken(accessToken);
 		return birthChartRepository
-				.findByAccessTokenHashAndUser_Id(hashAccessToken(accessToken), owner.getId())
+				.findByAccessTokenHashAndUser_Id(tokenHash, owner.getId())
+				.or(() -> {
+					List<BirthChart> userCharts = birthChartRepository.findAllByUser_IdOrderByGeneratedAtDesc(owner.getId());
+					for (BirthChart c : userCharts) {
+						UUID expected = UUID.nameUUIDFromBytes(("chart:" + c.getId() + ":" + owner.getId()).getBytes(StandardCharsets.UTF_8));
+						if (expected.equals(accessToken)) {
+							c.setAccessTokenHash(tokenHash);
+							birthChartRepository.save(c);
+							return Optional.of(c);
+						}
+					}
+					return Optional.empty();
+				})
 				.orElseThrow(BirthChartPersistenceService::notFound);
 	}
 

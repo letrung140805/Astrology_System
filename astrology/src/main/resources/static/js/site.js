@@ -29,6 +29,20 @@
         });
     });
 
+    // Đồng bộ trạng thái trang hiện tại trên thanh điều hướng chính
+    const currentNavPath = window.location.pathname;
+    const mainNavLinks = document.querySelectorAll('.main-nav a');
+    if (mainNavLinks.length > 0) {
+        mainNavLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+            if (href === currentNavPath || (href !== '/' && currentNavPath.startsWith(href)) || (href === '/history' && currentNavPath.startsWith('/result'))) {
+                link.classList.add('active');
+            } else if (href === '/' && currentNavPath !== '/') {
+                link.classList.remove('active');
+            }
+        });
+    }
+
     document.querySelectorAll('.mobile-menu').forEach((button) => {
         button.addEventListener('click', () => {
             const nav = document.querySelector('.main-nav');
@@ -50,6 +64,96 @@
             document.querySelectorAll('.gender-choice').forEach((choice) => choice.classList.toggle('selected', choice.contains(radio) && radio.checked));
         });
     });
+
+    // Birth Date (Day, Month, Year) synchronization
+    const birthDaySelect = document.getElementById('birthDay');
+    const birthMonthSelect = document.getElementById('birthMonth');
+    const birthYearSelect = document.getElementById('birthYear');
+    const hiddenBirthDate = document.getElementById('birthDate');
+
+    if (birthDaySelect && birthMonthSelect && birthYearSelect && hiddenBirthDate) {
+        const updateDaysAndSyncDate = () => {
+            const day = parseInt(birthDaySelect.value, 10);
+            const month = parseInt(birthMonthSelect.value, 10);
+            const year = parseInt(birthYearSelect.value, 10) || 2024;
+
+            if (month) {
+                const maxDays = new Date(year, month, 0).getDate();
+                Array.from(birthDaySelect.options).forEach((opt) => {
+                    const val = parseInt(opt.value, 10);
+                    if (val) {
+                        const isValid = val <= maxDays;
+                        opt.hidden = !isValid;
+                        opt.disabled = !isValid;
+                    }
+                });
+                if (day > maxDays) {
+                    birthDaySelect.value = '';
+                }
+            }
+
+            const currentDay = birthDaySelect.value;
+            const currentMonth = birthMonthSelect.value;
+            const currentYear = birthYearSelect.value;
+
+            if (currentDay && currentMonth && currentYear) {
+                const dStr = String(currentDay).padStart(2, '0');
+                const mStr = String(currentMonth).padStart(2, '0');
+                hiddenBirthDate.value = `${currentYear}-${mStr}-${dStr}`;
+            } else {
+                hiddenBirthDate.value = '';
+            }
+        };
+
+        birthDaySelect.addEventListener('change', updateDaysAndSyncDate);
+        birthMonthSelect.addEventListener('change', updateDaysAndSyncDate);
+        birthYearSelect.addEventListener('change', updateDaysAndSyncDate);
+
+        const chartForm = document.querySelector('.chart-form');
+        if (chartForm) {
+            try {
+                const saved = sessionStorage.getItem('tuvi_pending_chart');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.name && document.getElementById('fullName')) document.getElementById('fullName').value = data.name;
+                    if (data.gender) {
+                        const radio = document.querySelector('input[name="gender"][value="' + data.gender + '"]');
+                        if (radio) {
+                            radio.checked = true;
+                            document.querySelectorAll('.gender-choice').forEach((c) => c.classList.toggle('selected', c.contains(radio)));
+                        }
+                    }
+                    if (data.birthDay && birthDaySelect) birthDaySelect.value = data.birthDay;
+                    if (data.birthMonth && birthMonthSelect) birthMonthSelect.value = data.birthMonth;
+                    if (data.birthYear && birthYearSelect) birthYearSelect.value = data.birthYear;
+                    if (data.birthTime && document.getElementById('birthTime')) document.getElementById('birthTime').value = data.birthTime;
+                    if (data.birthplace && document.getElementById('birthplace')) document.getElementById('birthplace').value = data.birthplace;
+                    updateDaysAndSyncDate();
+                    sessionStorage.removeItem('tuvi_pending_chart');
+                }
+            } catch (e) {}
+
+            chartForm.addEventListener('submit', (e) => {
+                updateDaysAndSyncDate();
+                if (chartForm.dataset.authenticated === 'false') {
+                    e.preventDefault();
+                    try {
+                        const data = {
+                            name: document.getElementById('fullName') ? document.getElementById('fullName').value : '',
+                            gender: document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : 'Nữ',
+                            birthDay: birthDaySelect ? birthDaySelect.value : '',
+                            birthMonth: birthMonthSelect ? birthMonthSelect.value : '',
+                            birthYear: birthYearSelect ? birthYearSelect.value : '',
+                            birthTime: document.getElementById('birthTime') ? document.getElementById('birthTime').value : '',
+                            birthplace: document.getElementById('birthplace') ? document.getElementById('birthplace').value : ''
+                        };
+                        sessionStorage.setItem('tuvi_pending_chart', JSON.stringify(data));
+                    } catch (err) {}
+                    window.location.href = '/login?required=true';
+                }
+            });
+        }
+    }
 
     document.querySelectorAll('[data-toast]').forEach((button) => {
         button.addEventListener('click', (event) => {
@@ -77,25 +181,37 @@
     document.querySelectorAll('.password-toggle').forEach((button) => {
         button.addEventListener('click', () => {
             const input = button.closest('.input-with-icon').querySelector('input');
-            input.type = input.type === 'password' ? 'text' : 'password';
+            if (!input) return;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            const eyeOpen = button.querySelector('.eye-open');
+            const eyeClosed = button.querySelector('.eye-closed');
+            if (eyeOpen && eyeClosed) {
+                eyeOpen.classList.toggle('hidden', !isPassword);
+                eyeClosed.classList.toggle('hidden', isPassword);
+            }
         });
     });
 
     document.querySelectorAll('[data-auth-tab]').forEach((button) => {
         button.addEventListener('click', () => {
             document.querySelectorAll('[data-auth-tab]').forEach((tab) => tab.classList.toggle('selected', tab === button));
-            const register = button.dataset.authTab === 'register';
-            const submit = document.querySelector('[data-login-submit]');
-            const note = document.querySelector('[data-auth-note]');
-            if (submit) submit.textContent = register ? 'Tạo tài khoản　→' : 'Đăng Nhập　→';
-            if (note) note.textContent = register ? 'Đăng ký đang ở chế độ minh họa, chưa lưu thông tin.' : 'Giao diện minh họa · Tính năng tài khoản sẽ sớm ra mắt.';
+            const isRegister = button.dataset.authTab === 'register';
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            if (loginForm && registerForm) {
+                loginForm.style.display = isRegister ? 'none' : 'block';
+                registerForm.style.display = isRegister ? 'block' : 'none';
+            }
         });
     });
 
-    document.querySelectorAll('.auth-form, .account-form').forEach((form) => {
+
+
+    document.querySelectorAll('.account-form').forEach((form) => {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            showToast(form.matches('.auth-form') ? 'Đăng nhập chỉ là giao diện minh họa, chưa kết nối hệ thống tài khoản.' : 'Thông tin đã được cập nhật trong bản xem trước.');
+            showToast('Thông tin đã được cập nhật trong bản xem trước.');
         });
     });
 

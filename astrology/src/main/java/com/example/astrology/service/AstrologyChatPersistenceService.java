@@ -144,8 +144,21 @@ public class AstrologyChatPersistenceService {
 					.orElseThrow(AstrologyChatPersistenceService::notFound);
 		}
 		var user = appUserRepository.findByEmail(principalName)
+				.or(() -> appUserRepository.findByUsername(principalName))
 				.orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy tài khoản hiện tại."));
 		return birthChartRepository.findByAccessTokenHashAndUser_Id(tokenHash, user.getId())
+				.or(() -> {
+					List<BirthChart> userCharts = birthChartRepository.findAllByUser_IdOrderByGeneratedAtDesc(user.getId());
+					for (BirthChart c : userCharts) {
+						UUID expected = UUID.nameUUIDFromBytes(("chart:" + c.getId() + ":" + user.getId()).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+						if (expected.equals(accessToken)) {
+							c.setAccessTokenHash(tokenHash);
+							birthChartRepository.save(c);
+							return java.util.Optional.of(c);
+						}
+					}
+					return java.util.Optional.empty();
+				})
 				.orElseThrow(AstrologyChatPersistenceService::notFound);
 	}
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quản lý tài khoản | Tử Vi AI</title>
@@ -7,29 +7,222 @@
     <link rel="stylesheet" th:href="@{/css/site.css}">
     <script th:src="@{/js/site.js}" defer></script>
 </head>
-<body>
+<body class="account-page">
 <div th:replace="~{fragments/layout :: header('account')}"></div>
 <main class="page-main account-main">
-    <section class="page-intro account-intro"><span class="eyebrow">✣ HỆ THỐNG ĐỊNH DANH BẢN MỆNH AI</span><h1>Trung Tâm Quản Lý Tài Khoản &amp; Bản Mệnh</h1><p>Quản lý hồ sơ định danh, gói hội viên luận giải AI, bảo mật dữ liệu sinh thân và tùy biến thông báo thiên thời theo chuẩn thuật toán Tử Vi Đẩu Số.</p></section>
-    <div class="account-layout">
-        <aside class="account-sidebar"><div class="sidebar-menu"><button class="active" type="button" data-account-tab="profile">♙　Hồ sơ &amp; Bản mệnh　›</button><button type="button" data-account-tab="charts">♟　Lá số gia đạo <span>4/10</span></button></div><a class="button button-light button-wide" th:href="@{/login}">↪ Đăng xuất an toàn</a></aside>
-        <div class="account-content">
-            <section class="card account-profile" data-account-panel="profile">
-                <div class="account-user"><span class="portrait">NL</span><div><h2>Nguyễn Thị Lan <span class="gold-tag">◉ Bản Mệnh Plus</span></h2><p>✉ nguyen.lan@example.com　 ☎ +84 987 ••• 321　▦ Gia nhập: Tháng 03/2024</p></div><button class="button button-light" type="button" data-toast="Vui lòng chọn ảnh đại diện từ trang hồ sơ.">▣ Đổi ảnh</button></div>
-                <div class="chart-count"><small>▣ Lá số đã lập</small><strong>04</strong><small>Hạn mức tối đa 10</small></div>
-            </section>
-            <section class="card personal-card" data-account-panel="profile">
-                <div class="card-heading"><div><h2>◉ Thông Tin Cá Nhân &amp; Giờ Sinh Gốc</h2><p>Dữ liệu sinh thân quyết định 108 vị tinh tú, can chi năm tháng ngày giờ và các vòng vận hạn.</p></div><span class="status-label">Đã khóa tham chiếu</span></div>
-                <form class="account-form">
-                    <label>Họ và tên dương số<input value="Nguyễn Thị Lan"></label><label>Giới tính sinh học &amp; Âm Dương<select><option>Nữ giới (Âm Nữ)</option><option>Nam giới (Dương Nam)</option></select></label>
-                    <label>Ngày sinh Dương lịch<input type="date" value="2005-06-12"></label><label>Âm lịch quy đổi (Tự động)<input value="06/05 Ất Dậu (Năm Ất Dậu)" disabled></label>
-                    <label>Giờ sinh chuẩn xác<input type="time" value="10:30"></label><label>Nơi sinh (Hiệu chỉnh kinh độ)<input value="Hà Nội, Việt Nam (GMT+7)"></label>
-                    <div class="account-notice">♧　<b>Lưu ý bảo chứng tinh tú:</b> Giờ sinh gốc của bạn đã được mã hóa bất khả biến và dùng làm tham chiếu chuẩn cho toàn bộ chu kỳ an sao Thiên Bàn, 12 Cung chức, Lưu Thái Tuế và gợi ý khai vận Daily Insight mỗi sớm mai.</div>
-                    <div class="form-actions"><button class="button button-light" type="reset">Hủy thao tác</button><button class="button button-primary" type="submit">▣ Lưu thay đổi</button></div>
-                </form>
-            </section>
-            <section class="card family-panel hidden" data-account-panel="charts"><div class="card-heading"><div><h2>♟ Lá số gia đạo</h2><p>Quản lý những hồ sơ đã được bạn tạo gần đây.</p></div></div><div class="family-list"><a th:href="@{/result}"><span class="avatar-initial">Lan</span><span><b>Nguyễn Thị Lan</b><small>Bản mệnh cá nhân · 12/06/2005</small></span><span>Đang xem →</span></a><a href="#" data-toast="Đây là hồ sơ mẫu trong giao diện minh họa."><span class="avatar-initial">Minh</span><span><b>Trần Minh Anh</b><small>Thành viên gia đình · 04/11/1999</small></span><span>Mở lá số →</span></a></div><button class="button button-primary" type="button" data-toast="Tạo hồ sơ mới bằng biểu mẫu ở trang chủ.">＋ Thêm lá số gia đình</button></section>
-        </div>
+    <section class="page-intro account-intro">
+        <span class="eyebrow">
+            <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            HỆ THỐNG ĐỊNH DANH BẢN MỆNH AI
+        </span>
+        <h1>Trung Tâm Quản Lý Tài Khoản &amp; Bản Mệnh</h1>
+        <p>Tùy chỉnh thông tin định danh người dùng và đổi mật khẩu bảo vệ tài khoản lá số Tử Vi của bạn.</p>
+    </section>
+
+    <div class="account-container">
+        <!-- Thẻ hồ sơ tổng quan -->
+        <section class="card account-profile">
+            <div class="account-user-row">
+                <div class="account-user-left">
+                    <span class="portrait" th:text="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : (currentUser != null && currentUser.username != null ? #strings.substring(currentUser.username, 0, 1).toUpperCase() : 'U')}">U</span>
+                    <div class="account-user-meta">
+                        <h2>
+                            <span th:text="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? currentUser.fullName : (currentUser != null ? currentUser.username : 'Người dùng')}">Tên người dùng</span>
+                        </h2>
+                        <div class="user-sub-details">
+                            <span class="detail-item status-linked">
+                                <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                <span>Đã liên kết</span>
+                            </span>
+                            <span class="detail-item user-email-sub" th:if="${currentUser != null && currentUser.email != null}">
+                                <svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                                <span th:text="${currentUser.email}">email@gmail.com</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="account-actions-group">
+                    <button class="button button-light change-avatar-btn" type="button" data-toast="Tính năng đổi ảnh đại diện đang được cập nhật.">
+                        <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        <span>Đổi ảnh</span>
+                    </button>
+                    <form th:action="@{/logout}" method="post" style="display: inline-flex; margin: 0;">
+                        <button class="button button-light logout-action-btn" type="submit">
+                            <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            <span>Đăng xuất an toàn</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Thanh thống kê số lá số theo thời gian thực -->
+            <div class="chart-count">
+                <div class="chart-count-left">
+                    <small class="chart-count-label">
+                        <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Lá số đã lập trên tài khoản
+                    </small>
+                    <span class="chart-count-desc">Dữ liệu hồ sơ số được lưu trữ và cập nhật trực tiếp theo thời gian thực</span>
+                </div>
+                <div class="chart-count-right">
+                    <strong th:text="${chartCount != null ? (chartCount < 10 ? '0' + chartCount : chartCount) : (userChartCount != null ? (userChartCount < 10 ? '0' + userChartCount : userChartCount) : '00')}">00</strong>
+                    <small th:text="'(' + (${chartCount} ?: (${userChartCount} ?: 0)) + ' lá số)'">(0 lá số)</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cập nhật Thông Tin Tài Khoản (Tên hiển thị) -->
+        <section class="card profile-edit-card">
+            <div class="card-heading">
+                <div>
+                    <h2>
+                        <svg class="outline-icon heading-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Thông Tin Tài Khoản
+                    </h2>
+                    <p>Thay đổi tên người dùng để cá nhân hóa hệ thống luận giải.</p>
+                </div>
+            </div>
+
+            <!-- Thông báo cập nhật thông tin -->
+            <div th:if="${profileSuccessMessage}" class="auth-alert success" style="margin-bottom: 16px;">
+                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span th:text="${profileSuccessMessage}">Cập nhật thông tin tài khoản thành công!</span>
+            </div>
+            <div th:if="${profileErrorMessage}" class="auth-alert error" style="margin-bottom: 16px;">
+                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <span th:text="${profileErrorMessage}">Lỗi cập nhật thông tin.</span>
+            </div>
+
+            <form th:action="@{/account/update-profile}" method="post" class="profile-update-form">
+                <div class="form-grid-profile">
+                    <div class="form-field-item">
+                        <label class="field-label" for="profileFullName">
+                            Tên người dùng<span>Bắt buộc</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <span class="field-icon">
+                                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </span>
+                            <input id="profileFullName" name="fullName" required th:value="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? currentUser.fullName : (currentUser != null ? currentUser.username : '')}" placeholder="Nhập tên người dùng của bạn">
+                        </div>
+                    </div>
+
+                    <div class="form-field-item">
+                        <label class="field-label" for="profileEmail">
+                            Email / Gmail liên kết<span>Không thể thay đổi</span>
+                        </label>
+                        <div class="input-with-icon input-disabled-wrap">
+                            <span class="field-icon">
+                                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                            </span>
+                            <input id="profileEmail" th:value="${currentUser != null ? currentUser.email : #authentication.name}" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button class="button button-primary" type="submit">
+                        <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Lưu thông tin
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Thẻ Đổi Mật Khẩu Đăng Nhập -->
+        <section class="card password-card">
+            <div class="card-heading">
+                <div>
+                    <h2>
+                        <svg class="outline-icon heading-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Đổi Mật Khẩu Đăng Nhập
+                    </h2>
+                    <p>Cập nhật mật khẩu mới để bảo vệ an toàn tài khoản và quyền truy cập lá số Tử Vi.</p>
+                </div>
+            </div>
+
+            <!-- Thông báo đổi mật khẩu -->
+            <div th:if="${pwdSuccessMessage}" class="auth-alert success" style="margin-bottom: 16px;">
+                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span th:text="${pwdSuccessMessage}">Đổi mật khẩu thành công!</span>
+            </div>
+            <div th:if="${pwdErrorMessage}" class="auth-alert error" style="margin-bottom: 16px;">
+                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <span th:text="${pwdErrorMessage}">Mật khẩu hiện tại không chính xác.</span>
+            </div>
+
+            <form th:action="@{/account/change-password}" method="post" class="change-password-form">
+                <div class="password-fields-grid">
+                    <div class="password-field-item">
+                        <label class="field-label" for="currentPassword">Mật khẩu hiện tại<span>Bắt buộc</span></label>
+                        <div class="input-with-icon">
+                            <span class="field-icon">
+                                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <input id="currentPassword" name="currentPassword" type="password" required autocomplete="current-password" placeholder="Nhập mật khẩu hiện tại">
+                            <button class="password-toggle" type="button" aria-label="Hiện/ẩn mật khẩu" title="Hiện/ẩn mật khẩu">
+                                <svg class="eye-icon eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                                <svg class="eye-icon eye-open hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="password-field-item">
+                        <label class="field-label" for="newPassword">Mật khẩu mới<span>Tối thiểu 6 ký tự</span></label>
+                        <div class="input-with-icon">
+                            <span class="field-icon">
+                                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <input id="newPassword" name="newPassword" type="password" minlength="6" required autocomplete="new-password" placeholder="Nhập mật khẩu mới từ 6 ký tự">
+                            <button class="password-toggle" type="button" aria-label="Hiện/ẩn mật khẩu" title="Hiện/ẩn mật khẩu">
+                                <svg class="eye-icon eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                                <svg class="eye-icon eye-open hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="password-field-item">
+                        <label class="field-label" for="confirmPassword">Xác nhận mật khẩu mới<span>Bắt buộc</span></label>
+                        <div class="input-with-icon">
+                            <span class="field-icon">
+                                <svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <input id="confirmPassword" name="confirmPassword" type="password" minlength="6" required autocomplete="new-password" placeholder="Nhập lại mật khẩu mới để xác nhận">
+                            <button class="password-toggle" type="button" aria-label="Hiện/ẩn mật khẩu" title="Hiện/ẩn mật khẩu">
+                                <svg class="eye-icon eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                                <svg class="eye-icon eye-open hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button class="button button-primary" type="submit">
+                        <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L14 9M3 21l6-6m0 0l2 2m-2-2l-2-2m6-4a4 4 0 1 0-5.66-5.66 4 4 0 0 0 5.66 5.66z"></path></svg>
+                        Cập nhật mật khẩu
+                    </button>
+                </div>
+            </form>
+        </section>
     </div>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>
