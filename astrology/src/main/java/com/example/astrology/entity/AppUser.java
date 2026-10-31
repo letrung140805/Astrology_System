@@ -33,4 +33,10 @@ public class AppUser {
 	@Column(name = "full_name", length = 150)
 	private String fullName;
 
+	@Column(name = "role", length = 30)
+	private String role = "USER";
+
+	@Column(name = "enabled", nullable = false)
+	private boolean enabled = true;
+
 }

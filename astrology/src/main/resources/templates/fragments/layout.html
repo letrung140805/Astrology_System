@@ -1,27 +1,54 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <header class="site-header" th:fragment="header(activePage)">
     <a class="brand" th:href="@{/}" aria-label="Tử Vi AI - Trang chủ">
         <span class="brand-mark"><img class="brand-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo" /></span>
         <span class="brand-copy"><strong>Tử Vi AI</strong><small>Hiểu mình · Đón vận · Kiến tạo tương lai</small></span>
     </a>
-    <button class="mobile-menu" type="button" aria-label="Mở menu" aria-expanded="false">☰</button>
+    <button class="mobile-menu" type="button" aria-label="Mở menu" aria-expanded="false"><svg class="outline-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
     <nav class="main-nav" aria-label="Điều hướng chính">
         <a th:href="@{/}" th:classappend="${activePage == 'home'} ? 'active' : ''">Trang chủ</a>
         <a th:href="@{/about}" th:classappend="${activePage == 'about'} ? 'active' : ''">Giới thiệu</a>
-        <a th:href="@{/history}" th:classappend="${activePage == 'history'} ? 'active' : ''">Lịch sử lá số</a>
+        <a th:href="@{/history}" th:classappend="${activePage == 'history' or activePage == 'result'} ? 'active' : ''">Lịch sử lá số</a>
     </nav>
     <div class="header-actions">
         <button class="icon-button theme-toggle" type="button" aria-label="Đổi giao diện"><svg class="outline-icon theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg class="outline-icon theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
         <div class="language-switch" aria-label="Chọn ngôn ngữ"><button class="selected" type="button">VN</button><button type="button">EN</button></div>
-        <div class="profile-wrap">
-            <button class="profile-button" type="button" aria-label="Tài khoản" aria-expanded="false"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></button>
-            <div class="profile-menu">
-                <a th:href="@{/account}">⚙ Quản lý tài khoản</a>
-                <a th:href="@{/login}">↪ Đăng xuất</a>
+
+        <!-- Trạng thái CHƯA đăng nhập -->
+        <th:block sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}" class="button button-header-login">
+                <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                <span>Đăng nhập</span>
+            </a>
+        </th:block>
+
+        <!-- Trạng thái ĐÃ đăng nhập -->
+        <th:block sec:authorize="isAuthenticated()">
+            <div class="profile-wrap">
+                <button class="profile-button authenticated-avatar-btn" type="button" aria-label="Tài khoản" aria-expanded="false" th:title="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? currentUser.fullName : (currentUser != null && currentUser.username != null ? currentUser.username : 'Tài khoản')}">
+                    <span class="avatar-initial-circle" th:text="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : (currentUser != null && currentUser.username != null ? #strings.substring(currentUser.username, 0, 1).toUpperCase() : 'U')}">U</span>
+                </button>
+                <div class="profile-menu">
+                    <div class="profile-menu-header">
+                        <strong class="profile-name-badge" th:text="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? currentUser.fullName : (currentUser != null ? currentUser.username : 'Người dùng')}">Trung</strong>
+                        <small class="profile-role-badge">Tài khoản thành viên</small>
+                    </div>
+                    <div class="menu-divider"></div>
+                    <a th:href="@{/account}" class="profile-menu-item">
+                        <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>Quản lý tài khoản</span>
+                    </a>
+                    <form th:action="@{/logout}" method="post" class="logout-form">
+                        <button type="submit" class="logout-btn-link">
+                            <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            <span>Đăng xuất</span>
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </th:block>
     </div>
 </header>
 
@@ -30,7 +57,12 @@
         <div class="footer-brand">
             <a class="brand" th:href="@{/}"><span class="brand-mark"><img class="brand-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo" /></span><span class="brand-copy"><strong>Tử Vi AI</strong></span></a>
             <p>Hệ thống phân tích và luận giải lá số Tử Vi khoa học, kết hợp nền tảng tri thức cổ học phương Đông và trợ lý trí tuệ nhân tạo hiện đại.</p>
-            <div class="social-links"><a th:href="@{/chat}" aria-label="Trò chuyện">▣</a><a th:href="@{/about}" aria-label="Khám phá">⊙</a><a th:href="@{/history}" aria-label="Thông báo">♧</a><a th:href="@{/account}" aria-label="Liên hệ">✉</a></div>
+            <div class="social-links">
+                <a th:href="@{/chat}" aria-label="Trò chuyện"><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></a>
+                <a th:href="@{/about}" aria-label="Khám phá"><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></a>
+                <a th:href="@{/history}" aria-label="Lịch sử lá số"><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg></a>
+                <a th:href="@{/account}" aria-label="Quản lý tài khoản"><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></a>
+            </div>
         </div>
         <div><h3>Tính năng chính</h3><a th:href="@{/}">Lập lá số Tử Vi</a><a th:href="@{/about}">Giới thiệu dự án</a></div>
         <div><h3>Hệ thống luận giải</h3><a th:href="@{/}">Lịch âm Việt Nam GMT+7</a><a th:href="@{/}">Can Chi và Nạp Âm</a><a th:href="@{/}">12 Cung và Tinh bàn</a></div>

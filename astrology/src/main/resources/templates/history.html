@@ -31,7 +31,10 @@
                 <p th:if="${item.cucName != null}">Cục: <span th:text="${item.cucName}">Cục</span></p>
                 <div class="history-card-buttons">
                     <a class="button button-light" th:href="${item.resultUrl}">Mở lá số đã lưu</a>
-                    <a class="button button-primary" th:if="${item.chatUrl != null}" th:href="${item.chatUrl}">💬 Đàm đạo AI &amp; Lịch sử</a>
+                    <a class="button button-primary" th:if="${item.chatUrl != null}" th:href="${item.chatUrl}">
+                        <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Đàm đạo AI &amp; Lịch sử</span>
+                    </a>
                 </div>
             </article>
         </div>

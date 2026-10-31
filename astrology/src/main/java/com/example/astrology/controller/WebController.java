@@ -1,5 +1,8 @@
 package com.example.astrology.controller;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import com.example.astrology.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,12 +43,22 @@ public class WebController {
 
 	private final BirthChartApplicationService birthChartApplicationService;
 	private final BirthChartPersistenceService birthChartPersistenceService;
+	private final UserService userService;
+
+	@Autowired
+	public WebController(
+			BirthChartApplicationService birthChartApplicationService,
+			BirthChartPersistenceService birthChartPersistenceService,
+			UserService userService) {
+		this.birthChartApplicationService = birthChartApplicationService;
+		this.birthChartPersistenceService = birthChartPersistenceService;
+		this.userService = userService;
+	}
 
 	public WebController(
 			BirthChartApplicationService birthChartApplicationService,
 			BirthChartPersistenceService birthChartPersistenceService) {
-		this.birthChartApplicationService = birthChartApplicationService;
-		this.birthChartPersistenceService = birthChartPersistenceService;
+		this(birthChartApplicationService, birthChartPersistenceService, null);
 	}
 
 	@GetMapping("/")
@@ -51,16 +66,43 @@ public class WebController {
 		return "home";
 	}
 
+	public String result(
+			String name,
+			String gender,
+			LocalDate birthDate,
+			LocalTime birthTime,
+			String birthplace,
+			Principal principal,
+			HttpSession session,
+			Model model) {
+		return result(name, gender, birthDate, null, null, null, birthTime, birthplace, principal, session, model);
+	}
+
 	@PostMapping("/result")
 	public String result(
 			@RequestParam String name,
 			@RequestParam String gender,
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
+			@RequestParam(required = false) Integer birthDay,
+			@RequestParam(required = false) Integer birthMonth,
+			@RequestParam(required = false) Integer birthYear,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime birthTime,
 			@RequestParam(required = false) String birthplace,
 			Principal principal,
 			HttpSession session,
 			Model model) {
+		if (birthDate == null && birthDay != null && birthMonth != null && birthYear != null) {
+			try {
+				birthDate = LocalDate.of(birthYear, birthMonth, birthDay);
+			} catch (java.time.DateTimeException ex) {
+				model.addAttribute("saveErrorMessage", "Ngày tháng năm sinh không hợp lệ. Vui lòng kiểm tra lại.");
+				return "home";
+			}
+		}
+		if (birthDate == null) {
+			model.addAttribute("saveErrorMessage", "Vui lòng nhập đầy đủ ngày, tháng, năm sinh.");
+			return "home";
+		}
 		String principalName = principalName(principal);
 		AstrologyCalculationInput input = new AstrologyCalculationInput(
 				name, gender, birthDate, birthTime, birthplace);
@@ -108,6 +150,7 @@ public class WebController {
 		StoredBirthChartPageData pageData = birthChartPersistenceService.loadOwnedChart(
 				chartId, principalName(principal));
 		addStoredResult(model, pageData);
+		model.addAttribute("chartId", chartId);
 		return "result";
 	}
 
@@ -174,7 +217,7 @@ public class WebController {
 		if (principal == null || "anonymousUser".equals(principal.getName())) {
 			return null;
 		}
-		return principal.getName();
+			return principal.getName();
 	}
 
 	private static void rememberGuestChart(HttpSession session, UUID accessToken) {
@@ -213,17 +256,74 @@ public class WebController {
 	}
 
 	@GetMapping("/account")
-	public String account() {
+	public String account(
+			@RequestParam(required = false) String pwdSuccess,
+			@RequestParam(required = false) String pwdError,
+			@RequestParam(required = false) String profileSuccess,
+			@RequestParam(required = false) String profileError,
+			Principal principal,
+			Model model) {
+		if (pwdSuccess != null) {
+			model.addAttribute("pwdSuccessMessage", "Đổi mật khẩu thành công! Mật khẩu mới của bạn đã có hiệu lực.");
+		}
+		if (pwdError != null) {
+			model.addAttribute("pwdErrorMessage", pwdError);
+		}
+		if (profileSuccess != null) {
+			model.addAttribute("profileSuccessMessage", "Cập nhật thông tin tài khoản thành công!");
+		}
+		if (profileError != null) {
+			model.addAttribute("profileErrorMessage", profileError);
+		}
+		model.addAttribute("chartCount", birthChartPersistenceService.countCharts(principalName(principal)));
 		return "account";
+	}
+
+	@PostMapping("/account/update-profile")
+	public String updateProfile(
+			@RequestParam(required = false) String fullName,
+			@RequestParam(required = false) String username,
+			Principal principal) {
+		if (principal == null || principal.getName() == null) {
+			return "redirect:/login";
+		}
+		if (userService == null) {
+			return "redirect:/account?profileError=" + URLEncoder.encode("Dịch vụ người dùng chưa sẵn sàng.", StandardCharsets.UTF_8);
+		}
+		try {
+			userService.updateProfile(principal.getName(), fullName, username);
+			return "redirect:/account?profileSuccess=true";
+		} catch (IllegalArgumentException ex) {
+			return "redirect:/account?profileError=" + URLEncoder.encode(ex.getMessage(), StandardCharsets.UTF_8);
+		} catch (Exception ex) {
+			return "redirect:/account?profileError=" + URLEncoder.encode("Đã xảy ra lỗi khi cập nhật thông tin. Vui lòng thử lại sau.", StandardCharsets.UTF_8);
+		}
+	}
+
+	@PostMapping("/account/change-password")
+	public String changePassword(
+			@RequestParam String currentPassword,
+			@RequestParam String newPassword,
+			@RequestParam String confirmPassword,
+			Principal principal) {
+		if (principal == null || principal.getName() == null) {
+			return "redirect:/login";
+		}
+		if (userService == null) {
+			return "redirect:/account?pwdError=" + URLEncoder.encode("Dịch vụ người dùng chưa sẵn sàng.", StandardCharsets.UTF_8);
+		}
+		try {
+			userService.changePassword(principal.getName(), currentPassword, newPassword, confirmPassword);
+			return "redirect:/account?pwdSuccess=true";
+		} catch (IllegalArgumentException ex) {
+			return "redirect:/account?pwdError=" + URLEncoder.encode(ex.getMessage(), StandardCharsets.UTF_8);
+		} catch (Exception ex) {
+			return "redirect:/account?pwdError=" + URLEncoder.encode("Đã xảy ra lỗi khi đổi mật khẩu. Vui lòng thử lại sau.", StandardCharsets.UTF_8);
+		}
 	}
 
 	@GetMapping("/about")
 	public String about() {
 		return "about";
-	}
-
-	@GetMapping("/login")
-	public String login() {
-		return "login";
 	}
 }

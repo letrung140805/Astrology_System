@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dữ liệu lá số minh bạch | Tử Vi AI</title>
@@ -19,7 +19,7 @@
             <p class="handwritten">Khám phá bản thân từ những vì sao <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg></p>
             <div class="trust-row"><span>♧ Không tự suy diễn dữ liệu thiếu</span><span>✣ Hiển thị cung và sao có cấu trúc</span><span>◉ Nêu rõ quy tắc chưa xác minh</span></div>
         </div>
-        <form class="chart-form card" th:action="@{/result}" method="post">
+        <form class="chart-form card" th:action="@{/result}" method="post" id="chartForm" th:data-authenticated="${#authorization.expression('isAuthenticated()')}">
             <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="form-heading form-heading-centered">
                 <span class="icon-tile gold"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg></span>
@@ -42,27 +42,47 @@
                     <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><path d="M14.5 9.5L21 3M15 3h6v6"></path></svg></span> Nam (Dương Nam)
                 </label>
             </div>
-            <div class="form-two">
-                <div>
-                    <label for="birthDate">Ngày sinh (Dương lịch)</label>
-                    <div class="input-with-icon">
-                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
-                        <input id="birthDate" name="birthDate" type="date" required>
+            <label>Ngày sinh (Dương lịch)</label>
+            <div class="birth-dmy-group">
+                <div class="dmy-col">
+                    <span class="dmy-label">Ngày</span>
+                    <div class="select-with-icon">
+                        <select id="birthDay" name="birthDay" required aria-label="Ngày sinh">
+                            <option value="" disabled selected>Ngày</option>
+                            <option th:each="d : ${#numbers.sequence(1, 31)}" th:value="${d}" th:text="${d}">1</option>
+                        </select>
                     </div>
                 </div>
-                <div>
-                    <label for="birthTime">Giờ sinh</label>
-                    <div class="input-with-icon">
-                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
-                        <input id="birthTime" name="birthTime" type="time" required>
+                <div class="dmy-col">
+                    <span class="dmy-label">Tháng</span>
+                    <div class="select-with-icon">
+                        <select id="birthMonth" name="birthMonth" required aria-label="Tháng sinh">
+                            <option value="" disabled selected>Tháng</option>
+                            <option th:each="m : ${#numbers.sequence(1, 12)}" th:value="${m}" th:text="${'Tháng ' + m}">Tháng 1</option>
+                        </select>
                     </div>
                 </div>
+                <div class="dmy-col">
+                    <span class="dmy-label">Năm</span>
+                    <div class="select-with-icon">
+                        <select id="birthYear" name="birthYear" required aria-label="Năm sinh">
+                            <option value="" disabled selected>Năm</option>
+                            <option th:each="y : ${#numbers.sequence(2026, 1930, -1)}" th:value="${y}" th:text="${y}">2000</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="birthDate" name="birthDate">
+
+            <label for="birthTime">Giờ sinh</label>
+            <div class="input-with-icon">
+                <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <input id="birthTime" name="birthTime" type="time" required>
             </div>
             <label for="birthplace">Nơi ở hoặc sinh quán (Khảo độ kinh tuyến)</label>
             <div class="input-with-icon">
                 <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
                 <input id="birthplace" name="birthplace" list="vietnamLocations" placeholder="Hà Nội, Việt Nam" autocomplete="off">
-                <span class="input-end"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
             </div>
             <datalist id="vietnamLocations">
                 <option value="Hà Nội, Việt Nam"></option>
@@ -129,6 +149,16 @@
                 <option value="Vĩnh Phúc, Việt Nam"></option>
                 <option value="Yên Bái, Việt Nam"></option>
             </datalist>
+
+            <!-- Cảnh báo khi người dùng chưa đăng nhập -->
+            <div class="guest-auth-prompt" sec:authorize="!isAuthenticated()">
+                <div class="guest-prompt-badge">
+                    <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Yêu cầu đăng nhập</span>
+                </div>
+                <p>Khách có thể xem thông tin giới thiệu. Để lập và lưu giữ lá số Tử Vi, vui lòng <a th:href="@{/login(required=true)}">đăng nhập tài khoản Gmail</a>.</p>
+            </div>
+
             <button class="button button-primary button-wide chart-submit-btn" type="submit">
                 <span class="button-spark"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span> <span>Xem lá số tử vi</span> <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
