@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.example.astrology.calculation.CalculationAssessment;
 import com.example.astrology.calculation.CalculationGap;
+import com.example.astrology.calculation.TuViDetailService;
 import com.example.astrology.calculation.calendar.VietnameseLunarCalendarProvider;
 import com.example.astrology.calculation.chart.TracuutuviChart;
 
@@ -20,7 +21,8 @@ public record BirthChartPageData(
 		String yearNayinSource,
 		List<ChartPalaceDisplay> chartPalaces,
 		List<CalculationGap> remainingGaps,
-		List<String> chartLimitations) {
+		List<String> chartLimitations,
+		TuViDetailService.FullChartDetails fullDetails) {
 
 	public BirthChartPageData {
 		Objects.requireNonNull(assessment, "Đánh giá dữ liệu sinh không được để trống.");
@@ -28,5 +30,23 @@ public record BirthChartPageData(
 		remainingGaps = List.copyOf(Objects.requireNonNull(remainingGaps, "Danh sách khoảng trống không được để trống."));
 		chartLimitations = List.copyOf(
 				Objects.requireNonNull(chartLimitations, "Danh sách giới hạn không được để trống."));
+	}
+
+	public BirthChartPageData(
+			CalculationAssessment assessment,
+			TracuutuviChart chart,
+			String chartInputMessage,
+			VietnameseLunarCalendarProvider.LunarDate lunarDate,
+			String lunarCalendarName,
+			String lunarCalendarVersion,
+			String yearCanChi,
+			String yearNayinElement,
+			String yearNayinSource,
+			List<ChartPalaceDisplay> chartPalaces,
+			List<CalculationGap> remainingGaps,
+			List<String> chartLimitations) {
+		this(assessment, chart, chartInputMessage, lunarDate, lunarCalendarName,
+				lunarCalendarVersion, yearCanChi, yearNayinElement, yearNayinSource,
+				chartPalaces, remainingGaps, chartLimitations, null);
 	}
 }

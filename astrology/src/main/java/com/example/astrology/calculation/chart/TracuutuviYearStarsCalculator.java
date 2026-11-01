@@ -98,7 +98,7 @@ public class TracuutuviYearStarsCalculator {
 				chart, StarId.THIEN_MA, TIANMA_BRANCH.get(input.yearBranch()), evidence);
 	}
 
-	static int cycleDirection(HeavenlyStem stem, BirthSex sex) {
+	public static int cycleDirection(HeavenlyStem stem, BirthSex sex) {
 		boolean yangMale = stem.isYang() && sex == BirthSex.MALE;
 		boolean yinFemale = !stem.isYang() && sex == BirthSex.FEMALE;
 		return yangMale || yinFemale ? 1 : -1;

@@ -161,6 +161,9 @@ public class WebController {
 		model.addAttribute("name", input.name());
 		model.addAttribute("gender", input.gender());
 		model.addAttribute("birthDate", input.birthDate().format(BIRTH_DATE_FORMAT));
+		model.addAttribute("solarYear", input.birthDate().getYear());
+		model.addAttribute("solarMonth", input.birthDate().getMonthValue());
+		model.addAttribute("solarDay", input.birthDate().getDayOfMonth());
 		model.addAttribute("birthTime", input.birthTime() == null
 				? null
 				: input.birthTime().format(BIRTH_TIME_FORMAT));
@@ -178,12 +181,18 @@ public class WebController {
 		model.addAttribute("chartPalaces", pageData.chartPalaces());
 		model.addAttribute("remainingGaps", pageData.remainingGaps());
 		model.addAttribute("chartLimitations", pageData.chartLimitations());
+		if (pageData.fullDetails() != null) {
+			addDetailsToModel(model, pageData.fullDetails());
+		}
 	}
 
 	private void addStoredResult(Model model, StoredBirthChartPageData pageData) {
 		model.addAttribute("name", pageData.input().name());
 		model.addAttribute("gender", pageData.input().gender());
 		model.addAttribute("birthDate", pageData.input().birthDate().format(BIRTH_DATE_FORMAT));
+		model.addAttribute("solarYear", pageData.input().birthDate().getYear());
+		model.addAttribute("solarMonth", pageData.input().birthDate().getMonthValue());
+		model.addAttribute("solarDay", pageData.input().birthDate().getDayOfMonth());
 		model.addAttribute("birthTime", pageData.input().birthTime() == null
 				? null
 				: pageData.input().birthTime().format(BIRTH_TIME_FORMAT));
@@ -202,6 +211,27 @@ public class WebController {
 		model.addAttribute("chartLimitations", pageData.chartLimitations());
 		model.addAttribute("accessToken", pageData.accessToken());
 		model.addAttribute("storedChart", true);
+		if (pageData.fullDetails() != null) {
+			addDetailsToModel(model, pageData.fullDetails());
+		}
+	}
+
+	private void addDetailsToModel(Model model, com.example.astrology.calculation.TuViDetailService.FullChartDetails details) {
+		model.addAttribute("fullDetails", details);
+		model.addAttribute("canLuong", details.canLuong());
+		model.addAttribute("chuMenh", details.chuMenh());
+		model.addAttribute("chuThan", details.chuThan());
+		model.addAttribute("laiNhanCung", details.laiNhanCung());
+		model.addAttribute("amDuongNamNu", details.amDuongNamNu());
+		model.addAttribute("amDuongLy", details.amDuongLy());
+		model.addAttribute("banMenhFull", details.banMenhFull());
+		model.addAttribute("menhCucSinhKhac", details.menhCucSinhKhac());
+		model.addAttribute("monthCanChi", details.monthCanChi());
+		model.addAttribute("dayCanChi", details.dayCanChi());
+		model.addAttribute("hourCanChi", details.hourCanChi());
+		model.addAttribute("viewYearInfo", details.viewYearInfo());
+		model.addAttribute("tuanMarkerPosition", details.tuanMarkerPosition());
+		model.addAttribute("trietMarkerPosition", details.trietMarkerPosition());
 	}
 
 	@GetMapping("/history")

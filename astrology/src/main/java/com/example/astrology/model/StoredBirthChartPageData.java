@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.example.astrology.calculation.AstrologyCalculationInput;
 import com.example.astrology.calculation.CalculationGap;
+import com.example.astrology.calculation.TuViDetailService;
 import com.example.astrology.calculation.calendar.VietnameseLunarCalendarProvider;
 import com.example.astrology.calculation.chart.TracuutuviChart;
 
@@ -21,7 +22,8 @@ public record StoredBirthChartPageData(
 		String yearNayinSource,
 		List<ChartPalaceDisplay> chartPalaces,
 		List<CalculationGap> remainingGaps,
-		List<String> chartLimitations) {
+		List<String> chartLimitations,
+		TuViDetailService.FullChartDetails fullDetails) {
 
 	public StoredBirthChartPageData {
 		Objects.requireNonNull(input, "Thông tin hồ sơ không được để trống.");
@@ -34,5 +36,22 @@ public record StoredBirthChartPageData(
 		if (chartPalaces.size() != 12) {
 			throw new IllegalArgumentException("Lá số đã lưu phải có đủ 12 cung.");
 		}
+	}
+
+	public StoredBirthChartPageData(
+			UUID accessToken,
+			AstrologyCalculationInput input,
+			TracuutuviChart chart,
+			VietnameseLunarCalendarProvider.LunarDate lunarDate,
+			String lunarCalendarName,
+			String lunarCalendarVersion,
+			String yearCanChi,
+			String yearNayinElement,
+			String yearNayinSource,
+			List<ChartPalaceDisplay> chartPalaces,
+			List<CalculationGap> remainingGaps,
+			List<String> chartLimitations) {
+		this(accessToken, input, chart, lunarDate, lunarCalendarName, lunarCalendarVersion,
+				yearCanChi, yearNayinElement, yearNayinSource, chartPalaces, remainingGaps, chartLimitations, null);
 	}
 }

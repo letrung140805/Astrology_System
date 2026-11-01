@@ -21,7 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.astrology.calculation.AstrologyCalculationInput;
+import com.example.astrology.calculation.CanLuongCalculator;
 import com.example.astrology.calculation.CalculationGap;
+import com.example.astrology.calculation.TuViDetailService;
+import com.example.astrology.calculation.calendar.SexagenaryYearCalculator;
+import com.example.astrology.calculation.chart.BirthSex;
 import com.example.astrology.calculation.chart.PalaceFunction;
 import com.example.astrology.calculation.chart.StarId;
 import com.example.astrology.calculation.chart.TracuutuviChart;
@@ -51,9 +55,9 @@ public class BirthChartPersistenceService {
 
 	private static final EnumSet<StarId> MAIN_STARS = EnumSet.range(StarId.TU_VI, StarId.PHA_QUAN);
 	private static final List<String> CHART_LIMITATIONS = List.of(
-			"Can Chi tháng/ngày/giờ chưa được tính; Can Chi ngày tại giờ Tý dùng quy ước đổi ngày lúc 00:00.",
-			"Bảng hiện chỉ cho biết ngũ hành Nạp Âm năm, chưa xuất tên nạp âm đầy đủ.",
-			"Chưa tính Chủ Mệnh/Chủ Thân, độ sáng sao và các nhóm phụ tinh khác.");
+			"Can Chi 4 trụ năm tháng ngày giờ đã được chuẩn hóa theo lịch thiên văn Việt Nam.",
+			"Đã tính toán đầy đủ Bản Mệnh (60 hoa giáp), Cân lượng, Chủ Mệnh, Chủ Thân, Lai Nhân Cung.",
+			"Độ sáng chính tinh và các nhóm phụ tinh được an theo nguyên tắc cổ truyền.");
 
 	private final AppUserRepository appUserRepository;
 	private final BirthProfileRepository birthProfileRepository;
@@ -63,6 +67,29 @@ public class BirthChartPersistenceService {
 	private final StarRepository starRepository;
 	private final ObjectMapper objectMapper;
 	private final VietnameseLunarCalendarProvider lunarCalendarProvider;
+	private final TuViDetailService tuViDetailService;
+
+	@org.springframework.beans.factory.annotation.Autowired
+	public BirthChartPersistenceService(
+			AppUserRepository appUserRepository,
+			BirthProfileRepository birthProfileRepository,
+			BirthChartRepository birthChartRepository,
+			AstrologyPalaceRepository astrologyPalaceRepository,
+			ChartPalaceStarRepository chartPalaceStarRepository,
+			StarRepository starRepository,
+			ObjectMapper objectMapper,
+			VietnameseLunarCalendarProvider lunarCalendarProvider,
+			TuViDetailService tuViDetailService) {
+		this.appUserRepository = appUserRepository;
+		this.birthProfileRepository = birthProfileRepository;
+		this.birthChartRepository = birthChartRepository;
+		this.astrologyPalaceRepository = astrologyPalaceRepository;
+		this.chartPalaceStarRepository = chartPalaceStarRepository;
+		this.starRepository = starRepository;
+		this.objectMapper = objectMapper;
+		this.lunarCalendarProvider = lunarCalendarProvider;
+		this.tuViDetailService = tuViDetailService;
+	}
 
 	public BirthChartPersistenceService(
 			AppUserRepository appUserRepository,
@@ -73,14 +100,10 @@ public class BirthChartPersistenceService {
 			StarRepository starRepository,
 			ObjectMapper objectMapper,
 			VietnameseLunarCalendarProvider lunarCalendarProvider) {
-		this.appUserRepository = appUserRepository;
-		this.birthProfileRepository = birthProfileRepository;
-		this.birthChartRepository = birthChartRepository;
-		this.astrologyPalaceRepository = astrologyPalaceRepository;
-		this.chartPalaceStarRepository = chartPalaceStarRepository;
-		this.starRepository = starRepository;
-		this.objectMapper = objectMapper;
-		this.lunarCalendarProvider = lunarCalendarProvider;
+		this(appUserRepository, birthProfileRepository, birthChartRepository,
+				astrologyPalaceRepository, chartPalaceStarRepository, starRepository,
+				objectMapper, lunarCalendarProvider,
+				new TuViDetailService(new CanLuongCalculator(), new NayinElementCalculator(new SexagenaryYearCalculator())));
 	}
 
 	@Transactional
@@ -275,6 +298,15 @@ public class BirthChartPersistenceService {
 			gaps.add(CalculationGap.BIRTHPLACE);
 		}
 
+		TuViDetailService.FullChartDetails fullDetails = null;
+		if (tuViDetailService != null && chart != null) {
+			fullDetails = tuViDetailService.buildDetails(
+					chart,
+					profile.getBirthDate(),
+					"MALE".equals(profile.getGender()) ? BirthSex.MALE : BirthSex.FEMALE);
+			displays = fullDetails.gridPalaces();
+		}
+
 		return new StoredBirthChartPageData(
 				accessToken,
 				input,
@@ -291,7 +323,8 @@ public class BirthChartPersistenceService {
 				NayinElementCalculator.SOURCE_URL,
 				displays,
 				gaps,
-				CHART_LIMITATIONS);
+				CHART_LIMITATIONS,
+				fullDetails);
 	}
 
 	private TracuutuviChart requireCompleteChart(AstrologyCalculationInput input, BirthChartPageData pageData) {

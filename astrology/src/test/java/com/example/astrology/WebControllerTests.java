@@ -23,7 +23,6 @@ import org.springframework.ui.ExtendedModelMap;
 import com.example.astrology.calculation.AstrologyCalculationService;
 import com.example.astrology.calculation.CalculationGap;
 import com.example.astrology.calculation.calendar.BirthInputNormalizationService;
-import com.example.astrology.calculation.calendar.EarthlyBranch;
 import com.example.astrology.calculation.calendar.HoNgocDucLunarCalendarProvider;
 import com.example.astrology.calculation.calendar.NayinElementCalculator;
 import com.example.astrology.calculation.calendar.SexagenaryYearCalculator;
