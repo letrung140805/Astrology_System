@@ -28,6 +28,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.astrology.calculation.CanLuongCalculator;
+import com.example.astrology.calculation.TuViDetailService;
 import com.example.astrology.calculation.AstrologyCalculationInput;
 import com.example.astrology.calculation.AstrologyCalculationService;
 import com.example.astrology.calculation.calendar.BirthInputNormalizationService;
@@ -60,6 +62,10 @@ import com.example.astrology.repository.StarRepository;
 @Import({
 		BirthChartPersistenceService.class,
 		HoNgocDucLunarCalendarProvider.class,
+		TuViDetailService.class,
+		CanLuongCalculator.class,
+		NayinElementCalculator.class,
+		SexagenaryYearCalculator.class,
 		BirthChartPersistenceServiceTests.JsonConfiguration.class
 })
 class BirthChartPersistenceServiceTests {
