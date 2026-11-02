@@ -11,24 +11,135 @@
 <div th:replace="~{fragments/layout :: header('about')}"></div>
 <main>
     <section class="about-hero">
-        <div class="breadcrumb"><a th:href="@{/}">⌂ Trang chủ</a><span>›</span><span>Giới thiệu</span></div>
+        <div class="breadcrumb"><a th:href="@{/}">Trang chủ</a><span>›</span><span>Giới thiệu</span></div>
         <div class="about-hero-grid">
-            <div><span class="eyebrow">✣ DỰ ÁN THỬ NGHIỆM · TỬ VI ĐẨU SỐ</span><h1>Xây dựng bộ máy tính<br><em>có thể kiểm thử và đối chiếu</em></h1><p>Ứng dụng đang phát triển engine tính lá số theo từng quy tắc riêng biệt. Ngày âm và Can Chi năm được hệ thống chuyển đổi tự động; chart ứng viên vẫn chưa được xác minh bằng bộ lá số tham chiếu độc lập.</p><div class="promise-pills"><span>✣ Hiển thị dữ liệu có cấu trúc</span><span>♧ Nêu rõ giới hạn</span><span>◉ Chưa phải kết quả chính thức</span></div></div>
+            <div><span class="eyebrow">DỰ ÁN THỬ NGHIỆM · TỬ VI ĐẨU SỐ</span><h1>Xây dựng bộ máy tính<br><em>có thể kiểm thử và đối chiếu</em></h1><p>Ứng dụng đang phát triển engine tính lá số theo từng quy tắc riêng biệt. Ngày âm và Can Chi năm được hệ thống chuyển đổi tự động; chart ứng viên vẫn chưa được xác minh bằng bộ lá số tham chiếu độc lập.</p><div class="promise-pills"><span>Hiển thị dữ liệu có cấu trúc</span><span>Nêu rõ giới hạn</span><span>Chưa phải kết quả chính thức</span></div></div>
             <div class="mandala-card"><span class="mandala-ring"><img class="mandala-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo"></span><strong>Phạm vi hiện tại</strong><p>Hiển thị một số phép an cung và an sao theo profile quy tắc ứng viên.</p><div class="mandala-stats"><span><b>12</b>Cung chức</span><span><b>14</b>Chính tinh</span><span><b>Chưa</b>Xác minh độc lập</span></div></div>
         </div>
     </section>
     <section class="section section-muted">
         <div class="section-heading centered"><span class="eyebrow">ĐỊNH HƯỚNG CHIẾN LƯỢC</span><h2>Sứ Mệnh &amp; Tầm Nhìn</h2></div>
         <div class="mission-grid">
-            <article class="mission-card"><span class="icon-tile lavender">▣</span><span class="card-tag">ƯU TIÊN PHÁT TRIỂN</span><h3>Tính đúng trước khi mở rộng</h3><p>Engine được chia thành nhóm quy tắc để mỗi phần có thể kiểm thử riêng và đối chiếu với dữ liệu tham chiếu do người dùng cung cấp.</p><ul><li>Không tự tạo kết quả cho phần chưa triển khai.</li><li>Ghi nhận nguồn và trạng thái kiểm chứng của ruleset.</li><li>Thêm regression test khi có fixture lá số phù hợp.</li></ul></article>
-            <article class="mission-card warm"><span class="icon-tile gold">◎</span><span class="card-tag">CÁC PHẦN CÒN THIẾU</span><h3>Tiếp tục hoàn thiện theo căn cứ</h3><p>Ngày âm và Can Chi năm được suy ra tự động; nhiều nhóm quy tắc khác vẫn cần nguồn, dữ liệu đối chiếu và kiểm thử độc lập.</p><ul><li>Lịch quy đổi đang dùng quy tắc GMT+7, chưa xử lý múi giờ lịch sử theo địa điểm.</li><li>Chưa tính Nạp Âm và đầy đủ trụ Can Chi.</li><li>Chưa có luận giải AI dựa trên chart cá nhân.</li></ul></article>
+            <article class="mission-card"><span class="card-tag">ƯU TIÊN PHÁT TRIỂN</span><h3>Tính đúng trước khi mở rộng</h3><p>Engine được chia thành nhóm quy tắc để mỗi phần có thể kiểm thử riêng và đối chiếu với dữ liệu tham chiếu do người dùng cung cấp.</p><ul><li>Không tự tạo kết quả cho phần chưa triển khai.</li><li>Ghi nhận nguồn và trạng thái kiểm chứng của ruleset.</li><li>Thêm regression test khi có fixture lá số phù hợp.</li></ul></article>
+            <article class="mission-card warm"><span class="card-tag">CÁC PHẦN CÒN THIẾU</span><h3>Tiếp tục hoàn thiện theo căn cứ</h3><p>Ngày âm và Can Chi năm được suy ra tự động; nhiều nhóm quy tắc khác vẫn cần nguồn, dữ liệu đối chiếu và kiểm thử độc lập.</p><ul><li>Lịch quy đổi đang dùng quy tắc GMT+7, chưa xử lý múi giờ lịch sử theo địa điểm.</li><li>Chưa tính Nạp Âm và đầy đủ trụ Can Chi.</li><li>Chưa có luận giải AI dựa trên chart cá nhân.</li></ul></article>
         </div>
     </section>
     <section class="section">
         <div class="section-heading centered"><span class="eyebrow">TÔN CHỈ VẬN HÀNH</span><h2>4 Giá Trị Cốt Lõi</h2></div>
-        <div class="values-grid"><article><span>⚖</span><small>KHÔNG SUY DIỄN</small><h3>Hiển thị giới hạn</h3><p>Phần thiếu dữ liệu hoặc chưa có quy tắc được nêu rõ thay vì thay bằng kết quả phỏng đoán.</p></article><article><span>◈</span><small>NGUỒN QUY TẮC</small><h3>Ghi rõ profile</h3><p>Chart ứng viên công bố profile quy tắc đang dùng và trạng thái chưa được xác minh độc lập.</p></article><article><span>▦</span><small>KIỂM THỬ</small><h3>Đối chiếu theo fixture</h3><p>Unit test kiểm tra hành vi đã triển khai; độ chính xác thực tế cần thêm nhiều lá số tham chiếu độc lập.</p></article><article><span>♙</span><small>QUYỀN RIÊNG TƯ</small><h3>Không tuyên bố quá mức</h3><p>Không khẳng định đã mã hóa hoặc bảo vệ dữ liệu theo cơ chế chưa được thiết lập trong ứng dụng.</p></article></div>
+        <div class="values-grid">
+            <article>
+                <small>KHÔNG SUY DIỄN</small>
+                <h3>Hiển thị giới hạn</h3>
+                <p>Phần thiếu dữ liệu hoặc chưa có quy tắc được nêu rõ thay vì thay bằng kết quả phỏng đoán.</p>
+            </article>
+            <article>
+                <small>NGUỒN QUY TẮC</small>
+                <h3>Ghi rõ profile</h3>
+                <p>Chart ứng viên công bố profile quy tắc đang dùng và trạng thái chưa được xác minh độc lập.</p>
+            </article>
+            <article>
+                <small>KIỂM THỬ</small>
+                <h3>Đối chiếu theo fixture</h3>
+                <p>Unit test kiểm tra hành vi đã triển khai; độ chính xác thực tế cần thêm nhiều lá số tham chiếu độc lập.</p>
+            </article>
+            <article>
+                <small>QUYỀN RIÊNG TƯ</small>
+                <h3>Không tuyên bố quá mức</h3>
+                <p>Không khẳng định đã mã hóa hoặc bảo vệ dữ liệu theo cơ chế chưa được thiết lập trong ứng dụng.</p>
+            </article>
+        </div>
     </section>
-    <section class="quote-banner"><span>❞</span><blockquote>“Đức năng thắng số, minh triết dẫn đường. Lá số Tử Vi không phải chiếc lồng giam giữ tương lai, mà là tấm bản đồ địa hình giúp bạn chọn con đường đi an ổn và sáng suốt nhất.”</blockquote><small>— Tôn chỉ Phát triển của Tử Vi AI —</small></section>
+    <section class="section section-muted research-section">
+        <div class="research-header">
+            <div class="research-header-title">
+                <span class="eyebrow">CON NGƯỜI ĐẰNG SAU HỆ THỐNG</span>
+                <h2>Các bài nghiên cứu tiêu biểu liên quan</h2>
+            </div>
+            <p class="research-header-desc">
+                Sự hòa quyện giữa các học giả cổ dịch kỳ cựu và các chuyên gia công nghệ tiên phong hàng đầu tại Đông Á.
+            </p>
+        </div>
+        <div class="research-grid">
+            <article class="research-card">
+                <div class="research-card-cover">
+                    <img class="research-card-img" th:src="@{/images/article-1.jpg}" src="/images/article-1.jpg" alt="Hướng dẫn các bước lập lá số tử vi để luận đoán chính xác" loading="lazy">
+                    <span class="research-card-tag">Cẩm nang lập số</span>
+                </div>
+                <div class="research-card-body">
+                    <span class="research-card-meta">Phương Pháp Luận &amp; An Sao</span>
+                    <h3 class="research-card-title">
+                        <a href="https://lichngaytot.com/tu-vi/cac-buoc-lap-la-so-tu-vi-304-217457.html" target="_blank" rel="noopener noreferrer">Hướng dẫn các bước lập lá số tử vi để luận đoán chính xác</a>
+                    </h3>
+                    <p class="research-card-excerpt">
+                        Hệ thống hóa quy trình tuần tự từ xác định Can Chi, Cục số, an 12 cung chức, định Mệnh - Thân cho đến phân bổ các bộ chính tinh và phụ tinh chuẩn xác nhằm tạo tiền đề vững chắc cho việc luận đoán.
+                    </p>
+                    <div class="research-card-footer">
+                        <span class="research-card-source">
+                            <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            <span>lichngaytot.com</span>
+                        </span>
+                        <a href="https://lichngaytot.com/tu-vi/cac-buoc-lap-la-so-tu-vi-304-217457.html" target="_blank" rel="noopener noreferrer" class="research-card-action">
+                            <span>Đọc bài báo</span>
+                            <svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="research-card">
+                <div class="research-card-cover">
+                    <img class="research-card-img" th:src="@{/images/article-2.jpg}" src="/images/article-2.jpg" alt="Lịch sử Tử Vi Đẩu Số | Tiệp Lãm, Toàn Thư, Trần Đoàn | Minh Minh Quan Chỉ" loading="lazy">
+                    <span class="research-card-tag">Lịch sử học thuật</span>
+                </div>
+                <div class="research-card-body">
+                    <span class="research-card-meta">Khảo Cứu Cổ Thư Kinh Điển</span>
+                    <h3 class="research-card-title">
+                        <a href="https://mingming3.com/vi/ziwei/articles/ziwei_history" target="_blank" rel="noopener noreferrer">Lịch sử Tử Vi Đẩu Số | Tiệp Lãm, Toàn Thư, Trần Đoàn | Minh Minh Quan Chỉ</a>
+                    </h3>
+                    <p class="research-card-excerpt">
+                        Khảo cứu quá trình khởi phát và phát triển của môn phái từ thời Hi Di Trần Đoàn đời Tống, đối chiếu các bộ cổ thư kinh điển gối đầu giường như Triệu Thị Minh Thuyết, Tử Vi Toàn Thư và Tiệp Lãm.
+                    </p>
+                    <div class="research-card-footer">
+                        <span class="research-card-source">
+                            <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            <span>mingming3.com</span>
+                        </span>
+                        <a href="https://mingming3.com/vi/ziwei/articles/ziwei_history" target="_blank" rel="noopener noreferrer" class="research-card-action">
+                            <span>Đọc bài báo</span>
+                            <svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="research-card">
+                <div class="research-card-cover">
+                    <img class="research-card-img" th:src="@{/images/article-3.jpg}" src="/images/article-3.jpg" alt="Tử vi đẩu số: Nguồn gốc và cơ sở luận môn khoa học huyền bí" loading="lazy">
+                    <span class="research-card-tag">Cơ sở lý luận</span>
+                </div>
+                <div class="research-card-body">
+                    <span class="research-card-meta">Khoa Học &amp; Triết Học Cổ Đại</span>
+                    <h3 class="research-card-title">
+                        <a href="https://lichngaytot.com/tu-vi/tu-vi-dau-so-304-188764.html" target="_blank" rel="noopener noreferrer">Tử vi đẩu số: Nguồn gốc và cơ sở luận môn khoa học huyền bí</a>
+                    </h3>
+                    <p class="research-card-excerpt">
+                        Khám phá cơ sở triết lý Âm Dương Ngũ Hành, Thiên Can Địa Chi và mối tương quan giữa sự vận hành của tinh tú trên vòm trời phương Đông với quy luật vận mệnh của đời người.
+                    </p>
+                    <div class="research-card-footer">
+                        <span class="research-card-source">
+                            <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            <span>lichngaytot.com</span>
+                        </span>
+                        <a href="https://lichngaytot.com/tu-vi/tu-vi-dau-so-304-188764.html" target="_blank" rel="noopener noreferrer" class="research-card-action">
+                            <span>Đọc bài báo</span>
+                            <svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+    <section class="quote-banner"><blockquote>“Đức năng thắng số, minh triết dẫn đường. Lá số Tử Vi không phải chiếc lồng giam giữ tương lai, mà là tấm bản đồ địa hình giúp bạn chọn con đường đi an ổn và sáng suốt nhất.”</blockquote><small>— Tôn chỉ Phát triển của Tử Vi AI —</small></section>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>
 </body>

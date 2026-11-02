@@ -81,20 +81,13 @@ class AstrologyApplicationTests {
 	}
 
 	@Test
-	void registerEndpointPermitsAnonymousAndRedirectsToVerify() throws Exception {
+	void registerEndpointPermitsAnonymousAndRedirectsToLogin() throws Exception {
 		mockMvc.perform(post("/register").with(csrf())
 				.param("email", "newuser@gmail.com")
 				.param("password", "password123")
 				.param("fullName", "New User"))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern("/verify?email=*"));
-	}
-
-	@Test
-	void verifyEndpointPermitsAnonymous() throws Exception {
-		mockMvc.perform(get("/verify").param("email", "newuser@gmail.com"))
-				.andExpect(status().isOk())
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("newuser@gmail.com")));
+				.andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern("/login?registered=true&email=*"));
 	}
 
 	@Test

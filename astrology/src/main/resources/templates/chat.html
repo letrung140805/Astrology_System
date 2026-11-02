@@ -14,7 +14,9 @@
     <main class="chat-page">
       <section class="chat-window">
         <header class="chat-header">
-          <div class="chat-header-compass"><svg class="outline-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
+          <div class="chat-header-compass" title="Tử Vi AI">
+            <img class="chat-header-ai-img" th:src="@{/images/ai-avatar.jpg}" src="/images/ai-avatar.jpg" alt="Tử Vi AI" />
+          </div>
           <div class="chat-header-info">
             <div class="chat-title-row">
               <h1 class="chat-title">Trợ lý AI Đàm Đạo Lá Số</h1>
@@ -61,9 +63,10 @@
         >
           <p th:text="${chatWarning}">Câu trả lời chưa được lưu.</p>
         </section>
-        <div class="chat-messages" data-chat-messages id="chatMessages">
+        <div class="chat-messages" data-chat-messages id="chatMessages"
+             th:data-user-initial="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : (currentUser != null && currentUser.username != null ? #strings.substring(currentUser.username, 0, 1).toUpperCase() : 'B')}">
           <article class="message assistant" th:if="${messages.isEmpty()}">
-            <span class="chat-avatar">AI</span>
+            <img class="chat-avatar chat-avatar-ai" th:src="@{/images/ai-avatar.jpg}" src="/images/ai-avatar.jpg" alt="Tử Vi AI" />
             <div>
               <div class="message-bubble" data-raw-content="Chào bạn! Tôi đã nạp toàn bộ cấu trúc 12 cung thiên bàn, tam phương tứ chính và chu kỳ ngũ hành vận khí của bạn.
 
@@ -78,9 +81,7 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
             th:each="item : ${messages}"
             th:classappend="${item.senderType == 'USER' ? 'user-message' : 'assistant'}"
           >
-            <span class="chat-avatar" th:if="${item.senderType != 'USER'}"
-              >AI</span
-            >
+            <img class="chat-avatar chat-avatar-ai" th:if="${item.senderType != 'USER'}" th:src="@{/images/ai-avatar.jpg}" src="/images/ai-avatar.jpg" alt="Tử Vi AI" />
             <div>
               <div class="message-bubble" th:attr="data-raw-content=${item.content}" th:text="${item.content}">
                 Nội dung
@@ -89,8 +90,9 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
                 >Người gửi</small
               >
             </div>
-            <span class="chat-avatar" th:if="${item.senderType == 'USER'}"
-              >Bạn</span
+            <span class="chat-avatar chat-avatar-user" th:if="${item.senderType == 'USER'}"
+                  th:text="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : (currentUser != null && currentUser.username != null ? #strings.substring(currentUser.username, 0, 1).toUpperCase() : 'B')}"
+              >B</span
             >
           </article>
           <article class="message user-message" th:if="${chatQuestion != null}">
@@ -100,10 +102,13 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
               </div>
               <small>Bạn</small>
             </div>
-            <span class="chat-avatar">Bạn</span>
+            <span class="chat-avatar chat-avatar-user"
+                  th:text="${currentUser != null && currentUser.fullName != null && !currentUser.fullName.isBlank() ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : (currentUser != null && currentUser.username != null ? #strings.substring(currentUser.username, 0, 1).toUpperCase() : 'B')}"
+              >B</span
+            >
           </article>
           <article class="message assistant" th:if="${chatAnswer != null}">
-            <span class="chat-avatar">AI</span>
+            <img class="chat-avatar chat-avatar-ai" th:src="@{/images/ai-avatar.jpg}" src="/images/ai-avatar.jpg" alt="Tử Vi AI" />
             <div>
               <div class="message-bubble" th:attr="data-raw-content=${chatAnswer}" th:text="${chatAnswer}">
                 Câu trả lời

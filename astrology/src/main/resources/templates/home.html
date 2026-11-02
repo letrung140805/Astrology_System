@@ -12,17 +12,16 @@
 <main>
     <section class="hero home-hero">
         <div class="hero-copy">
-            <span class="eyebrow">✦ TỬ VI ĐẨU SỐ · DỮ LIỆU CÓ CẤU TRÚC</span>
+            <span class="eyebrow">TỬ VI ĐẨU SỐ · DỮ LIỆU CÓ CẤU TRÚC</span>
             <h1>Lá số Tử Vi<br><em>Tính được đến đâu, rõ đến đó</em></h1>
             <p>Nhập thông tin sinh để xem dữ liệu hiện engine có thể tính. Kết quả ứng viên, dữ liệu nhập tay và phần chưa hỗ trợ được phân biệt rõ.</p>
-            <div class="hero-spark">✦</div>
+            
             <p class="handwritten">Khám phá bản thân từ những vì sao <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg></p>
-            <div class="trust-row"><span>♧ Không tự suy diễn dữ liệu thiếu</span><span>✣ Hiển thị cung và sao có cấu trúc</span><span>◉ Nêu rõ quy tắc chưa xác minh</span></div>
+            <div class="trust-row"><span>Không tự suy diễn dữ liệu thiếu</span><span>Hiển thị cung và sao có cấu trúc</span><span>Nêu rõ quy tắc chưa xác minh</span></div>
         </div>
         <form class="chart-form card" th:action="@{/result}" method="post" id="chartForm" th:data-authenticated="${#authorization.expression('isAuthenticated()')}">
             <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="form-heading form-heading-centered">
-                <span class="icon-tile gold"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg></span>
                 <h2>Nhập thông tin của bạn</h2>
                 <p>Điền đầy đủ thông tin để khởi tạo lá số và giải đoán vận trình chuẩn xác nhất.</p>
             </div>
@@ -165,21 +164,21 @@
         </form>
     </section>
     <section class="section section-muted">
-        <div class="section-heading centered"><span class="eyebrow">✦ CÁCH HIỂN THỊ KẾT QUẢ ✦</span><h2>Xem rõ dữ liệu đã tính</h2><p>Kết quả phân biệt giữa thông tin do bạn nhập, phần tính được và phần chưa có căn cứ triển khai.</p></div>
+        <div class="section-heading centered"><span class="eyebrow">CÁCH HIỂN THỊ KẾT QUẢ</span><h2>Xem rõ dữ liệu đã tính</h2><p>Kết quả phân biệt giữa thông tin do bạn nhập, phần tính được và phần chưa có căn cứ triển khai.</p></div>
         <div class="steps-grid">
-            <article class="step-card"><span class="icon-tile lilac">▣</span><small>Bước 01</small><h3>Nhập ngày giờ sinh</h3><p>Ngày dương lịch và giờ địa phương được chuẩn hóa; địa chi giờ chỉ hiện khi có giờ sinh.</p></article>
-            <article class="step-card"><span class="icon-tile gold">♧</span><small>Bước 02</small><h3>Tự quy đổi lịch âm</h3><p>Engine quy đổi ngày dương và xác định Can Chi năm theo năm âm lịch, dùng quy ước lịch Việt Nam GMT+7.</p></article>
-            <article class="step-card"><span class="icon-tile lavender">⊙</span><small>Bước 03</small><h3>Kiểm tra phần đã tính</h3><p>Xem 12 cung và các sao thuộc nhóm hiện triển khai, kèm profile quy tắc và cảnh báo chưa đối chiếu lá số thực.</p></article>
+            <article class="step-card"><small>Bước 01</small><h3>Nhập ngày giờ sinh</h3><p>Ngày dương lịch và giờ địa phương được chuẩn hóa; địa chi giờ chỉ hiện khi có giờ sinh.</p></article>
+            <article class="step-card"><small>Bước 02</small><h3>Tự quy đổi lịch âm</h3><p>Engine quy đổi ngày dương và xác định Can Chi năm theo năm âm lịch, dùng quy ước lịch Việt Nam GMT+7.</p></article>
+            <article class="step-card"><small>Bước 03</small><h3>Kiểm tra phần đã tính</h3><p>Xem 12 cung và các sao thuộc nhóm hiện triển khai, kèm profile quy tắc và cảnh báo chưa đối chiếu lá số thực.</p></article>
         </div>
     </section>
     <section class="section benefits-section">
-        <div class="section-heading centered"><span class="eyebrow">✦ NGUYÊN TẮC HIỂN THỊ ✦</span><h2>Minh bạch về giới hạn</h2><p>Chart ứng viên hiện dùng ruleset chưa được xác minh độc lập và không thay thế một lá số đã được đối chiếu.</p></div>
+        <div class="section-heading centered"><span class="eyebrow">NGUYÊN TẮC HIỂN THỊ</span><h2>Minh bạch về giới hạn</h2><p>Chart ứng viên hiện dùng ruleset chưa được xác minh độc lập và không thay thế một lá số đã được đối chiếu.</p></div>
         <div class="benefit-grid">
-            <article class="benefit-card"><span class="benefit-icon purple">ϟ</span><h3>Không bịa dữ liệu</h3><p>Phần chưa thể tính từ đầu vào hiện tại được ghi rõ thay vì tự điền kết quả.</p></article>
-            <article class="benefit-card"><span class="benefit-icon green">◉</span><h3>Có cấu trúc</h3><p>Các cung, địa chi và sao đã tính được hiển thị thành từng mục riêng.</p></article>
-            <article class="benefit-card"><span class="benefit-icon blue">✪</span><h3>Rõ nguồn quy tắc</h3><p>Chart ghi nhận profile quy tắc đang dùng và trạng thái chưa xác minh.</p></article>
-            <article class="benefit-card"><span class="benefit-icon orange">♥</span><h3>Nêu phần còn thiếu</h3><p>Chuyển lịch, Can Chi từ ngày sinh, Nạp Âm và các nhóm sao chưa hỗ trợ không bị che khuất.</p></article>
-            <article class="benefit-card"><span class="benefit-icon pink">♙</span><h3>Không luận giải giả</h3><p>Giao diện kết quả chỉ trình bày dữ liệu tính toán, không tạo nội dung dự đoán khi engine chưa hỗ trợ.</p></article>
+            <article class="benefit-card"><h3>Không bịa dữ liệu</h3><p>Phần chưa thể tính từ đầu vào hiện tại được ghi rõ thay vì tự điền kết quả.</p></article>
+            <article class="benefit-card"><h3>Có cấu trúc</h3><p>Các cung, địa chi và sao đã tính được hiển thị thành từng mục riêng.</p></article>
+            <article class="benefit-card"><h3>Rõ nguồn quy tắc</h3><p>Chart ghi nhận profile quy tắc đang dùng và trạng thái chưa xác minh.</p></article>
+            <article class="benefit-card"><h3>Nêu phần còn thiếu</h3><p>Chuyển lịch, Can Chi từ ngày sinh, Nạp Âm và các nhóm sao chưa hỗ trợ không bị che khuất.</p></article>
+            <article class="benefit-card"><h3>Không luận giải giả</h3><p>Giao diện kết quả chỉ trình bày dữ liệu tính toán, không tạo nội dung dự đoán khi engine chưa hỗ trợ.</p></article>
         </div>
     </section>
 </main>

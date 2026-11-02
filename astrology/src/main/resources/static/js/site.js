@@ -166,6 +166,108 @@
         button.addEventListener('click', () => window.print());
     });
 
+    const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+    if (downloadPdfBtn) {
+        downloadPdfBtn.addEventListener('click', downloadChartPdf);
+    }
+
+    function downloadChartPdf() {
+        const btn = document.getElementById('downloadPdfBtn');
+        if (!btn) return;
+
+        if (typeof html2pdf === 'undefined') {
+            alert('Đang nạp công cụ tạo PDF, vui lòng thử lại sau giây lát.');
+            return;
+        }
+
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<svg class="outline-icon spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> <span>Đang tạo PDF...</span>';
+
+        const chartWrapper = document.getElementById('astrologyChartOnly');
+        if (!chartWrapper) {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+            alert('Không tìm thấy khung lá số để tải.');
+            return;
+        }
+
+        // Full-screen loading overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'pdfLoadingOverlay';
+        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(20,18,38,0.7);backdrop-filter:blur(5px);z-index:999999;display:flex;align-items:center;justify-content:center;color:#191943;';
+        overlay.innerHTML = `
+            <div style="background:#ffffff;padding:28px 36px;border-radius:18px;box-shadow:0 20px 48px rgba(0,0,0,0.3);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;max-width:90vw;">
+                <svg class="outline-icon spin" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#6158a8" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+                <div style="font-weight:700;font-size:17px;font-family:'Times New Roman',Times,Georgia,serif;color:#191943;">Đang xuất lá số PDF độ nét cao...</div>
+                <div style="font-size:13px;color:#686776;">Hệ thống đang chuẩn hóa cấu trúc 12 cung và ngũ hành. Vui lòng đợi trong giây lát...</div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Create an unconstrained sandbox container attached directly to body
+        // Matching A4 printable width (~198mm = 748px) to prevent any clipping
+        const tempContainer = document.createElement('div');
+        tempContainer.id = 'pdfCaptureSandbox';
+        tempContainer.style.cssText = 'position:fixed;top:0;left:0;width:748px;max-width:748px;background:#ffffff;z-index:999990;overflow:visible;box-sizing:border-box;pointer-events:none;';
+
+        const clone = chartWrapper.cloneNode(true);
+        clone.classList.add('pdf-chart-capture');
+        tempContainer.appendChild(clone);
+        document.body.appendChild(tempContainer);
+
+        const isDark = document.body.classList.contains('dark-mode');
+        if (isDark) {
+            document.body.classList.remove('dark-mode');
+        }
+
+        const nameEl = document.querySelector('.result-titlebar em') || document.querySelector('.center-name-val');
+        const rawName = nameEl ? nameEl.textContent.trim() : 'nguoi-dung';
+        const cleanName = rawName.toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '') || 'lasotuvi';
+        const filename = `la-so-tu-vi-${cleanName}.pdf`;
+
+        const opt = {
+            margin: [8, 6, 8, 6],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                scrollX: 0,
+                scrollY: 0,
+                backgroundColor: '#ffffff'
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(clone).save()
+            .then(() => {
+                showToast('Đã tải lá số PDF thành công!');
+            })
+            .catch((err) => {
+                console.error('Lỗi xuất PDF:', err);
+                showToast('Đã xảy ra lỗi khi tạo file PDF. Vui lòng thử lại.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                if (overlay && overlay.parentNode) {
+                    overlay.parentNode.removeChild(overlay);
+                }
+                if (tempContainer && tempContainer.parentNode) {
+                    tempContainer.parentNode.removeChild(tempContainer);
+                }
+                if (isDark) {
+                    document.body.classList.add('dark-mode');
+                }
+            });
+    }
+
     document.querySelectorAll('[data-share]').forEach((button) => {
         button.addEventListener('click', () => {
             if (navigator.clipboard && window.isSecureContext) {
@@ -318,6 +420,7 @@
             chatInput.disabled = true;
             if (sendButton) sendButton.disabled = true;
 
+            const userInitial = (chatMessages.dataset.userInitial || document.querySelector('.authenticated-avatar-btn .avatar-initial-circle')?.textContent || 'B').trim() || 'B';
             const userArticle = document.createElement('article');
             userArticle.className = 'message user-message';
             userArticle.innerHTML = `
@@ -325,7 +428,7 @@
                     <div class="message-bubble"></div>
                     <small>Bạn</small>
                 </div>
-                <span class="chat-avatar">Bạn</span>
+                <span class="chat-avatar chat-avatar-user">${escapeHtml(userInitial)}</span>
             `;
             userArticle.querySelector('.message-bubble').textContent = message;
             chatMessages.appendChild(userArticle);
@@ -333,7 +436,7 @@
             const aiArticle = document.createElement('article');
             aiArticle.className = 'message assistant';
             aiArticle.innerHTML = `
-                <span class="chat-avatar">AI</span>
+                <img class="chat-avatar chat-avatar-ai" src="/images/ai-avatar.jpg" alt="Tử Vi AI" />
                 <div>
                     <div class="message-bubble"><div class="bubble-content"></div><span class="typing-cursor"></span></div>
                     <small>Tử Vi AI</small>

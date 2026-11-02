@@ -5,16 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kết quả tính lá số | Tử Vi AI</title>
     <link rel="icon" type="image/jpeg" th:href="@{/images/logo.jpg}" />
-    <link rel="stylesheet" th:href="@{/css/site.css}" />
-    <script th:src="@{/js/site.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/site.css(v='2.1')}" />
+    <script th:src="@{/js/html2pdf.bundle.min.js}" defer></script>
+    <script th:src="@{/js/site.js(v='2.1')}" defer></script>
   </head>
   <body>
     <div th:replace="~{fragments/layout :: header('result')}"></div>
     <main class="page-main result-main">
       <div class="result-titlebar">
         <div>
-          <span class="eyebrow">✦ Dữ liệu tính toán được</span>
+          <span class="eyebrow">Dữ liệu tính toán được</span>
           <h1>Thông tin sinh của <em th:text="${name}">Người dùng</em></h1>
+        </div>
+        <div class="title-actions" th:if="${chart != null}">
+          <button type="button" class="button download-pdf-btn" id="downloadPdfBtn" title="Tải lá số dạng file PDF về máy">
+            <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Tải lá số PDF</span>
+          </button>
         </div>
       </div>
       <section
@@ -86,7 +93,7 @@
 
       <section class="chart-result">
         <div class="chart-heading">
-          <span class="eyebrow">✣ KHUNG LÁ SỐ TỬ VI</span>
+          <span class="eyebrow">KHUNG LÁ SỐ TỬ VI</span>
           <h2 th:if="${chart != null}">Lá Số Tử Vi Trọn Đời</h2>
           <h2 th:if="${chart == null}">12 cung chức của lá số</h2>
           <div class="chart-input-needed" th:if="${chart == null}">
@@ -104,6 +111,7 @@
           </div>
         </div>
         <div class="chart-scroll-frame" th:if="${chart != null}">
+          <div id="astrologyChartOnly" class="astrology-chart-wrapper">
           <div class="astrology-chart-grid">
             <!-- Boundary markers for Tuần and Triệt -->
             <div class="boundary-marker marker-tuan" th:if="${tuanMarkerPosition != null}" th:classappend="${'pos-' + tuanMarkerPosition}"><span>Tuần</span></div>
@@ -188,13 +196,13 @@
               </div>
             </article>
 
-            <!-- Center 2x2: Tra Cứu Tử Vi Chính Xác Nhất Việt Nam (Tử Vi AI) -->
+            <!-- Center 2x2: Tra Cứu Tử Vi Chính Xác (Tử Vi AI) -->
             <section class="astrology-chart-center">
               <div class="chart-center-header">
                 <div class="center-badge-mark">
                   <img class="center-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo" />
                 </div>
-                <h2 class="center-site-title">TRA CỨU TỬ VI CHÍNH XÁC NHẤT VIỆT NAM</h2>
+                <h2 class="center-site-title">TRA CỨU TỬ VI CHÍNH XÁC</h2>
                 <span class="center-subtitle">TỬ VI AI · LÁ SỐ CÁ NHÂN</span>
               </div>
 
@@ -285,6 +293,7 @@
               <span class="swatch-item swatch-tho"><span class="box"></span>Thổ</span>
             </div>
           </div>
+          </div><!-- /#astrologyChartOnly -->
         </div>
         <div
           class="palace-results palace-placeholders"
