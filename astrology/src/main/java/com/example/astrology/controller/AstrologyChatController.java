@@ -70,6 +70,10 @@ public class AstrologyChatController {
 		model.addAttribute("messages", session.messages());
 		model.addAttribute("conversations", historyList);
 		model.addAttribute("isNewChat", newChat || session.conversationId() == null);
+		if (!model.containsAttribute("suggestions")) {
+			var suggestions = astrologyChatService.getLatestSuggestions(accessToken, conversationId, userPrincipal);
+			model.addAttribute("suggestions", suggestions);
+		}
 		return "chat";
 	}
 
@@ -107,6 +111,7 @@ public class AstrologyChatController {
 		try {
 			var reply = astrologyChatService.send(
 					accessToken, conversationId, principalName(principal), message);
+			redirectAttributes.addFlashAttribute("suggestions", reply.suggestions());
 			if (reply.persisted()) {
 				return "redirect:/chat/" + accessToken + "?conversationId=" + reply.conversationId();
 			}
@@ -175,12 +180,17 @@ public class AstrologyChatController {
 								var reply = astrologyChatService.send(
 										accessToken, conversationId, userPrincipal, cleanQuestion);
 								sendEvent(emitter, Map.of("token", reply.answer()));
-								if (reply.persisted()) {
-									sendEvent(emitter, Map.of("done", true, "conversationId", reply.conversationId()));
-								} else {
-									sendEvent(emitter, Map.of("done", true, "warning",
-											"Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử."));
+								Map<String, Object> payload = new java.util.HashMap<>();
+								payload.put("done", true);
+								if (reply.persisted() && reply.conversationId() != null) {
+									payload.put("conversationId", reply.conversationId());
+								} else if (!reply.persisted()) {
+									payload.put("warning", "Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử.");
 								}
+								if (reply.suggestions() != null && !reply.suggestions().isEmpty()) {
+									payload.put("suggestions", reply.suggestions());
+								}
+								sendEvent(emitter, payload);
 								emitter.complete();
 								return;
 							} catch (Exception fallbackEx) {
@@ -198,7 +208,13 @@ public class AstrologyChatController {
 						try {
 							Long savedId = astrologyChatService.saveExchange(
 									accessToken, conversationId, userPrincipal, cleanQuestion, partialAnswer);
-							sendEvent(emitter, Map.of("done", true, "conversationId", savedId));
+							List<String> suggestions = astrologyChatService.generateFollowUpSuggestions(
+									accessToken, savedId != null ? savedId : conversationId, userPrincipal, cleanQuestion, partialAnswer);
+							Map<String, Object> payload = new java.util.HashMap<>();
+							payload.put("done", true);
+							if (savedId != null) payload.put("conversationId", savedId);
+							if (suggestions != null && !suggestions.isEmpty()) payload.put("suggestions", suggestions);
+							sendEvent(emitter, payload);
 						} catch (Exception saveEx) {
 							logger.warn("Could not persist partial interrupted stream", saveEx);
 							sendEvent(emitter, Map.of("done", true, "warning", explainFailure(error)));
@@ -212,11 +228,22 @@ public class AstrologyChatController {
 								try {
 									Long savedId = astrologyChatService.saveExchange(
 											accessToken, conversationId, userPrincipal, cleanQuestion, finalAnswer);
-									sendEvent(emitter, Map.of("done", true, "conversationId", savedId));
+									List<String> suggestions = astrologyChatService.generateFollowUpSuggestions(
+											accessToken, savedId != null ? savedId : conversationId, userPrincipal, cleanQuestion, finalAnswer);
+									Map<String, Object> payload = new java.util.HashMap<>();
+									payload.put("done", true);
+									if (savedId != null) payload.put("conversationId", savedId);
+									if (suggestions != null && !suggestions.isEmpty()) payload.put("suggestions", suggestions);
+									sendEvent(emitter, payload);
 								} catch (Exception saveEx) {
 									logger.warn("Stream completed but persistence failed", saveEx);
-									sendEvent(emitter, Map.of("done", true, "warning",
-											"Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử."));
+									List<String> suggestions = astrologyChatService.generateFollowUpSuggestions(
+											accessToken, conversationId, userPrincipal, cleanQuestion, finalAnswer);
+									Map<String, Object> payload = new java.util.HashMap<>();
+									payload.put("done", true);
+									payload.put("warning", "Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử.");
+									if (suggestions != null && !suggestions.isEmpty()) payload.put("suggestions", suggestions);
+									sendEvent(emitter, payload);
 								}
 							} else {
 								// Stream completed with no content (e.g. reasoning-only stream on free models)
@@ -225,11 +252,15 @@ public class AstrologyChatController {
 									var reply = astrologyChatService.send(
 											accessToken, conversationId, userPrincipal, cleanQuestion);
 									sendEvent(emitter, Map.of("token", reply.answer()));
-									if (reply.persisted()) {
-										sendEvent(emitter, Map.of("done", true, "conversationId", reply.conversationId()));
-									} else {
-										sendEvent(emitter, Map.of("done", true));
+									Map<String, Object> payload = new java.util.HashMap<>();
+									payload.put("done", true);
+									if (reply.persisted() && reply.conversationId() != null) {
+										payload.put("conversationId", reply.conversationId());
 									}
+									if (reply.suggestions() != null && !reply.suggestions().isEmpty()) {
+										payload.put("suggestions", reply.suggestions());
+									}
+									sendEvent(emitter, payload);
 								} catch (Exception fallbackEx) {
 									logger.warn("Synchronous fallback also failed", fallbackEx);
 									sendEvent(emitter, Map.of("error", explainFailure(fallbackEx)));
@@ -246,12 +277,17 @@ public class AstrologyChatController {
 				var reply = astrologyChatService.send(
 						accessToken, conversationId, userPrincipal, cleanQuestion);
 				sendEvent(emitter, Map.of("token", reply.answer()));
-				if (reply.persisted()) {
-					sendEvent(emitter, Map.of("done", true, "conversationId", reply.conversationId()));
-				} else {
-					sendEvent(emitter, Map.of("done", true, "warning",
-							"Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử."));
+				Map<String, Object> payload = new java.util.HashMap<>();
+				payload.put("done", true);
+				if (reply.persisted() && reply.conversationId() != null) {
+					payload.put("conversationId", reply.conversationId());
+				} else if (!reply.persisted()) {
+					payload.put("warning", "Câu trả lời đã hoàn tất nhưng chưa lưu được vào lịch sử.");
 				}
+				if (reply.suggestions() != null && !reply.suggestions().isEmpty()) {
+					payload.put("suggestions", reply.suggestions());
+				}
+				sendEvent(emitter, payload);
 			} catch (Exception fallbackEx) {
 				logger.warn("Fallback synchronous generation also failed", fallbackEx);
 				sendEvent(emitter, Map.of("error", explainFailure(fallbackEx)));

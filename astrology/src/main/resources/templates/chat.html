@@ -38,7 +38,6 @@
               <svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
               <span>Đàm đạo mới</span>
             </a>
-            <button class="chat-action-btn" type="button" data-print title="Tải xuống hoặc in lịch sử trò chuyện"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> <span>Tải lịch sử</span></button>
             <a class="chat-action-btn" th:href="@{/result/{accessToken}(accessToken=${accessToken})}" title="Quay lại xem lá số chi tiết"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> <span>Mở lá số</span></a>
           </div>
         </header>
@@ -120,14 +119,27 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
         <div class="quick-prompts">
           <small class="quick-prompts-label"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 4.5-3.5 8-8 8 4.5 0 8 3.5 8 8 0-4.5 3.5-8 8-8-4.5 0-8-3.5-8-8z"></path></svg> <span>GỢI Ý CÂU HỎI NHANH DÀNH RIÊNG CHO BẢN MỆNH CỦA BẠN:</span></small>
           <div class="quick-prompts-list">
-            <button
-              type="button"
-              data-prompt="Cung Phu Thê của tôi có đào hoa hay trắc trở không?"
-            ><svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> <span>Cung Phu Thê có đào hoa hay trắc trở không?</span></button>
-            <button
-              type="button"
-              data-prompt="Đường sự nghiệp của tôi nên làm việc độc lập hay hợp tác chung thì tốt hơn?"
-            ><svg class="outline-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> <span>Nên làm độc lập hay hợp tác chung?</span></button>
+            <th:block th:if="${suggestions != null && !suggestions.isEmpty()}">
+              <button
+                type="button"
+                th:each="sug : ${suggestions}"
+                th:attr="data-prompt=${sug}"
+              ><span th:text="${sug}">Gợi ý câu hỏi</span></button>
+            </th:block>
+            <th:block th:if="${suggestions == null || suggestions.isEmpty()}">
+              <button
+                type="button"
+                data-prompt="Cung Phu Thê của tôi có đào hoa hay trắc trở không?"
+              ><span>Cung Phu Thê có đào hoa hay trắc trở không?</span></button>
+              <button
+                type="button"
+                data-prompt="Đường sự nghiệp của tôi nên làm việc độc lập hay hợp tác chung thì tốt hơn?"
+              ><span>Nên làm độc lập hay hợp tác chung?</span></button>
+              <button
+                type="button"
+                data-prompt="Cung Tài Bạch và vận tiền tài của tôi có cơ hội đột phá không?"
+              ><span>Tài vận có cơ hội đột phá không?</span></button>
+            </th:block>
           </div>
         </div>
         <form
@@ -162,7 +174,6 @@ Bạn đang muốn đào sâu về định hướng **công danh sự nghiệp**
             placeholder="Hỏi bất kỳ điều gì về cung mệnh, đại vận, công danh, tài bạch của bạn..."
             autocomplete="off"
           />
-          <button type="button" class="pin-palace-btn" id="pinPalaceBtn" title="Ghim cung số"><svg class="outline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24z"></path></svg> <span>Ghim Cung</span></button>
           <button class="chat-send-btn" type="submit" id="chatSendButton"><span>Đàm đạo</span> <svg class="outline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
         </form>
         <div class="chat-footnote">

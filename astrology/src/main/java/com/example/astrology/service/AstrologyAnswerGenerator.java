@@ -19,5 +19,13 @@ public interface AstrologyAnswerGenerator {
 		return Flux.just(answer);
 	}
 
+	default List<String> generateFollowUpSuggestions(
+			String chartContext,
+			List<AstrologyChatPersistenceService.ChatTurn> history,
+			String question,
+			String answer) {
+		return List.of();
+	}
+
 	String modelName();
 }

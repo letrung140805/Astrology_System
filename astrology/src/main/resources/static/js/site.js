@@ -386,25 +386,41 @@
         const csrfInput = chatForm.querySelector('input[name="_csrf"]');
         const streamUrl = chatForm.dataset.streamUrl || (chatForm.action + '/stream');
 
-        document.querySelectorAll('[data-prompt]').forEach((button) => {
+        const submitSuggestion = (text) => {
+            if (!chatInput || !text || chatInput.disabled) return;
+            chatInput.value = text;
+            if (typeof chatForm.requestSubmit === 'function') {
+                chatForm.requestSubmit();
+            } else {
+                chatForm.dispatchEvent(new Event('submit', { cancelable: true }));
+            }
+        };
+
+        const updateFollowUpSuggestions = (suggestions) => {
+            const list = document.querySelector('.quick-prompts-list');
+            if (!list || !Array.isArray(suggestions) || suggestions.length === 0) return;
+            list.innerHTML = '';
+            suggestions.slice(0, 3).forEach((text) => {
+                if (!text || typeof text !== 'string') return;
+                const clean = text.trim();
+                if (!clean) return;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.setAttribute('data-prompt', clean);
+                btn.innerHTML = `<span>${escapeHtml(clean)}</span>`;
+                btn.addEventListener('click', () => submitSuggestion(clean));
+                list.appendChild(btn);
+            });
+        };
+
+        document.querySelectorAll('.quick-prompts-list [data-prompt]').forEach((button) => {
             button.addEventListener('click', () => {
-                if (chatInput) {
-                    chatInput.value = button.dataset.prompt;
-                    chatInput.focus();
+                const promptText = button.getAttribute('data-prompt');
+                if (promptText) {
+                    submitSuggestion(promptText);
                 }
             });
         });
-
-        const pinBtn = document.getElementById('pinPalaceBtn');
-        if (pinBtn && chatInput) {
-            pinBtn.addEventListener('click', () => {
-                const tag = '[Ghim Cung Mệnh] ';
-                if (!chatInput.value.includes(tag)) {
-                    chatInput.value = tag + chatInput.value;
-                }
-                chatInput.focus();
-            });
-        }
 
         chatForm.addEventListener('submit', async (event) => {
             const message = chatInput ? chatInput.value.trim() : '';
@@ -526,6 +542,9 @@
                             }
                             if (data.warning) {
                                 showToast(data.warning);
+                            }
+                            if (data.suggestions && Array.isArray(data.suggestions) && data.suggestions.length > 0) {
+                                updateFollowUpSuggestions(data.suggestions);
                             }
                         } catch (e) {
                             accumulatedMarkdown += dataStr;
