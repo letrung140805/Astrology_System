@@ -192,6 +192,7 @@ Astrology_System/
         │   │   │   ├── BirthChartPersistenceService.java
         │   │   │   ├── AstrologyChatService.java
         │   │   │   ├── AstrologyRagService.java # Tự động seed & truy vấn tài liệu tri thức RAG
+        │   │   │   ├── AiPromptService.java     # Quản lý & nạp tệp cấu hình chỉ dẫn AI (Clean code)
         │   │   │   ├── OpenAiAstrologyAnswerGenerator.java # Tương tác LLM qua Spring AI
         │   │   │   ├── UserService.java
         │   │   │   └── CustomUserDetailsService.java
@@ -223,6 +224,9 @@ Astrology_System/
         │   └── resources/
         │       ├── application.properties     # Cấu hình chính của ứng dụng
         │       ├── application-example.properties # File cấu hình mẫu tham khảo
+        │       ├── ai/                        # Tệp cấu hình nội dung huấn luyện & chỉ dẫn AI (Clean code)
+        │       │   ├── system-instructions.md # Quy tắc xưng hô, ngôn ngữ, luận giải Tử Vi chuyên sâu
+        │       │   └── suggestions-prompt.md  # Quy tắc sinh 3 câu hỏi gợi ý tiếp theo
         │       ├── static/                    # Tệp tĩnh: CSS, JavaScript, hình ảnh
         │       │   ├── css/site.css
         │       │   ├── js/site.js, marked.min.js, html2pdf.bundle.min.js

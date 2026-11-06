@@ -386,14 +386,16 @@
         const csrfInput = chatForm.querySelector('input[name="_csrf"]');
         const streamUrl = chatForm.dataset.streamUrl || (chatForm.action + '/stream');
 
-        const submitSuggestion = (text) => {
-            if (!chatInput || !text || chatInput.disabled) return;
+        const applySuggestion = (text) => {
+            if (!chatInput || !text) return;
             chatInput.value = text;
-            if (typeof chatForm.requestSubmit === 'function') {
-                chatForm.requestSubmit();
-            } else {
-                chatForm.dispatchEvent(new Event('submit', { cancelable: true }));
-            }
+            chatInput.disabled = false;
+            chatInput.focus();
+            const len = chatInput.value.length;
+            try {
+                chatInput.setSelectionRange(len, len);
+            } catch (e) {}
+            chatInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         };
 
         const updateFollowUpSuggestions = (suggestions) => {
@@ -408,7 +410,7 @@
                 btn.type = 'button';
                 btn.setAttribute('data-prompt', clean);
                 btn.innerHTML = `<span>${escapeHtml(clean)}</span>`;
-                btn.addEventListener('click', () => submitSuggestion(clean));
+                btn.addEventListener('click', () => applySuggestion(clean));
                 list.appendChild(btn);
             });
         };
@@ -417,7 +419,7 @@
             button.addEventListener('click', () => {
                 const promptText = button.getAttribute('data-prompt');
                 if (promptText) {
-                    submitSuggestion(promptText);
+                    applySuggestion(promptText);
                 }
             });
         });

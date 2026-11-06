@@ -13,6 +13,7 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +47,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 			3. Dùng danh sách gạch đầu dòng (`- `) hoặc đánh số thứ tự (`1. `, `2. `) để làm rõ từng ý phân tích.
 			4. In đậm (`**...**`) các sao, cung, vị trí đắc/hãm và từ khóa trọng tâm để làm nổi bật thông tin.
 			5. Ngắt dòng đôi giữa các đoạn để người đọc dễ theo dõi, không gom thành một khối chữ dày đặc.
+			6. YÊU CẦU HOÀN THIỆN TOÀN DIỆN: Luôn hoàn thành trọn vẹn 100% câu trả lời đến dấu kết thúc, kết luận rõ ràng, tuyệt đối không bao giờ ngắt quãng dở dang giữa câu hay giữa chừng luận giải.
 			""";
 
 	private final ChatClient chatClient;
@@ -71,6 +73,12 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 		return apiKey != null && !apiKey.isBlank() && !apiKey.contains("demo-replace-with-your-key");
 	}
 
+	private OpenAiChatOptions.Builder buildChatOptions() {
+		return OpenAiChatOptions.builder()
+				.model(modelName)
+				.maxTokens(8192);
+	}
+
 	@Override
 	public String generate(
 			String chartContext,
@@ -81,7 +89,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 					"Chưa cấu hình API Key Google Gemini (AI Studio). Vui lòng thiết lập api-key trong application.properties trước khi hỏi AI.");
 		}
 		List<Message> promptMessages = buildPromptMessages(chartContext, history, question);
-		return chatClient.prompt().messages(promptMessages).call().content();
+		return chatClient.prompt().messages(promptMessages).options(buildChatOptions()).call().content();
 	}
 
 	@Override
@@ -94,7 +102,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 					"Chưa cấu hình API Key Google Gemini (AI Studio). Vui lòng thiết lập api-key trong application.properties trước khi hỏi AI."));
 		}
 		List<Message> promptMessages = buildPromptMessages(chartContext, history, question);
-		return chatClient.prompt().messages(promptMessages).stream().content();
+		return chatClient.prompt().messages(promptMessages).options(buildChatOptions()).stream().content();
 	}
 
 	private List<Message> buildPromptMessages(
@@ -136,7 +144,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 			}
 		}
 
-		promptMessages.add(new UserMessage(question + "\n\n(Yêu cầu: Luôn trả lời hoàn toàn bằng tiếng Việt và định dạng Markdown phân đoạn rõ ràng như ChatGPT)"));
+		promptMessages.add(new UserMessage(question + "\n\n(Yêu cầu: Luôn trả lời hoàn toàn bằng tiếng Việt, phân đoạn rõ ràng và hoàn thành trọn vẹn toàn bộ câu trả lời đến kết luận cuối cùng, không dừng dở dang giữa câu hay giữa đoạn)"));
 		return promptMessages;
 	}
 
