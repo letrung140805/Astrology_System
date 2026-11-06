@@ -59,27 +59,49 @@
         });
     });
 
-    document.querySelectorAll('.gender-choice input').forEach((radio) => {
+    const updateGenderChoiceVisuals = (groupName) => {
+        document.querySelectorAll(`.gender-choice input[name="${groupName}"]`).forEach((r) => {
+            const choice = r.closest('.gender-choice');
+            if (choice) {
+                choice.classList.toggle('selected', r.checked);
+            }
+        });
+    };
+
+    document.querySelectorAll('.gender-choice input[type="radio"]').forEach((radio) => {
         radio.addEventListener('change', () => {
-            document.querySelectorAll('.gender-choice').forEach((choice) => choice.classList.toggle('selected', choice.contains(radio) && radio.checked));
+            updateGenderChoiceVisuals(radio.name);
         });
     });
 
-    // Birth Date (Day, Month, Year) synchronization
-    const birthDaySelect = document.getElementById('birthDay');
-    const birthMonthSelect = document.getElementById('birthMonth');
-    const birthYearSelect = document.getElementById('birthYear');
-    const hiddenBirthDate = document.getElementById('birthDate');
+    document.querySelectorAll('.gender-choice').forEach((choice) => {
+        choice.addEventListener('click', () => {
+            const radio = choice.querySelector('input[type="radio"]');
+            if (radio && !radio.checked) {
+                radio.checked = true;
+                updateGenderChoiceVisuals(radio.name);
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+    });
 
-    if (birthDaySelect && birthMonthSelect && birthYearSelect && hiddenBirthDate) {
-        const updateDaysAndSyncDate = () => {
-            const day = parseInt(birthDaySelect.value, 10);
-            const month = parseInt(birthMonthSelect.value, 10);
-            const year = parseInt(birthYearSelect.value, 10) || 2024;
+    // Helper for birth date (day, month, year) synchronization
+    const initDateSync = (dayId, monthId, yearId, hiddenId) => {
+        const daySelect = document.getElementById(dayId);
+        const monthSelect = document.getElementById(monthId);
+        const yearSelect = document.getElementById(yearId);
+        const hiddenDate = document.getElementById(hiddenId);
+
+        if (!daySelect || !monthSelect || !yearSelect || !hiddenDate) return null;
+
+        const update = () => {
+            const day = parseInt(daySelect.value, 10);
+            const month = parseInt(monthSelect.value, 10);
+            const year = parseInt(yearSelect.value, 10) || 2024;
 
             if (month) {
                 const maxDays = new Date(year, month, 0).getDate();
-                Array.from(birthDaySelect.options).forEach((opt) => {
+                Array.from(daySelect.options).forEach((opt) => {
                     const val = parseInt(opt.value, 10);
                     if (val) {
                         const isValid = val <= maxDays;
@@ -87,27 +109,76 @@
                         opt.disabled = !isValid;
                     }
                 });
-                if (day > maxDays) {
-                    birthDaySelect.value = '';
-                }
+                if (day > maxDays) daySelect.value = '';
             }
 
-            const currentDay = birthDaySelect.value;
-            const currentMonth = birthMonthSelect.value;
-            const currentYear = birthYearSelect.value;
-
-            if (currentDay && currentMonth && currentYear) {
-                const dStr = String(currentDay).padStart(2, '0');
-                const mStr = String(currentMonth).padStart(2, '0');
-                hiddenBirthDate.value = `${currentYear}-${mStr}-${dStr}`;
+            const cDay = daySelect.value;
+            const cMonth = monthSelect.value;
+            const cYear = yearSelect.value;
+            if (cDay && cMonth && cYear) {
+                hiddenDate.value = `${cYear}-${String(cMonth).padStart(2, '0')}-${String(cDay).padStart(2, '0')}`;
             } else {
-                hiddenBirthDate.value = '';
+                hiddenDate.value = '';
             }
         };
 
-        birthDaySelect.addEventListener('change', updateDaysAndSyncDate);
-        birthMonthSelect.addEventListener('change', updateDaysAndSyncDate);
-        birthYearSelect.addEventListener('change', updateDaysAndSyncDate);
+        daySelect.addEventListener('change', update);
+        monthSelect.addEventListener('change', update);
+        yearSelect.addEventListener('change', update);
+        update();
+        return update;
+    };
+
+    const updateDaysAndSyncDate = initDateSync('birthDay', 'birthMonth', 'birthYear', 'birthDate');
+    const syncCouple1 = initDateSync('birthDay1', 'birthMonth1', 'birthYear1', 'birthDate1');
+    const syncCouple2 = initDateSync('birthDay2', 'birthMonth2', 'birthYear2', 'birthDate2');
+
+    const coupleForm = document.getElementById('coupleForm');
+    if (coupleForm) {
+        coupleForm.addEventListener('submit', () => {
+            if (syncCouple1) syncCouple1();
+            if (syncCouple2) syncCouple2();
+        });
+    }
+
+    const editCoupleBtn = document.getElementById('editCoupleBtn');
+    if (editCoupleBtn) {
+        editCoupleBtn.addEventListener('click', () => {
+            const section = document.getElementById('coupleFormSection');
+            if (section) {
+                section.classList.remove('form-collapsed');
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+
+    const scrollToAnalysisBtn = document.getElementById('scrollToAnalysisBtn');
+    if (scrollToAnalysisBtn) {
+        scrollToAnalysisBtn.addEventListener('click', () => {
+            const el = document.getElementById('coupleAnalysisSection');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    const downloadCouplePdfBtn = document.getElementById('downloadCouplePdfBtn');
+    if (downloadCouplePdfBtn) {
+        downloadCouplePdfBtn.addEventListener('click', () => {
+            if (typeof html2pdf === 'undefined') {
+                alert('Đang nạp công cụ tạo PDF, vui lòng thử lại sau giây lát.');
+                return;
+            }
+            const frame = document.getElementById('coupleChartsFrame');
+            if (!frame) return;
+            const opt = {
+                margin: [8, 6, 8, 6],
+                filename: 'la-so-tu-vi-cap-doi.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 1.8, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(frame).save();
+        });
+    }
 
         const chartForm = document.querySelector('.chart-form');
         if (chartForm) {
@@ -120,7 +191,7 @@
                         const radio = document.querySelector('input[name="gender"][value="' + data.gender + '"]');
                         if (radio) {
                             radio.checked = true;
-                            document.querySelectorAll('.gender-choice').forEach((c) => c.classList.toggle('selected', c.contains(radio)));
+                            updateGenderChoiceVisuals('gender');
                         }
                     }
                     if (data.birthDay && birthDaySelect) birthDaySelect.value = data.birthDay;
@@ -153,7 +224,6 @@
                 }
             });
         }
-    }
 
     document.querySelectorAll('[data-toast]').forEach((button) => {
         button.addEventListener('click', (event) => {

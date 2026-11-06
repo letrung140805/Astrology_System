@@ -23,6 +23,8 @@ public class SecurityConfig {
 						.requestMatchers("/account/**").authenticated()
 						.requestMatchers(
 								"/",
+								"/tuong-hop",
+								"/tuong-hop/**",
 								"/about",
 								"/login",
 								"/login/**",

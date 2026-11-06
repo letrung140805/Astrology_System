@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="astrologyChart(person, chartDomId)" class="astrology-chart-wrapper" th:id="${chartDomId}">
+  <div class="astrology-chart-grid">
+    <!-- Boundary markers for Tuần and Triệt -->
+    <div class="boundary-marker marker-tuan" th:if="${person.tuanMarkerPosition != null}" th:classappend="${'pos-' + person.tuanMarkerPosition}"><span>Tuần</span></div>
+    <div class="boundary-marker marker-triet" th:if="${person.trietMarkerPosition != null}" th:classappend="${'pos-' + person.trietMarkerPosition}"><span>Triệt</span></div>
+
+    <article
+      class="chart-palace"
+      th:each="palace : ${person.chartPalaces}"
+      th:classappend="${'branch-' + #strings.toLowerCase(palace.branch.name()) + ' palace-' + #strings.toLowerCase(palace.function.name())}"
+    >
+      <!-- Cell Top Bar: Stem Branch Code, Sign Element, Palace Name with <THÂN>, and Dai Han / Nguyet Han -->
+      <div class="palace-cell-top">
+        <div class="palace-top-left">
+          <span class="palace-branch-code" th:text="${palace.stemBranchCode}">Đ.Tỵ</span>
+          <span class="palace-sign-elem" th:text="${palace.palaceSignElement}">-Hoả</span>
+        </div>
+        <div class="palace-title-wrap">
+          <h3 th:classappend="${'element-' + #strings.toLowerCase(palace.branch.element.name())}">
+            <span th:text="${#strings.toUpperCase(palace.function.vietnameseName)}">PHU THÊ</span>
+            <span class="palace-than-tag" th:if="${person.chart != null and person.chart.positions.thanPalace == palace.branch}">&lt;THÂN&gt;</span>
+          </h3>
+        </div>
+        <div class="palace-han-wrap">
+          <span class="palace-order-num" th:text="${palace.daiHan > 0 ? palace.daiHan : ''}">26</span>
+          <small class="palace-nguyethan" th:text="${palace.nguyetHan}">Th.11</small>
+        </div>
+      </div>
+
+      <!-- Cell Body: Stars List -->
+      <div class="palace-cell-body">
+        <!-- 14 Chính Tinh -->
+        <div class="major-stars-block" th:if="${palace.majorStars != null and !palace.majorStars.isEmpty()}">
+          <div
+            class="major-star-item"
+            th:each="star : ${palace.majorStars}"
+            th:classappend="${'element-' + #strings.toLowerCase(star.element.name())}"
+          >
+            <span class="major-star-sign" th:text="${(star.name == 'Tử Vi' or star.name == 'Thái Dương' or star.name == 'Thiên Đồng' or star.name == 'Thiên Tướng' or star.name == 'Thiên Lương' or star.name == 'Thất Sát') ? '+' : '-'}">+</span>
+            <strong class="major-star-name" th:text="${#strings.toUpperCase(star.name)}">THIÊN LƯƠNG</strong>
+            <span class="star-brightness" th:if="${!#strings.isEmpty(star.brightness)}" th:text="${star.brightness}">(H)</span>
+          </div>
+        </div>
+
+        <!-- Phụ Tinh Cát / Hung (2 Columns) -->
+        <div class="aux-stars-block" th:if="${(palace.goodStars != null and !palace.goodStars.isEmpty()) or (palace.badStars != null and !palace.badStars.isEmpty())}">
+          <ul class="aux-stars-col good-stars" th:if="${palace.goodStars != null and !palace.goodStars.isEmpty()}">
+            <li
+              th:each="star : ${palace.goodStars}"
+              th:classappend="${'element-' + #strings.toLowerCase(star.element.name())}"
+            >
+              <span class="star-name" th:text="${star.name}">Thiên Việt</span>
+              <small class="star-brightness" th:if="${!#strings.isEmpty(star.brightness)}" th:text="${star.brightness}">(Đ)</small>
+            </li>
+          </ul>
+          <ul class="aux-stars-col bad-stars" th:if="${palace.badStars != null and !palace.badStars.isEmpty()}">
+            <li
+              th:each="star : ${palace.badStars}"
+            >
+              <span class="star-name" th:text="${star.name}">Điếu Khách</span>
+              <small class="star-brightness" th:if="${!#strings.isEmpty(star.brightness)}" th:text="${star.brightness}">(H)</small>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Fallback if stars not split -->
+        <ul class="chart-star-list" th:if="${(palace.majorStars == null or palace.majorStars.isEmpty()) and (palace.goodStars == null or palace.goodStars.isEmpty()) and !palace.stars.isEmpty()}">
+          <li
+            th:each="star : ${palace.stars}"
+            th:classappend="${'element-' + #strings.toLowerCase(star.element.name())}"
+          >
+            <strong class="star-name" th:text="${star.name}">Tử Vi</strong>
+            <small class="star-brightness" th:if="${!#strings.isEmpty(star.brightness)}" th:text="${star.brightness}">(V)</small>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Cell Bottom Bar: ĐV.<Cung>, Tràng Sinh, LN.<Cung> -->
+      <div class="palace-cell-bottom">
+        <span class="palace-bottom-dv" th:text="${palace.dvLabel}">ĐV.HUYNH</span>
+        <span class="palace-bottom-trangsinh" th:text="${palace.trangSinh}">Tuyệt</span>
+        <span class="palace-bottom-ln" th:text="${palace.lnLabel}">LN.PHỐI</span>
+      </div>
+    </article>
+
+    <!-- Center 2x2: Tra Cứu Tử Vi Chính Xác (Tử Vi AI) -->
+    <section class="astrology-chart-center">
+      <div class="chart-center-header">
+        <div class="center-badge-mark">
+          <img class="center-logo-img" th:src="@{/images/logo.jpg}" src="/images/logo.jpg" alt="Tử Vi AI Logo" />
+        </div>
+        <h2 class="center-site-title">TRA CỨU TỬ VI CHÍNH XÁC</h2>
+        <span class="center-subtitle">TỬ VI AI · LÁ SỐ CÁ NHÂN</span>
+      </div>
+
+      <div class="chart-center-content">
+        <ul class="center-info-list">
+          <li>
+            <span class="info-label">Họ tên:</span>
+            <strong class="info-val strong" th:text="${person.name}">Lê Đức Trung</strong>
+          </li>
+          <li>
+            <span class="info-label">Năm sinh:</span>
+            <span class="info-val" th:text="${(person.solarYear != null ? person.solarYear : (person.lunarDate != null ? person.lunarDate.year : '2005')) + (person.yearCanChi != null ? ' - ' + person.yearCanChi : '')}">2005 - Ất Dậu</span>
+          </li>
+          <li>
+            <span class="info-label">Tháng sinh:</span>
+            <span class="info-val" th:text="${(person.solarMonth != null ? person.solarMonth : '') + (person.lunarDate != null ? ' (' + person.lunarDate.month + (person.lunarDate.leapMonth ? ' nhuận' : '') + ' Âm)' : '') + (person.monthCanChi != null ? ' - ' + person.monthCanChi : '')}">8 (7 Âm) - Giáp Thân</span>
+          </li>
+          <li>
+            <span class="info-label">Ngày sinh:</span>
+            <span class="info-val" th:text="${(person.solarDay != null ? person.solarDay : '') + (person.lunarDate != null ? ' (' + person.lunarDate.day + ' Âm)' : '') + (person.dayCanChi != null ? ' - ' + person.dayCanChi : '')}">14 (10 Âm) - Canh Ngọ</span>
+          </li>
+          <li>
+            <span class="info-label">Giờ sinh:</span>
+            <span class="info-val" th:text="${(person.birthTime != null ? person.birthTime : '') + (person.chart != null and person.chart.positions != null ? ' (Giờ ' + person.chart.input.birthHour.earthlyBranch.vietnameseName + ')' : '') + (person.hourCanChi != null ? ' - ' + person.hourCanChi : '')}">18:12 (Giờ Dậu) - Ất Dậu</span>
+          </li>
+          <li>
+            <span class="info-label">Năm xem:</span>
+            <span class="info-val" th:text="${person.viewYearInfo != null ? person.viewYearInfo : 'Bính Ngọ (2026), 22 tuổi'}">Bính Ngọ (2026), 22 tuổi</span>
+          </li>
+          <li>
+            <span class="info-label">Âm dương:</span>
+            <span class="info-val" th:text="${(person.amDuongNamNu != null ? person.amDuongNamNu : '') + (person.amDuongLy != null ? ' (' + person.amDuongLy + ')' : '')}">Âm Nam (Âm Dương thuận lý)</span>
+          </li>
+          <li class="item-ban-menh">
+            <span class="info-label">Bản mệnh:</span>
+            <span class="info-val highlight">
+              <span th:text="${person.banMenhFull != null ? person.banMenhFull : person.yearNayinElement}">Tuyền Trung Thủy - Thổ Ngũ Cục</span>
+              <span class="menh-cuc-bracket" th:if="${person.menhCucSinhKhac != null and !person.menhCucSinhKhac.isBlank()}" th:text="${' ' + person.menhCucSinhKhac}"> (Cục Thổ khắc Mệnh Thủy)</span>
+            </span>
+          </li>
+          <li>
+            <span class="info-label">Thân cư:</span>
+            <span class="info-val" th:text="${person.chart != null ? 'Cung ' + person.chart.positions.thanPalace.vietnameseName : 'Cung Tỵ'}">Cung Tỵ</span>
+          </li>
+          <li>
+            <span class="info-label">Chủ mệnh:</span>
+            <span class="info-val" th:text="${person.chuMenh != null ? person.chuMenh : 'Cự Môn'}">Cự Môn</span>
+          </li>
+          <li>
+            <span class="info-label">Chủ thân:</span>
+            <span class="info-val" th:text="${person.chuThan != null ? person.chuThan : 'Thiên Đồng'}">Thiên Đồng</span>
+          </li>
+          <li>
+            <span class="info-label">Lai nhân cung:</span>
+            <span class="info-val highlight" th:text="${person.laiNhanCung != null ? person.laiNhanCung : 'Phu Thê'}">Phu Thê</span>
+          </li>
+          <li>
+            <span class="info-label">Cân lượng:</span>
+            <span class="info-val highlight" th:text="${person.canLuong != null ? person.canLuong : '4 lượng 9 chỉ'}">4 lượng 9 chỉ</span>
+          </li>
+          <li th:if="${person.birthplace != null and !person.birthplace.isBlank()}">
+            <span class="info-label">Nguyên quán:</span>
+            <span class="info-val" th:text="${person.birthplace}">Thanh Hóa, Việt Nam</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="chart-center-footer">
+        <span>© 2026 Tử Vi AI · Phân tích bản mệnh chi tiết</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom Footer Bar: Brightness & Five Elements Legend -->
+  <div class="chart-bottom-bar">
+    <div class="legend-brightness">
+      <span>(M): Miếu địa;</span>
+      <span>(V): Vượng địa;</span>
+      <span>(Đ): Đắc địa;</span>
+      <span>(B): Bình hòa;</span>
+      <span>(H): Hãm địa</span>
+    </div>
+    <div class="legend-elements">
+      <span class="swatch-item swatch-kim"><span class="box"></span>Kim</span>
+      <span class="swatch-item swatch-moc"><span class="box"></span>Mộc</span>
+      <span class="swatch-item swatch-thuy"><span class="box"></span>Thủy</span>
+      <span class="swatch-item swatch-hoa"><span class="box"></span>Hỏa</span>
+      <span class="swatch-item swatch-tho"><span class="box"></span>Thổ</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

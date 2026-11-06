@@ -197,11 +197,11 @@ h1 { color: var(--ink); }
 
 .gender-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 3px; }
 
-.gender-choice { height: 44px; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 12px; background: #f5f4f1; cursor: pointer; color: #434053; font-size: 13.5px; font-weight: 600; font-family: 'Segoe UI', sans-serif; border: 1px solid #e2dfda; transition: all 0.2s ease; }
+.gender-choice { height: 44px; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 12px; background: #f5f4f1; cursor: pointer; color: #434053; font-size: 13.5px; font-weight: 600; font-family: 'Segoe UI', sans-serif; border: 1px solid #e2dfda; transition: all 0.2s ease; user-select: none; -webkit-user-select: none; }
 
 .gender-choice:hover { background: #eceae5; border-color: #d0ccc3; }
 
-.gender-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.gender-choice input { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; }
 
 .gender-choice.selected { color: #ffffff; background: #24214f; box-shadow: 0 4px 14px rgba(36, 33, 79, .25); border-color: #24214f; }
 
@@ -5777,4 +5777,764 @@ body.dark-mode .title-actions .download-pdf-btn { background: linear-gradient(13
 body.dark-mode .title-actions .print-chart-btn { background: #232038; color: #dedbff; border-color: #423c63; }
 
 body.dark-mode .title-actions .print-chart-btn:hover { background: #2e2a48; border-color: #5d558b; }
+
+/* ==========================================================================
+   TƯƠNG HỢP TÌNH DUYÊN (COUPLE COMPATIBILITY) STYLES
+   ========================================================================== */
+
+.couple-main {
+    min-height: 80vh;
+    max-width: 1600px !important;
+    width: 100% !important;
+    padding: 24px 20px 60px !important;
+    box-sizing: border-box;
+}
+
+.couple-hero-header {
+    padding: 54px 10vw 40px;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 30%, #f1edf9 0%, #f9f7f4 55%, transparent 75%);
+    border-bottom: 1px solid rgba(29, 28, 61, 0.05);
+}
+
+.couple-hero-content {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.couple-hero-content h1 {
+    font-size: clamp(34px, 3.8vw, 48px);
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 10px 0 12px;
+}
+
+.couple-hero-content p {
+    font-size: 16.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.couple-notice {
+    max-width: 1000px;
+    margin: 24px auto 0;
+}
+
+/* Couple Form */
+.couple-form-section {
+    padding: 44px 10vw 64px;
+    max-width: 1400px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.couple-form-section.form-collapsed {
+    padding-top: 16px;
+    padding-bottom: 24px;
+}
+
+.couple-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: start;
+}
+
+.couple-form-card {
+    background: #ffffff;
+    border: 1px solid #eae7e1;
+    border-radius: 20px;
+    padding: 34px 30px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+}
+
+.couple-form-card .form-heading,
+.couple-form-card .form-heading-centered {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+}
+
+.card-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.badge-male {
+    background: #eef4ff;
+    color: #2b6cb0;
+    border: 1px solid #cbdcf7;
+}
+
+.badge-female {
+    background: #fdf2f8;
+    color: #b83280;
+    border: 1px solid #f9d8ec;
+}
+
+.couple-form-card h2 {
+    font-size: 24px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.couple-form-card p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+}
+
+.couple-form-footer {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.couple-submit-btn {
+    min-width: 250px;
+    max-width: 320px;
+    width: auto !important;
+    height: 48px;
+    padding: 0 28px !important;
+    font-size: 15px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 26px;
+    box-shadow: 0 4px 16px rgba(29, 28, 61, 0.25);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.couple-submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(29, 28, 61, 0.35);
+}
+
+/* Result Section - Exactly 85% width of screen */
+.couple-result-section {
+    padding: 24px 0 60px;
+    width: 85% !important;
+    max-width: 85% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+.couple-score-banner {
+    background: linear-gradient(135deg, #f7f4fc 0%, #fffdf8 100%);
+    border: 1px solid #ebdcf5;
+    border-radius: 20px;
+    padding: 24px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 6px 20px rgba(97, 88, 168, 0.06);
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.score-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.score-circle {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6158a8 0%, #483d8b 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(97, 88, 168, 0.35);
+    flex-shrink: 0;
+}
+
+.score-circle strong {
+    font-size: 32px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    line-height: 1;
+}
+
+.score-circle small {
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.score-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.couple-names-tag {
+    font-size: 17px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.badge-success { background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; }
+.badge-primary { background: #ebf8ff; color: #2a4365; border: 1px solid #bee3f8; }
+.badge-info { background: #fefcbf; color: #744210; border: 1px solid #faf089; }
+.badge-warning { background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7; }
+
+.score-summary-text {
+    font-size: 14.5px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+.couple-charts-titlebar {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.couple-charts-titlebar h2 {
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 6px 0 0;
+}
+
+/* Dual Charts Side by Side: Exactly 85% width without horizontal scroll */
+.couple-dual-charts-frame {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+    padding: 6px 0 16px;
+    box-sizing: border-box !important;
+}
+
+.couple-dual-charts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.couple-chart-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e5e2da;
+    border-radius: 14px;
+    padding: 10px 8px 8px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden;
+}
+
+.couple-chart-header {
+    text-align: center;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.couple-chart-header h3 {
+    font-size: 19px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 2px 0 3px;
+    text-align: center;
+}
+
+.chart-quick-meta {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: center;
+    display: block;
+}
+
+.couple-chart-embed {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    min-width: 0 !important;
+    overflow: hidden;
+}
+
+.couple-chart-embed .astrology-chart-wrapper {
+    width: 100%;
+    min-width: 0 !important;
+}
+
+/* Compact, proportional chart grid for couple side-by-side mode */
+.couple-chart-embed .astrology-chart-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    aspect-ratio: 1.02 / 1 !important;
+    grid-template-rows: repeat(4, 1fr) !important;
+    border-width: 1.5px !important;
+}
+
+.couple-chart-embed .chart-palace {
+    padding: 2px 3px 2px !important;
+    border-width: 1px !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+.couple-chart-embed .palace-cell-top {
+    margin-bottom: 1px !important;
+    padding-bottom: 1px !important;
+}
+
+.couple-chart-embed .palace-branch-code {
+    font-size: 10px !important;
+    font-weight: 800 !important;
+}
+
+.couple-chart-embed .palace-sign-elem {
+    font-size: 8.5px !important;
+}
+
+.couple-chart-embed .palace-title-wrap h3 {
+    font-size: 10.5px !important;
+    letter-spacing: 0 !important;
+}
+
+.couple-chart-embed .palace-than-tag {
+    font-size: 9px !important;
+}
+
+.couple-chart-embed .palace-order-num {
+    font-size: 10px !important;
+}
+
+.couple-chart-embed .palace-nguyethan {
+    font-size: 8.5px !important;
+}
+
+.couple-chart-embed .palace-cell-body {
+    padding: 1px 0 !important;
+    min-height: 0 !important;
+}
+
+.couple-chart-embed .major-stars-block {
+    gap: 1px 3px !important;
+    margin-bottom: 2px !important;
+}
+
+.couple-chart-embed .major-star-item {
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+}
+
+.couple-chart-embed .major-star-sign {
+    font-size: 9px !important;
+}
+
+.couple-chart-embed .star-brightness {
+    font-size: 8px !important;
+}
+
+.couple-chart-embed .aux-stars-block {
+    gap: 2px !important;
+}
+
+.couple-chart-embed .good-stars,
+.couple-chart-embed .bad-stars {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.couple-chart-embed .good-stars li,
+.couple-chart-embed .bad-stars li {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+}
+
+.couple-chart-embed .good-stars li::before {
+    font-size: 7px !important;
+    margin-right: 1px !important;
+}
+
+.couple-chart-embed .star-name {
+    font-size: 8px !important;
+}
+
+.couple-chart-embed .palace-cell-bottom {
+    padding-top: 1px !important;
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+    border-top-width: 0.5px !important;
+}
+
+.couple-chart-embed .boundary-marker {
+    font-size: 8px !important;
+    padding: 1px 6px !important;
+}
+
+/* Center card in compact couple chart */
+.couple-chart-embed .astrology-chart-center {
+    padding: 3px 5px 2px !important;
+    justify-content: flex-start !important;
+    gap: 1px !important;
+    border-width: 1px !important;
+}
+
+.couple-chart-embed .chart-center-header {
+    padding-bottom: 1.5px !important;
+    margin-bottom: 1.5px !important;
+    border-bottom-width: 1px !important;
+}
+
+.couple-chart-embed .center-badge-mark {
+    width: 18px !important;
+    height: 18px !important;
+    border-width: 1px !important;
+    margin: 0 auto 1px !important;
+}
+
+.couple-chart-embed .center-site-title {
+    font-size: 10px !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+}
+
+.couple-chart-embed .center-subtitle {
+    font-size: 6.5px !important;
+    margin-top: 0 !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.1 !important;
+}
+
+.couple-chart-embed .chart-center-content {
+    padding: 0 !important;
+    flex: 1;
+    min-height: 0 !important;
+}
+
+.couple-chart-embed .center-info-list {
+    gap: 0 !important;
+    max-width: 100% !important;
+}
+
+.couple-chart-embed .center-info-list li {
+    font-size: 7.5px !important;
+    line-height: 1.2 !important;
+    padding-bottom: 0 !important;
+    border-bottom: 0.5px dotted rgba(175, 155, 120, 0.25) !important;
+}
+
+.couple-chart-embed .center-info-list .info-label {
+    font-size: 7.5px !important;
+}
+
+.couple-chart-embed .center-info-list .info-val {
+    font-size: 7.5px !important;
+}
+
+.couple-chart-embed .center-info-list .info-val.strong {
+    font-size: 8px !important;
+}
+
+.couple-chart-embed .chart-center-footer {
+    padding-top: 1px !important;
+    margin-top: 0 !important;
+    font-size: 6.5px !important;
+    border-top-width: 0.5px !important;
+}
+
+.couple-chart-embed .chart-center-footer p {
+    font-size: 6.5px !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+}
+
+/* Action Bar below charts */
+.couple-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 28px 0 54px;
+}
+
+.couple-action-btn {
+    height: 48px;
+    padding: 0 24px;
+    border-radius: 12px;
+    font-size: 14.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.couple-action-btn.edit-btn {
+    background: #ffffff;
+    color: var(--ink);
+    border: 1px solid #d4cfc6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.couple-action-btn.edit-btn:hover {
+    background: #fbf9f6;
+    border-color: #b8b1a4;
+    transform: translateY(-1px);
+}
+
+.couple-action-btn.download-btn {
+    background: #fdfbf7;
+    color: #4a4574;
+    border: 1px solid #cfcae2;
+    box-shadow: 0 2px 8px rgba(97, 88, 168, 0.08);
+}
+
+.couple-action-btn.download-btn:hover {
+    background: #f4f1fa;
+    border-color: #6158a8;
+    transform: translateY(-1px);
+}
+
+.couple-action-btn.chat-btn {
+    box-shadow: 0 4px 16px rgba(97, 88, 168, 0.25);
+}
+
+/* 5 Pillars Analysis */
+.couple-analysis-section {
+    padding-top: 10px;
+    border-top: 1px solid rgba(29, 28, 61, 0.06);
+}
+
+.analysis-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.analysis-card {
+    background: #ffffff;
+    border: 1px solid #ebe8e2;
+    border-radius: 18px;
+    padding: 26px 24px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+}
+
+.analysis-card.full-width-card {
+    grid-column: 1 / -1;
+}
+
+.analysis-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.analysis-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-menh { background: #eef2ff; color: #4338ca; }
+.icon-can { background: #fef3c7; color: #b45309; }
+.icon-chi { background: #ecfdf5; color: #047857; }
+.icon-cungphi { background: #fdf2f8; color: #be185d; }
+.icon-phuthe { background: #faf5ff; color: #7e22ce; }
+
+.analysis-pillar-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+}
+
+.analysis-card-header h3 {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 2px 0 0;
+}
+
+.pillar-score {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6158a8;
+    background: #f4f1fa;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.analysis-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.analysis-card-body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0;
+}
+
+.couple-advice-box {
+    background: linear-gradient(135deg, #fbf9f6 0%, #f7f4fc 100%);
+    border: 1px solid #ebdcf5;
+    border-radius: 18px;
+    padding: 28px 32px;
+}
+
+.advice-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.advice-icon {
+    font-size: 22px;
+}
+
+.advice-header h4 {
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+}
+
+.advice-content {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #434053;
+    margin: 0;
+}
+
+/* ==========================================================================
+   DARK MODE CHO TƯƠNG HỢP CẶP ĐÔI
+   ========================================================================== */
+
+body.dark-mode .couple-hero-header {
+    background: radial-gradient(ellipse at 50% 30%, #201d36 0%, #151422 65%, transparent 80%);
+    border-color: #2b2744;
+}
+
+body.dark-mode .couple-form-card,
+body.dark-mode .couple-chart-col,
+body.dark-mode .analysis-card,
+body.dark-mode .view-year-select-wrap {
+    background: #1b192c !important;
+    border-color: #312d4d !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .styled-select {
+    background: #232039;
+    border-color: #3e3860;
+    color: #e5e3ff;
+}
+
+body.dark-mode .couple-score-banner {
+    background: linear-gradient(135deg, #211e38 0%, #1c1a2e 100%) !important;
+    border-color: #3c3660 !important;
+}
+
+body.dark-mode .couple-action-btn.edit-btn {
+    background: #232038;
+    color: #dedbff;
+    border-color: #423c63;
+}
+
+body.dark-mode .couple-action-btn.edit-btn:hover {
+    background: #2e2a48;
+    border-color: #5d558b;
+}
+
+body.dark-mode .couple-action-btn.download-btn {
+    background: #201e33;
+    color: #c4b5fd;
+    border-color: #3c375c;
+}
+
+body.dark-mode .couple-advice-box {
+    background: linear-gradient(135deg, #1f1c32 0%, #1a172a 100%) !important;
+    border-color: #393358 !important;
+}
+
+body.dark-mode .advice-content {
+    color: #c9c5e8 !important;
+}
+
+body.dark-mode .pillar-score {
+    background: #2c274b !important;
+    color: #c4b5fd !important;
+}
+
+@media (max-width: 992px) {
+    .couple-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .couple-dual-charts-container {
+        grid-template-columns: 1fr !important;
+    }
+    .analysis-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .couple-score-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 
