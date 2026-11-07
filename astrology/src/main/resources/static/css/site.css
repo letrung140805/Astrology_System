@@ -7189,3 +7189,311 @@ body.dark-mode .rule-card-advice {
 }
 
 
+
+/* ==========================================================================
+   LỊCH SỬ TRA CỨU CẶP ĐÔI (COUPLE CHARTS HISTORY)
+   ========================================================================== */
+
+/* Layout grid thẻ lịch sử trong trang /history */
+.history-main .timeline-cards {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 18px !important;
+    padding-top: 14px;
+}
+
+.history-main .timeline-cards article.card {
+    min-height: auto;
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #ebe8f2;
+    box-shadow: 0 4px 18px rgba(35, 30, 75, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.history-main .timeline-cards article.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(35, 30, 75, 0.08);
+    border-color: #d1caea;
+}
+
+/* Thẻ lịch sử cặp đôi */
+.couple-history-timeline-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.couple-history-card {
+    position: relative;
+}
+
+.couple-card-score-bold {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #272052;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    letter-spacing: -0.2px;
+}
+
+.couple-card-score-bold strong {
+    font-weight: 700;
+    color: #272052;
+}
+
+.couple-card-top-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.couple-history-date {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #7b7891;
+}
+
+.couple-card-title-row {
+    margin-bottom: 12px;
+}
+
+.couple-history-names {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: #1f1b3e;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    line-height: 1.35;
+}
+
+.couple-history-names .couple-heart-icon {
+    color: #8c85b5;
+    flex-shrink: 0;
+}
+
+.couple-card-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.mini-score-tag {
+    font-size: 11.5px;
+    background: #f4f3f9;
+    color: #4b4476;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #e7e4f2;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.mini-score-tag strong {
+    color: #272052;
+}
+
+.couple-open-saved-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 13.5px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #50449a 0%, #3e337b 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(80, 68, 154, 0.25);
+    transition: all 0.2s ease;
+}
+
+.couple-open-saved-btn:hover {
+    background: linear-gradient(135deg, #5e51b3 0%, #4a3d93 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(80, 68, 154, 0.35);
+}
+
+.history-empty-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.history-empty-card {
+    padding: 36px 28px;
+    border-radius: 16px;
+    background: #fbfbfe;
+    border: 1px dashed #d1cde4;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.history-empty-card p {
+    color: #6c6888;
+    margin: 0 0 16px;
+    font-size: 14.5px;
+}
+
+/* Notice Banner trạng thái lưu / xem lại trên trang couple.html */
+.couple-history-notice {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    border: 1px solid transparent;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.couple-history-notice .notice-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.couple-history-notice .notice-content {
+    flex: 1;
+}
+
+.couple-history-notice .notice-action-btn {
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: underline;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.couple-history-notice.info {
+    background: #f4f3fb;
+    border-color: #dcd8f2;
+    color: #383063;
+}
+
+.couple-history-notice.info .notice-icon-box {
+    background: #e6e2f8;
+    color: #4f4296;
+}
+
+.couple-history-notice.info .notice-action-btn {
+    color: #4f4296;
+}
+
+.couple-history-notice.success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.couple-history-notice.success .notice-icon-box {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.couple-history-notice.success .notice-action-btn {
+    color: #15803d;
+}
+
+/* Dark mode cho lịch sử cặp đôi */
+body.dark-mode .history-main .timeline-cards article.card {
+    background: #201d33 !important;
+    border-color: #383452 !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-mode .history-main .timeline-cards article.card:hover {
+    border-color: #58517e !important;
+}
+
+body.dark-mode .couple-history-names {
+    color: #f1efff !important;
+}
+
+body.dark-mode .couple-history-date {
+    color: #a49fc4 !important;
+}
+
+body.dark-mode .couple-card-score-bold,
+body.dark-mode .couple-card-score-bold strong {
+    color: #f1efff !important;
+}
+
+body.dark-mode .mini-score-tag {
+    background: #292543 !important;
+    border-color: #423c68 !important;
+    color: #cfcaf0 !important;
+}
+
+body.dark-mode .mini-score-tag strong {
+    color: #ffffff !important;
+}
+
+body.dark-mode .couple-open-saved-btn {
+    background: linear-gradient(135deg, #6255b5 0%, #4a3e97 100%) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .history-empty-card {
+    background: #201d33 !important;
+    border-color: #433c69 !important;
+}
+
+body.dark-mode .history-empty-card p {
+    color: #a49fc4 !important;
+}
+
+body.dark-mode .couple-history-notice.info {
+    background: #25223c !important;
+    border-color: #433c69 !important;
+    color: #dedbff !important;
+}
+
+body.dark-mode .couple-history-notice.info .notice-icon-box {
+    background: #342e56 !important;
+    color: #c7beff !important;
+}
+
+body.dark-mode .couple-history-notice.info .notice-action-btn {
+    color: #b5a8ff !important;
+}
+
+body.dark-mode .couple-history-notice.success {
+    background: #142a1e !important;
+    border-color: #235438 !important;
+    color: #86efac !important;
+}
+
+body.dark-mode .couple-history-notice.success .notice-icon-box {
+    background: #1e412e !important;
+    color: #4ade80 !important;
+}
+
+body.dark-mode .couple-history-notice.success .notice-action-btn {
+    color: #86efac !important;
+}

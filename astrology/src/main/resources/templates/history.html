@@ -13,14 +13,15 @@
     <section class="page-intro">
         <p class="eyebrow">LỊCH SỬ TRA CỨU</p>
         <h1>Các lá số đã lưu</h1>
-        <p th:if="${guestHistory}">Lịch sử khách được gắn với phiên trình duyệt hiện tại. Hãy lưu liên kết riêng tư của từng lá số để mở lại sau.</p>
-        <p th:unless="${guestHistory}">Danh sách lá số được lưu cho tài khoản hiện tại.</p>
+        <p th:if="${guestHistory}">Lịch sử khách được gắn với phiên trình duyệt hiện tại. Hãy đăng nhập để lưu trữ vĩnh viễn các lá số và bài luận giải.</p>
+        <p th:unless="${guestHistory}">Danh sách lá số cá nhân và hồ sơ tương hợp cặp đôi được lưu cho tài khoản của bạn.</p>
     </section>
 
+    <!-- PHẦN 1: LỊCH SỬ TẠO LÁ SỐ CÁ NHÂN -->
     <section class="timeline-section">
         <div class="section-heading">
             <span class="eyebrow">HỒ SƠ TỪ CƠ SỞ DỮ LIỆU</span>
-            <h2>Lịch sử tạo lá số</h2>
+            <h2>Lịch sử tạo lá số cá nhân</h2>
         </div>
         <div class="timeline-cards" th:if="${!historyItems.isEmpty()}">
             <article class="card" th:each="item : ${historyItems}">
@@ -37,9 +38,59 @@
                 </div>
             </article>
         </div>
-        <div class="card" th:if="${historyItems.isEmpty()}">
-            <p>Chưa có lá số nào được lưu trong lịch sử này.</p>
-            <a class="button button-primary" th:href="@{/}">Tạo lá số</a>
+        <div class="card history-empty-card" th:if="${historyItems.isEmpty()}">
+            <p>Chưa có lá số cá nhân nào được lưu trong lịch sử.</p>
+            <div class="history-empty-actions">
+                <a class="button button-primary" th:href="@{/}">Tạo lá số cá nhân</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHẦN 2: LỊCH SỬ LÁ SỐ TƯƠNG HỢP (LUÔN HIỂN THỊ DƯỚI PHẦN CÁ NHÂN) -->
+    <section class="timeline-section couple-history-timeline-section">
+        <div class="section-heading">
+            <span class="eyebrow">TƯƠNG HỢP TÌNH DUYÊN</span>
+            <h2>Lịch sử lá số tương hợp</h2>
+            <p>Hồ sơ đối chiếu 2 lá số và bản luận giải chi tiết 5 yếu tố tương hợp tình duyên.</p>
+        </div>
+
+        <!-- Danh sách khi đã có lá số cặp đôi đã lưu -->
+        <div class="timeline-cards couple-timeline-cards" th:if="${coupleHistoryItems != null and !coupleHistoryItems.isEmpty()}">
+            <article class="card couple-history-card" th:each="cItem : ${coupleHistoryItems}">
+                <div class="couple-card-top-meta">
+                    <small class="couple-history-date" th:text="${#temporals.format(cItem.createdAt, 'dd/MM/yyyy HH:mm')}">07/11/2026 14:30</small>
+                    <span class="couple-card-score-bold">
+                        <strong th:text="${cItem.totalScore + '/100'}">90/100</strong> · <strong th:text="${cItem.rating}">Rất Hòa Hợp</strong>
+                    </span>
+                </div>
+                <div class="couple-card-title-row">
+                    <h3 class="couple-history-names">
+                        <span th:text="${cItem.name1}">Người 1</span>
+                        <svg class="outline-icon couple-heart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        <span th:text="${cItem.name2}">Người 2</span>
+                    </h3>
+                </div>
+                <div class="couple-card-pills-row">
+                    <span class="mini-score-tag">Tình cảm: <strong th:text="${#numbers.formatDecimal(cItem.emotionalScore, 1, 1)}">8.0</strong></span>
+                    <span class="mini-score-tag">Giao tiếp: <strong th:text="${#numbers.formatDecimal(cItem.communicationScore, 1, 1)}">7.0</strong></span>
+                    <span class="mini-score-tag">Tài chính: <strong th:text="${#numbers.formatDecimal(cItem.financialScore, 1, 1)}">7.5</strong></span>
+                    <span class="mini-score-tag">Độ bền: <strong th:text="${#numbers.formatDecimal(cItem.stabilityScore, 1, 1)}">6.5</strong></span>
+                    <span class="mini-score-tag">Sống chung: <strong th:text="${#numbers.formatDecimal(cItem.livingTogetherScore, 1, 1)}">7.0</strong></span>
+                </div>
+                <div class="history-card-buttons">
+                    <a class="button button-primary couple-open-saved-btn" th:href="${cItem.viewUrl}">
+                        <span>Xem lại 2 lá số &amp; luận giải</span>
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <!-- Khung hiển thị khi chưa có lá số cặp đôi nào -->
+        <div class="card history-empty-card" th:if="${coupleHistoryItems == null or coupleHistoryItems.isEmpty()}">
+            <p>Chưa có lá số tương hợp cặp đôi nào được lưu trong lịch sử.</p>
+            <div class="history-empty-actions">
+                <a class="button button-primary" th:href="@{/tuong-hop}">Lập lá số cặp đôi &amp; Xem tương hợp</a>
+            </div>
         </div>
     </section>
 </main>

@@ -122,6 +122,50 @@ public record CoupleCompatibilityResult(
 	}
 
 	// Helper accessors for backward compatibility
+	public static CoupleCompatibilityResult fromSaved(
+			int totalScore,
+			String rating,
+			String ratingColor,
+			String summary,
+			String advice,
+			Double emotionalScore,
+			Double communicationScore,
+			Double financialScore,
+			Double stabilityScore,
+			Double livingTogetherScore,
+			String emotionalInterpretation,
+			String communicationInterpretation,
+			String financialInterpretation,
+			String stabilityInterpretation,
+			String livingTogetherInterpretation,
+			String conclusion) {
+		return new CoupleCompatibilityResult(
+				totalScore,
+				rating != null ? rating : "",
+				ratingColor != null ? ratingColor : "badge-primary",
+				summary != null ? summary : "",
+				"", 0, "",
+				"", 0, "",
+				"", 0, "",
+				"", 0, "",
+				"", "",
+				advice != null ? advice : "",
+				emotionalScore != null ? emotionalScore : 7.0,
+				communicationScore != null ? communicationScore : 7.0,
+				financialScore != null ? financialScore : 7.0,
+				stabilityScore != null ? stabilityScore : 7.0,
+				livingTogetherScore != null ? livingTogetherScore : 7.0,
+				emotionalInterpretation != null ? emotionalInterpretation : "",
+				communicationInterpretation != null ? communicationInterpretation : "",
+				financialInterpretation != null ? financialInterpretation : "",
+				stabilityInterpretation != null ? stabilityInterpretation : "",
+				livingTogetherInterpretation != null ? livingTogetherInterpretation : "",
+				conclusion != null ? conclusion : "",
+				"",
+				List.of()
+		);
+	}
+
 	public double attractionScore() {
 		return emotionalScore;
 	}

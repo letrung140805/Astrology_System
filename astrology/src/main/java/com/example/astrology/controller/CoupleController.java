@@ -8,19 +8,23 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.astrology.calculation.AstrologyCalculationInput;
+import com.example.astrology.entity.CoupleChart;
 import com.example.astrology.model.BirthChartPageData;
 import com.example.astrology.model.CoupleCompatibilityResult;
 import com.example.astrology.model.CouplePersonData;
 import com.example.astrology.service.BirthChartApplicationService;
+import com.example.astrology.service.CoupleChartPersistenceService;
 import com.example.astrology.service.CoupleCompatibilityService;
 
 @Controller
@@ -33,12 +37,22 @@ public class CoupleController {
 
 	private final BirthChartApplicationService birthChartApplicationService;
 	private final CoupleCompatibilityService coupleCompatibilityService;
+	private final CoupleChartPersistenceService coupleChartPersistenceService;
+
+	@Autowired
+	public CoupleController(
+			BirthChartApplicationService birthChartApplicationService,
+			CoupleCompatibilityService coupleCompatibilityService,
+			CoupleChartPersistenceService coupleChartPersistenceService) {
+		this.birthChartApplicationService = birthChartApplicationService;
+		this.coupleCompatibilityService = coupleCompatibilityService;
+		this.coupleChartPersistenceService = coupleChartPersistenceService;
+	}
 
 	public CoupleController(
 			BirthChartApplicationService birthChartApplicationService,
 			CoupleCompatibilityService coupleCompatibilityService) {
-		this.birthChartApplicationService = birthChartApplicationService;
-		this.coupleCompatibilityService = coupleCompatibilityService;
+		this(birthChartApplicationService, coupleCompatibilityService, null);
 	}
 
 	@GetMapping
@@ -143,6 +157,18 @@ public class CoupleController {
 
 			CoupleCompatibilityResult compatibility = coupleCompatibilityService.assess(person1, person2);
 
+			// Lưu kết quả 2 lá số và bài luận giải tương hợp vào database/lịch sử
+			if (coupleChartPersistenceService != null && principalName(principal) != null) {
+				try {
+					CoupleChart savedChart = coupleChartPersistenceService.save(
+							person1, person2, compatibility, principalName(principal));
+					model.addAttribute("savedId", savedChart.getId());
+					model.addAttribute("savedSuccess", true);
+				} catch (Exception ex) {
+					logger.warn("Could not save couple chart to history: {}", ex.getMessage());
+				}
+			}
+
 			model.addAttribute("person1", person1);
 			model.addAttribute("person2", person2);
 			model.addAttribute("compatibility", compatibility);
@@ -185,6 +211,67 @@ public class CoupleController {
 				pageData.yearNayinElement(),
 				pageData.fullDetails()
 		);
+	}
+
+	@GetMapping("/id/{id}")
+	public String viewSavedCoupleChart(
+			@PathVariable Long id,
+			Principal principal,
+			Model model) {
+
+		String principalName = principalName(principal);
+		if (principalName == null) {
+			return "redirect:/login?required=true";
+		}
+		if (coupleChartPersistenceService == null) {
+			return "redirect:/tuong-hop";
+		}
+
+		CoupleChart saved = coupleChartPersistenceService.loadOwned(id, principalName);
+
+		AstrologyCalculationInput input1 = new AstrologyCalculationInput(
+				saved.getName1(), saved.getGender1(), saved.getBirthDate1(), saved.getBirthTime1(), saved.getBirthplace1());
+		BirthChartPageData pageData1 = birthChartApplicationService.calculate(input1);
+
+		AstrologyCalculationInput input2 = new AstrologyCalculationInput(
+				saved.getName2(), saved.getGender2(), saved.getBirthDate2(), saved.getBirthTime2(), saved.getBirthplace2());
+		BirthChartPageData pageData2 = birthChartApplicationService.calculate(input2);
+
+		CouplePersonData person1 = toPersonData(input1, pageData1, saved.getBirthDate1().getDayOfMonth(), saved.getBirthDate1().getMonthValue(), saved.getBirthDate1().getYear());
+		CouplePersonData person2 = toPersonData(input2, pageData2, saved.getBirthDate2().getDayOfMonth(), saved.getBirthDate2().getMonthValue(), saved.getBirthDate2().getYear());
+
+		CoupleCompatibilityResult compatibility = CoupleCompatibilityResult.fromSaved(
+				saved.getTotalScore() != null ? saved.getTotalScore() : 0,
+				saved.getRating(),
+				saved.getRatingColor(),
+				"Kết quả đối chiếu tương hợp giữa " + saved.getName1() + " và " + saved.getName2() + ".",
+				saved.getAdvice(),
+				saved.getEmotionalScore(),
+				saved.getCommunicationScore(),
+				saved.getFinancialScore(),
+				saved.getStabilityScore(),
+				saved.getLivingTogetherScore(),
+				saved.getEmotionalInterpretation(),
+				saved.getCommunicationInterpretation(),
+				saved.getFinancialInterpretation(),
+				saved.getStabilityInterpretation(),
+				saved.getLivingTogetherInterpretation(),
+				saved.getConclusion()
+		);
+
+		model.addAttribute("activePage", "tuong-hop");
+		model.addAttribute("person1", person1);
+		model.addAttribute("person2", person2);
+		model.addAttribute("compatibility", compatibility);
+		model.addAttribute("viewYear", 2026);
+		model.addAttribute("submitted", true);
+		model.addAttribute("savedId", saved.getId());
+		model.addAttribute("isFromHistory", true);
+
+		preserveFormInputs(model, saved.getName1(), saved.getGender1(), saved.getBirthDate1().getDayOfMonth(), saved.getBirthDate1().getMonthValue(), saved.getBirthDate1().getYear(), saved.getBirthTime1(), saved.getBirthplace1(),
+				saved.getName2(), saved.getGender2(), saved.getBirthDate2().getDayOfMonth(), saved.getBirthDate2().getMonthValue(), saved.getBirthDate2().getYear(), saved.getBirthTime2(), saved.getBirthplace2(), 2026);
+
+		return "couple";
 	}
 
 	private void preserveFormInputs(Model model,
