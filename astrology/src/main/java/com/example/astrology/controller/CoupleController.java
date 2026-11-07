@@ -1,5 +1,6 @@
 package com.example.astrology.controller;
 
+import java.security.Principal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,6 +48,15 @@ public class CoupleController {
 		return "couple";
 	}
 
+	public String calculateCouple(
+			String name1, String gender1, LocalDate birthDate1, Integer birthDay1, Integer birthMonth1, Integer birthYear1, LocalTime birthTime1, String birthplace1,
+			String name2, String gender2, LocalDate birthDate2, Integer birthDay2, Integer birthMonth2, Integer birthYear2, LocalTime birthTime2, String birthplace2,
+			Integer viewYear, Model model) {
+		return calculateCouple(name1, gender1, birthDate1, birthDay1, birthMonth1, birthYear1, birthTime1, birthplace1,
+				name2, gender2, birthDate2, birthDay2, birthMonth2, birthYear2, birthTime2, birthplace2,
+				viewYear, () -> "testUser", model);
+	}
+
 	@PostMapping
 	public String calculateCouple(
 			@RequestParam String name1,
@@ -68,7 +78,12 @@ public class CoupleController {
 			@RequestParam(required = false) String birthplace2,
 
 			@RequestParam(required = false, defaultValue = "2026") Integer viewYear,
+			Principal principal,
 			Model model) {
+
+		if (principalName(principal) == null) {
+			return "redirect:/login?required=true";
+		}
 
 		model.addAttribute("activePage", "tuong-hop");
 
@@ -193,6 +208,13 @@ public class CoupleController {
 		model.addAttribute("formBirthplace2", birthplace2);
 
 		model.addAttribute("formViewYear", viewYear != null ? viewYear : 2026);
+	}
+
+	private static String principalName(Principal principal) {
+		if (principal == null || "anonymousUser".equals(principal.getName())) {
+			return null;
+		}
+		return principal.getName();
 	}
 }
 

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tương hợp tình duyên · Lập lá số cặp đôi | Tử Vi AI</title>
     <link rel="icon" type="image/jpeg" th:href="@{/images/logo.jpg}">
-    <link rel="stylesheet" th:href="@{/css/site.css(v='2.3')}">
+    <link rel="stylesheet" th:href="@{/css/site.css(v='2.6')}">
     <script th:src="@{/js/html2pdf.bundle.min.js}" defer></script>
-    <script th:src="@{/js/site.js(v='2.3')}" defer></script>
+    <script th:src="@{/js/site.js(v='2.6')}" defer></script>
 </head>
 <body>
 <div th:replace="~{fragments/layout :: header('tuong-hop')}"></div>
@@ -30,7 +30,7 @@
 
     <!-- SECTION 1: FORM NHẬP THÔNG TIN 2 NGƯỜI (SIDE BY SIDE) -->
     <section id="coupleFormSection" class="couple-form-section" th:classappend="${submitted} ? 'form-collapsed' : ''">
-        <form class="couple-form" th:action="@{/tuong-hop}" method="post" id="coupleForm">
+        <form class="couple-form" th:action="@{/tuong-hop}" method="post" id="coupleForm" th:data-authenticated="${#authorization.expression('isAuthenticated()')}">
             <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
             <div class="couple-form-grid">
@@ -171,6 +171,15 @@
                         <input id="birthplace2" name="birthplace2" list="vietnamLocations" placeholder="Ví dụ: TP. Hồ Chí Minh, Việt Nam" autocomplete="off" th:value="${formBirthplace2}">
                     </div>
                 </article>
+            </div>
+
+            <!-- Cảnh báo khi người dùng chưa đăng nhập -->
+            <div class="guest-auth-prompt couple-auth-prompt" sec:authorize="!isAuthenticated()">
+                <div class="guest-prompt-badge">
+                    <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Yêu cầu đăng nhập</span>
+                </div>
+                <p>Khách có thể xem thông tin giới thiệu. Để lập và xem luận giải tương hợp lá số cặp đôi, vui lòng <a th:href="@{/login(required=true)}">đăng nhập tài khoản Gmail</a>.</p>
             </div>
 
             <!-- NÚT SUBMIT -->

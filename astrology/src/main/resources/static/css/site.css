@@ -5901,8 +5901,18 @@ body.dark-mode .title-actions .print-chart-btn:hover { background: #2e2a48; bord
     margin: 0;
 }
 
+.couple-auth-prompt {
+    width: 100%;
+    max-width: 100%;
+    margin: 24px 0 0 0;
+    padding: 14px 20px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
 .couple-form-footer {
-    margin-top: 28px;
+    margin-top: 24px;
     display: flex;
     justify-content: center;
     align-items: center;

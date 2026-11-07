@@ -31,6 +31,17 @@
 
     // Đồng bộ trạng thái trang hiện tại trên thanh điều hướng chính
     const currentNavPath = window.location.pathname;
+
+    // Tự động chuyển hướng nếu vừa đăng nhập xong từ một trang yêu cầu xác thực
+    try {
+        const targetRedirect = sessionStorage.getItem('tuvi_auth_redirect');
+        if (targetRedirect && currentNavPath === '/' && targetRedirect !== '/') {
+            sessionStorage.removeItem('tuvi_auth_redirect');
+            window.location.href = targetRedirect;
+            return;
+        }
+    } catch (e) {}
+
     const mainNavLinks = document.querySelectorAll('.main-nav a');
     if (mainNavLinks.length > 0) {
         mainNavLinks.forEach((link) => {
@@ -135,9 +146,85 @@
 
     const coupleForm = document.getElementById('coupleForm');
     if (coupleForm) {
-        coupleForm.addEventListener('submit', () => {
+        try {
+            const savedCouple = sessionStorage.getItem('tuvi_pending_couple_chart');
+            if (savedCouple) {
+                const data = JSON.parse(savedCouple);
+                if (data.name1 && document.getElementById('fullName1')) document.getElementById('fullName1').value = data.name1;
+                if (data.gender1) {
+                    const r1 = document.querySelector('input[name="gender1"][value="' + data.gender1 + '"]');
+                    if (r1) {
+                        r1.checked = true;
+                        updateGenderChoiceVisuals('gender1');
+                    }
+                }
+                const bDay1 = document.getElementById('birthDay1');
+                const bMonth1 = document.getElementById('birthMonth1');
+                const bYear1 = document.getElementById('birthYear1');
+                if (data.birthDay1 && bDay1) bDay1.value = data.birthDay1;
+                if (data.birthMonth1 && bMonth1) bMonth1.value = data.birthMonth1;
+                if (data.birthYear1 && bYear1) bYear1.value = data.birthYear1;
+                if (data.birthTime1 && document.getElementById('birthTime1')) document.getElementById('birthTime1').value = data.birthTime1;
+                if (data.birthplace1 && document.getElementById('birthplace1')) document.getElementById('birthplace1').value = data.birthplace1;
+
+                if (data.name2 && document.getElementById('fullName2')) document.getElementById('fullName2').value = data.name2;
+                if (data.gender2) {
+                    const r2 = document.querySelector('input[name="gender2"][value="' + data.gender2 + '"]');
+                    if (r2) {
+                        r2.checked = true;
+                        updateGenderChoiceVisuals('gender2');
+                    }
+                }
+                const bDay2 = document.getElementById('birthDay2');
+                const bMonth2 = document.getElementById('birthMonth2');
+                const bYear2 = document.getElementById('birthYear2');
+                if (data.birthDay2 && bDay2) bDay2.value = data.birthDay2;
+                if (data.birthMonth2 && bMonth2) bMonth2.value = data.birthMonth2;
+                if (data.birthYear2 && bYear2) bYear2.value = data.birthYear2;
+                if (data.birthTime2 && document.getElementById('birthTime2')) document.getElementById('birthTime2').value = data.birthTime2;
+                if (data.birthplace2 && document.getElementById('birthplace2')) document.getElementById('birthplace2').value = data.birthplace2;
+
+                if (syncCouple1) syncCouple1();
+                if (syncCouple2) syncCouple2();
+                sessionStorage.removeItem('tuvi_pending_couple_chart');
+            }
+        } catch (e) {}
+
+        coupleForm.addEventListener('submit', (e) => {
             if (syncCouple1) syncCouple1();
             if (syncCouple2) syncCouple2();
+
+            if (coupleForm.dataset.authenticated === 'false') {
+                e.preventDefault();
+                try {
+                    const bDay1 = document.getElementById('birthDay1');
+                    const bMonth1 = document.getElementById('birthMonth1');
+                    const bYear1 = document.getElementById('birthYear1');
+                    const bDay2 = document.getElementById('birthDay2');
+                    const bMonth2 = document.getElementById('birthMonth2');
+                    const bYear2 = document.getElementById('birthYear2');
+                    const data = {
+                        name1: document.getElementById('fullName1') ? document.getElementById('fullName1').value : '',
+                        gender1: document.querySelector('input[name="gender1"]:checked') ? document.querySelector('input[name="gender1"]:checked').value : 'Nam',
+                        birthDay1: bDay1 ? bDay1.value : '',
+                        birthMonth1: bMonth1 ? bMonth1.value : '',
+                        birthYear1: bYear1 ? bYear1.value : '',
+                        birthTime1: document.getElementById('birthTime1') ? document.getElementById('birthTime1').value : '',
+                        birthplace1: document.getElementById('birthplace1') ? document.getElementById('birthplace1').value : '',
+
+                        name2: document.getElementById('fullName2') ? document.getElementById('fullName2').value : '',
+                        gender2: document.querySelector('input[name="gender2"]:checked') ? document.querySelector('input[name="gender2"]:checked').value : 'Nữ',
+                        birthDay2: bDay2 ? bDay2.value : '',
+                        birthMonth2: bMonth2 ? bMonth2.value : '',
+                        birthYear2: bYear2 ? bYear2.value : '',
+                        birthTime2: document.getElementById('birthTime2') ? document.getElementById('birthTime2').value : '',
+                        birthplace2: document.getElementById('birthplace2') ? document.getElementById('birthplace2').value : ''
+                    };
+                    sessionStorage.setItem('tuvi_pending_couple_chart', JSON.stringify(data));
+                    sessionStorage.setItem('tuvi_auth_redirect', '/tuong-hop');
+                } catch (err) {}
+                window.location.href = '/login?required=true';
+            }
         });
     }
 

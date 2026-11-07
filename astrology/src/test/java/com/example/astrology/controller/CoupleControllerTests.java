@@ -240,4 +240,17 @@ class CoupleControllerTests {
 		assertTrue(compatibility.cungPhiTitle().contains("Đoài"));
 		assertTrue(compatibility.cungPhiTitle().contains("Phục Vị"));
 	}
+
+	@Test
+	void calculateCoupleUnauthenticatedRedirectsToLogin() {
+		ExtendedModelMap model = new ExtendedModelMap();
+
+		String viewName = controller.calculateCouple(
+				"Lê Đức Trung", "Nam", LocalDate.of(2005, 8, 14), 14, 8, 2005, LocalTime.of(17, 30), "Hà Nội",
+				"Hoàng Anh Vũ", "Nữ", LocalDate.of(2005, 4, 4), 4, 4, 2005, LocalTime.of(18, 0), "Hà Nội",
+				2026, null, model
+		);
+
+		assertEquals("redirect:/login?required=true", viewName);
+	}
 }
