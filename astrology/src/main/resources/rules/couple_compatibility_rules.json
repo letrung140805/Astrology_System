@@ -1,0 +1,302 @@
+{
+  "version": "2.0",
+  "name": "Bộ Quy Tắc 5 Trụ Cột Tương Hợp Tình Duyên (Song Bàn Hợp Hôn)",
+  "description": "Chuẩn hóa quy tắc đối chiếu song bàn theo 5 phương diện cốt lõi: Hòa hợp tình cảm, Giao tiếp, Tài chính, Độ bền trước biến cố, Sống chung",
+  "dimensions": [
+    {
+      "id": "EMOTIONAL",
+      "name": "Hòa hợp tình cảm",
+      "weight": 25,
+      "description": "Đối chiếu Cung Mệnh, Phu Thê, Phúc Đức, Đào Hồng Hỷ và ngũ hành nạp âm"
+    },
+    {
+      "id": "COMMUNICATION",
+      "name": "Giao tiếp",
+      "weight": 20,
+      "description": "Đối chiếu tương tác ngôn từ, ứng xử xã hội qua Nô Bộc, Thiên Di, Cự Môn, Hóa Kỵ"
+    },
+    {
+      "id": "FINANCIAL",
+      "name": "Tài chính",
+      "weight": 15,
+      "description": "Đối chiếu Cung Tài Bạch, Quan Lộc về quản trị kinh tế và tích lũy tiền bạc"
+    },
+    {
+      "id": "STABILITY",
+      "name": "Độ bền trước biến cố",
+      "weight": 20,
+      "description": "Đánh giá khả năng vượt qua sóng gió qua Lục sát tinh, Tuần Triệt và cát tinh cứu giải"
+    },
+    {
+      "id": "LIVING_TOGETHER",
+      "name": "Sống chung",
+      "weight": 20,
+      "description": "Đối chiếu Cung Điền Trạch, nếp sống sinh hoạt và sự hòa hợp trong tổ ấm"
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE_EMOTIONAL_CROSS_MENH_PHUTHE",
+      "dimension": "EMOTIONAL",
+      "name": "Hình mẫu bạn đời phản chiếu (Mệnh ↔ Phu Thê chéo)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "CROSS_MENH_PHUTHE_ANY",
+      "description": "Chính tinh Cung Mệnh của một trong hai người phản chiếu đúng cung Phu Thê của người kia. Bạn mang trọn vẹn nét tính cách, thần thái mà đối phương hằng mong ước ở người bạn đời lý tưởng.",
+      "advice": "Tự tin phát huy bản sắc riêng của mình vì đó chính là nét duyên cuốn hút đối phương sâu đậm nhất."
+    },
+    {
+      "id": "RULE_EMOTIONAL_DUAL_RESONANCE",
+      "dimension": "EMOTIONAL",
+      "name": "Song phương tương chiếu - Nhân duyên tiền định",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "CROSS_DUAL_RESONANCE",
+      "description": "Cả hai chiều Mệnh và Phu Thê của hai bạn đều giao thoa tương ứng. Hai người vừa gặp đã có cảm giác thân thuộc như nhân duyên tiền định (Soulmate Resonance), sức hút cảm xúc mãnh liệt.",
+      "advice": "Trân trọng mối duyên lành trời ban, luôn nuôi dưỡng tình cảm bằng sự thấu hiểu mỗi ngày."
+    },
+    {
+      "id": "RULE_EMOTIONAL_SHARED_STAR",
+      "dimension": "EMOTIONAL",
+      "name": "Đồng điệu chính tinh Mệnh / Phúc Đức",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "SHARED_STAR_MENH_OR_PHUC",
+      "description": "Cung Mệnh hoặc Cung Phúc Đức của hai bạn có chung chính tinh tọa thủ. Hai bạn dễ dàng cảm nhận và đồng điệu với thế giới nội tâm của nhau mà không cần quá nhiều lời giải thích.",
+      "advice": "Dùng sự đồng điệu để bao dung cho những lúc đối phương mệt mỏi thay vì phán xét."
+    },
+    {
+      "id": "RULE_EMOTIONAL_POLARITY_COMPLEMENT",
+      "dimension": "EMOTIONAL",
+      "name": "Bù trừ Âm - Dương hài hòa (Cương phối Nhu)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "MENH_POLARITY_COMPLEMENT",
+      "description": "Một người quyết đoán, độc lập (Cương) kết hợp cùng một người dịu dàng, chu đáo, biết lắng nghe (Nhu). Đây là thế bù trừ hoàn hảo theo triết lý Âm Dương của Tử Vi.",
+      "advice": "Nhìn nhận sự khác biệt của nhau như mảnh ghép bổ trợ quý giá để làm tròn đầy mối quan hệ."
+    },
+    {
+      "id": "RULE_EMOTIONAL_ROMANTIC_STARS",
+      "dimension": "EMOTIONAL",
+      "name": "Đào hoa duyên nợ hội tụ (Đào Hoa, Hồng Loan, Thiên Hỷ)",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "ROMANTIC_STARS_PRESENT",
+      "description": "Sự xuất hiện của các sao Đào Hoa, Hồng Loan, Thiên Hỷ tại Mệnh hoặc Phu Thê mang lại sự ngọt ngào, lãng mạn và sức hút tình cảm tự nhiên.",
+      "advice": "Duy trì những khoảnh khắc lãng mạn, hẹn hò riêng tư để hâm nóng tình yêu lứa đôi."
+    },
+    {
+      "id": "RULE_EMOTIONAL_PHUTHE_SOFTNESS",
+      "dimension": "EMOTIONAL",
+      "name": "Cung Phu Thê mềm mại & Nhân hậu",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "PHU_THE",
+      "stars": ["Thiên Đồng", "Thái Âm", "Thiên Lương", "Văn Xương", "Văn Khúc"],
+      "description": "Cung Phu Thê có các sao thiện tinh, phúc tinh dịu dàng. Mối quan hệ vợ chồng có độ mềm mại cao, hai bên biết lắng nghe, cư xử hòa nhã và thấu hiểu lẫn nhau.",
+      "advice": "Duy trì sự ân cần và cách xưng hô ngọt ngào trong sinh hoạt thường ngày."
+    },
+    {
+      "id": "RULE_EMOTIONAL_CO_THAN_QUA_TU",
+      "dimension": "EMOTIONAL",
+      "name": "Tâm tư khép kín (Cô Thần, Quả Tú)",
+      "category": "CHALLENGE",
+      "weight": -3,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "PHUC_DUC",
+      "stars": ["Cô Thần", "Quả Tú"],
+      "description": "Có sao Cô Thần hoặc Quả Tú tại Phúc Đức hoặc Mệnh. Đôi lúc một trong hai người có xu hướng thu mình vào thế giới riêng, cảm thấy cô đơn dù đang ở bên cạnh người mình yêu.",
+      "advice": "Người kia cần chủ động kiên nhẫn, tạo cảm giác an toàn để đối phương dễ dàng mở lòng tâm sự."
+    },
+    {
+      "id": "RULE_EMOTIONAL_NGU_HANH_SINH",
+      "dimension": "EMOTIONAL",
+      "name": "Ngũ hành bản mệnh tương sinh",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "TRADITIONAL_MENH_SINH",
+      "description": "Ngũ hành nạp âm bản mệnh tương sinh thuận lý, người này luôn biết nâng đỡ, tạo điểm tựa bình an và tiếp thêm sinh khí may mắn cho người kia.",
+      "advice": "Tiếp tục gìn giữ sự quan tâm ân cần và làm chỗ dựa tinh thần cho nhau."
+    },
+    {
+      "id": "RULE_EMOTIONAL_NGU_HANH_KHAC",
+      "dimension": "EMOTIONAL",
+      "name": "Ngũ hành bản mệnh tương khắc",
+      "category": "CHALLENGE",
+      "weight": -2,
+      "conditionType": "TRADITIONAL_MENH_KHAC",
+      "description": "Ngũ hành nạp âm bản mệnh tương khắc, đôi khi dẫn đến sự khác biệt về cảm xúc hoặc tốc độ phản ứng tâm lý, cần sự hòa hoãn.",
+      "advice": "Học cách nhường nhịn và lắng nghe; ngũ hành tương khắc hoàn toàn có thể hóa giải bằng sự bao dung."
+    },
+    {
+      "id": "RULE_COMM_CU_MON_GOOD",
+      "dimension": "COMMUNICATION",
+      "name": "Giao tiếp trí tuệ sắc bén (Cự Môn cát hóa)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "CU_MON_GOOD",
+      "description": "Sao Cự Môn đi kèm các sao thông tuệ (Hóa Khoa, Hóa Lộc, Tấu Thư). Hai bạn thích những cuộc trò chuyện sâu sắc, có tư duy phản biện cao và học hỏi được rất nhiều từ góc nhìn của nhau.",
+      "advice": "Duy trì thói quen trao đổi thẳng thắn và cùng chia sẻ các chủ đề cùng quan tâm."
+    },
+    {
+      "id": "RULE_COMM_CU_MON_CLASH",
+      "dimension": "COMMUNICATION",
+      "name": "Cảnh báo khẩu thiệt & Tranh luận cái tôi",
+      "category": "CHALLENGE",
+      "weight": -4,
+      "conditionType": "CU_MON_CLASH",
+      "description": "Sao Cự Môn gặp sát tinh hoặc xuất hiện ở Nô Bộc/Mệnh của cả hai người. Nguy cơ bất đồng dễ biến thành cuộc tranh luận để chứng minh ai đúng ai sai, gây tổn thương tình cảm.",
+      "advice": "Thực hành nghệ thuật giao tiếp bất bạo động: Khi cảm xúc dâng trào, hãy tạm dừng tranh luận 15 phút trước khi tiếp tục đối thoại."
+    },
+    {
+      "id": "RULE_COMM_THIEN_DI_SUPPORT",
+      "dimension": "COMMUNICATION",
+      "name": "Đồng hành ăn ý ngoài xã hội (Thiên Di hỗ trợ)",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "THIEN_DI",
+      "stars": ["Thiên Tướng", "Tả Phụ", "Hữu Bật", "Thiên Mã"],
+      "description": "Cung Thiên Di của hai người tương trợ tốt. Khi cùng nhau xuất hiện trước bạn bè, đối tác hoặc ra ngoài xã hội, hai bạn luôn biết giữ thể diện và nâng đỡ hình ảnh cho nhau.",
+      "advice": "Cùng nhau tham gia các hoạt động xã hội hoặc du lịch để mở rộng trải nghiệm chung."
+    },
+    {
+      "id": "RULE_COMM_HOA_KY",
+      "dimension": "COMMUNICATION",
+      "name": "Hiểu lầm & Nghi ngờ (Hóa Kỵ ngự chiếu)",
+      "category": "CHALLENGE",
+      "weight": -3,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "NO_BOC",
+      "stars": ["Hóa Kỵ"],
+      "description": "Sao Hóa Kỵ chiếu Cung Nô Bộc hoặc Phu Thê tạo ra tâm lý đa nghi, dễ suy diễn lời nói của đối phương theo chiều hướng tiêu cực.",
+      "advice": "Luôn xác nhận lại ý nghĩ thay vì suy đoán; đặt câu hỏi rõ ràng và tin tưởng đối phương."
+    },
+    {
+      "id": "RULE_FINANCE_WEALTH_STARS",
+      "dimension": "FINANCIAL",
+      "name": "Tài lộc hội tụ & Bổ trợ kinh tế",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "TAI_BACH",
+      "stars": ["Vũ Khúc", "Thiên Phủ", "Lộc Tồn", "Hóa Lộc"],
+      "description": "Cả hai đều có tài tinh tại Tài Bạch hoặc Quan Lộc. Khi ở cạnh nhau, hai bạn thúc đẩy may mắn tài lộc cho nhau, có tư duy kiếm tiền và quản lý tài chính thực tế.",
+      "advice": "Đồng thuận trong các kế hoạch đầu tư lớn; duy trì sự minh bạch tài chính gia đình."
+    },
+    {
+      "id": "RULE_FINANCE_HAO_STARS",
+      "dimension": "FINANCIAL",
+      "name": "Cảnh báo hao tài & Bất đồng chi tiêu",
+      "category": "CHALLENGE",
+      "weight": -3,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "TAI_BACH",
+      "stars": ["Đại Hao", "Tiểu Hao", "Địa Kiếp"],
+      "description": "Có sao hao tán tại Tài Bạch. Đôi bên có thể có phong cách chi tiêu khác nhau (một người phóng khoáng, một người tiết kiệm), dễ nảy sinh bất đồng về tiền bạc.",
+      "advice": "Lập ngân sách gia đình rõ ràng: Quỹ chi tiêu chung, Quỹ tiết kiệm khẩn cấp và Quỹ tự do cá nhân."
+    },
+    {
+      "id": "RULE_FINANCE_CAREER_DRIVE",
+      "dimension": "FINANCIAL",
+      "name": "Đồng lòng xây dựng sự nghiệp & Kinh tế bền vững",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "QUAN_LOC",
+      "stars": ["Tử Vi", "Thiên Phủ", "Hóa Quyền", "Hóa Khoa"],
+      "description": "Cung Quan Lộc vững chãi, hai bạn có chí hướng làm ăn rõ ràng, là hậu thuẫn và điểm tựa vững chắc cho nhau trên con đường gây dựng tài chính.",
+      "advice": "Khích lệ sự nghiệp của nhau, cùng nhau ăn mừng những cột mốc phát triển tài chính gia đình."
+    },
+    {
+      "id": "RULE_STABILITY_LUC_SAT",
+      "dimension": "STABILITY",
+      "name": "Thử thách tôi luyện từ Sát tinh (Kình, Đà, Hỏa, Linh, Không, Kiếp)",
+      "category": "CHALLENGE",
+      "weight": -3,
+      "conditionType": "SATS_STARS_PRESENT",
+      "stars": ["Kình Dương", "Đà La", "Hỏa Tinh", "Linh Tinh", "Địa Không", "Địa Kiếp"],
+      "description": "Sát tinh hiện diện tại các cung trọng điểm (Mệnh, Phu Thê) mang tính chất chuông báo động: Cuộc sống lứa đôi sẽ có những giai đoạn thử thách về tính khí nóng nảy hoặc hoàn cảnh khách quan.",
+      "advice": "Cổ nhân dạy: 'Đức năng thắng số'. Khi sóng gió ập đến, sự bình tĩnh, nhẫn nại và thủy chung chính là chiếc phao cứu sinh vững chắc nhất."
+    },
+    {
+      "id": "RULE_STABILITY_TUAN_TRIET",
+      "dimension": "STABILITY",
+      "name": "Cung Phu Thê gặp Tuần hoặc Triệt (Tiền hung hậu cát)",
+      "category": "NEUTRAL",
+      "weight": 3,
+      "conditionType": "PALACE_TUAN_TRIET",
+      "palace": "PHU_THE",
+      "description": "Cung Phu Thê có Tuần hoặc Triệt đóng. Chuyện tình cảm thuở đầu có thể trải qua thử thách, nhưng chính điều đó giúp tôi luyện tình yêu thêm son sắt, càng về hậu vận càng an yên bền vững.",
+      "advice": "Kiên nhẫn cùng nhau vượt qua các giai đoạn khó khăn ban đầu; không nên nản lòng trước những trắc trở nhất thời."
+    },
+    {
+      "id": "RULE_STABILITY_RESCUE_STARS",
+      "dimension": "STABILITY",
+      "name": "Cát tinh cứu giải phò trợ (Hóa Khoa, Khôi Việt, Giải Thần)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "RESCUE_STARS_PRESENT",
+      "stars": ["Hóa Khoa", "Thiên Khôi", "Thiên Việt", "Giải Thần", "Long Đức"],
+      "description": "Sự trợ lực của các sao cứu giải giúp hóa giải hung hiểm, chuyển nguy thành an. Dù mối quan hệ có lúc gặp bất đồng nhưng luôn có quý nhân hoặc cơ duyên giúp hai bạn hàn gắn êm đẹp.",
+      "advice": "Trân trọng sự giúp đỡ của gia đình và bạn bè thân thiết trong việc hòa giải những hiểu lầm."
+    },
+    {
+      "id": "RULE_STABILITY_BAT_TRACH",
+      "dimension": "STABILITY",
+      "name": "Khí trường Bát Trạch phong thủy hộ trì",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "TRADITIONAL_BAT_TRACH_GOOD",
+      "description": "Cung phi Bát Tự phối ngẫu tạo quẻ Sinh Khí hoặc Diên Niên thượng cát. Khí trường phong thủy hòa hợp, tăng sức đề kháng và độ bền cho mối quan hệ trước sóng gió cuộc sống.",
+      "advice": "Bố trí không gian phòng ngủ và hướng nhà hài hòa để tiếp tục đón nhận vượng khí."
+    },
+    {
+      "id": "RULE_LIVING_DIEN_TRACH_GOOD",
+      "dimension": "LIVING_TOGETHER",
+      "name": "Tổ ấm an cư vững chãi (Điền Trạch cát tinh)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "DIEN_TRACH",
+      "stars": ["Thái Âm", "Thiên Phủ", "Tử Vi", "Vũ Khúc"],
+      "description": "Cung Điền Trạch có các sao điền sản, phú tinh. Hai bạn có cùng quan điểm coi trọng không gian sống, biết vun vén trang hoàng tổ ấm và cùng nhau tích lũy nhà cửa ổn định.",
+      "advice": "Cùng nhau lập kế hoạch mua sắm, trang trí nhà cửa để tạo cảm giác gắn bó thân thuộc."
+    },
+    {
+      "id": "RULE_LIVING_DIEN_TRACH_UNSTABLE",
+      "dimension": "LIVING_TOGETHER",
+      "name": "Nhịp sống biến động & Thói quen khác biệt",
+      "category": "CHALLENGE",
+      "weight": -3,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "DIEN_TRACH",
+      "stars": ["Địa Không", "Địa Kiếp", "Đại Hao"],
+      "description": "Điền Trạch có sao biến động hao tán. Nhịp sinh hoạt hoặc thói quen ngăn nắp giữa hai người có sự khác biệt, dễ dẫn đến những cằn nhằn nhỏ trong đời sống thường nhật.",
+      "advice": "Phân chia công việc nhà rõ ràng, bao dung cho những thói quen nhỏ của nhau."
+    },
+    {
+      "id": "RULE_LIVING_PHUTHE_HARSHNESS",
+      "dimension": "LIVING_TOGETHER",
+      "name": "Cung Phu Thê cương nghị (Cần thêm sự mềm mại)",
+      "category": "CHALLENGE",
+      "weight": -2,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "PHU_THE",
+      "stars": ["Thất Sát", "Phá Quân", "Vũ Khúc"],
+      "description": "Cung Phu Thê có các sao võ cách thực tế. Hai bạn khi sống chung có xu hướng độc lập, giải quyết việc theo lý trí, nhưng đôi khi thiếu đi sự mềm mại, lãng mạn cần thiết cho đời sống lứa đôi.",
+      "advice": "Học cách hạ giọng khi căng thẳng, bộc lộ tình cảm một cách dịu dàng hơn thay vì chỉ hành động thực tế."
+    },
+    {
+      "id": "RULE_LIVING_DAILY_HABIT",
+      "dimension": "LIVING_TOGETHER",
+      "name": "Địa chi hòa hợp & Thói quen sinh hoạt đồng điệu",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "TRADITIONAL_CHI_HOP",
+      "description": "Địa chi năm sinh nằm trong vòng Tam Hợp hoặc Lục Hợp. Mối gắn kết cảm xúc bền chặt, thấu hiểu nhịp sinh hoạt và dễ hòa hợp nếp sống thường nhật khi về chung một nhà.",
+      "advice": "Tận dụng sự hòa hợp tự nhiên này để xây dựng mái ấm gia đình hạnh phúc, thuận hòa."
+    }
+  ]
+}

@@ -6009,6 +6009,17 @@ body.dark-mode .title-actions .print-chart-btn:hover { background: #2e2a48; bord
     font-family: 'Times New Roman', Times, Georgia, serif;
     font-weight: 700;
     color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.couple-heart-icon {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
 }
 
 .badge-success { background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; }
@@ -6472,6 +6483,566 @@ body.dark-mode .title-actions .print-chart-btn:hover { background: #2e2a48; bord
 }
 
 /* ==========================================================================
+   DASHBOARD TƯƠNG HỢP & BÀI LUẬN GIẢI GEMINI AI
+   ========================================================================== */
+
+.couple-subscores-dashboard {
+    background: #ffffff;
+    border: 1px solid #ebdcf5;
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 8px 30px rgba(110, 86, 207, 0.05);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(110, 86, 207, 0.08);
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+}
+
+.subscores-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #6e56cf;
+    text-transform: uppercase;
+    background: #f4f0ff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.dashboard-title-group h3 {
+    font-size: 22px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+}
+
+.dashboard-overall-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6e56cf 0%, #4338ca 100%);
+    color: #ffffff;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    box-shadow: 0 4px 14px rgba(110, 86, 207, 0.25);
+}
+
+.dashboard-overall-pill strong {
+    font-size: 16px;
+    color: #fef08a;
+}
+
+.subscores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px 28px;
+}
+
+.subscore-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subscore-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.subscore-name {
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subscore-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563;
+    line-height: 1;
+}
+
+.subscore-outline-icon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.subscore-val {
+    font-weight: 700;
+    color: #6e56cf;
+}
+
+.subscore-bar-bg {
+    height: 9px;
+    background: #ede9f6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.subscore-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.8s ease-in-out;
+}
+
+.fill-attraction { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.fill-personality { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+.fill-partner { background: linear-gradient(90deg, #8b5cf6, #a855f7); }
+.fill-emotional { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.fill-communication { background: linear-gradient(90deg, #f59e0b, #eab308); }
+.fill-dailylife { background: linear-gradient(90deg, #06b6d4, #0ea5e9); }
+.fill-financial { background: linear-gradient(90deg, #10b981, #059669); }
+.fill-stability { background: linear-gradient(90deg, #6366f1, #4f46e5); }
+.fill-living { background: linear-gradient(90deg, #06b6d4, #0ea5e9); }
+
+.subscores-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px 24px;
+}
+
+/* BÀI LUẬN GIẢI GEMINI AI */
+.couple-ai-interpretation {
+    background: #ffffff;
+    border: 1px solid #e2d9f3;
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 36px rgba(110, 86, 207, 0.06);
+}
+
+.ai-interpretation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(110, 86, 207, 0.1);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+}
+
+.ai-header-clean {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(110, 86, 207, 0.1);
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+}
+
+.ai-header-clean .ai-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ai-header-clean .ai-header-left h3 {
+    margin: 0;
+    font-size: 24px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.ai-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ai-avatar-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 4px 14px rgba(110, 86, 207, 0.2);
+    border: 2px solid #ebdcf5;
+}
+
+.ai-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #6e56cf;
+}
+
+.ai-header-left h3 {
+    font-size: 24px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 2px 0 0;
+}
+
+.ai-verified-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #047857;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+.ai-interpretation-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.ai-section-box {
+    background: #faf8fd;
+    border: 1px solid #ede4f7;
+    border-radius: 16px;
+    padding: 24px 28px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-section-box:hover {
+    box-shadow: 0 6px 20px rgba(110, 86, 207, 0.06);
+}
+
+.ai-section-box.section-strength {
+    border-left: 4px solid #10b981;
+    background: #f8fdfa;
+}
+
+.ai-section-box.section-warning {
+    border-left: 4px solid #f59e0b;
+    background: #fffdf8;
+}
+
+.ai-section-box.section-advice {
+    border-left: 4px solid #6e56cf;
+    background: #fbf9ff;
+}
+
+/* 5 TRỤ CỘT TƯƠNG HỢP CỐT LÕI */
+.factor-card {
+    border-radius: 16px;
+    padding: 24px 28px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.factor-card .ai-section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px dashed rgba(110, 86, 207, 0.12);
+    padding-bottom: 12px;
+}
+
+.factor-title-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.factor-meta-desc {
+    display: block;
+    font-size: 13px;
+    color: var(--muted, #64748b);
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.factor-score-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid rgba(110, 86, 207, 0.2);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    white-space: nowrap;
+}
+
+.factor-score-pill .score-pill-label {
+    font-size: 12px;
+    color: var(--muted, #64748b);
+}
+
+.factor-score-pill strong {
+    font-size: 15px;
+    color: #6e56cf;
+}
+
+.factor-emotional {
+    border-left: 4px solid #ec4899;
+    background: #fdf8fa;
+}
+.factor-emotional .section-num { background: #ec4899; }
+.factor-emotional .factor-score-pill strong { color: #ec4899; }
+
+.factor-communication {
+    border-left: 4px solid #f59e0b;
+    background: #fffdf7;
+}
+.factor-communication .section-num { background: #f59e0b; }
+.factor-communication .factor-score-pill strong { color: #d97706; }
+
+.factor-financial {
+    border-left: 4px solid #10b981;
+    background: #f7fdf9;
+}
+.factor-financial .section-num { background: #10b981; }
+.factor-financial .factor-score-pill strong { color: #059669; }
+
+.factor-stability {
+    border-left: 4px solid #6366f1;
+    background: #f9f9ff;
+}
+.factor-stability .section-num { background: #6366f1; }
+.factor-stability .factor-score-pill strong { color: #4f46e5; }
+
+.factor-living {
+    border-left: 4px solid #06b6d4;
+    background: #f6fcfe;
+}
+.factor-living .section-num { background: #06b6d4; }
+.factor-living .factor-score-pill strong { color: #0891b2; }
+
+.factor-conclusion {
+    border-left: 4px solid #6366f1;
+    background: linear-gradient(135deg, #fbfaff 0%, #f4f2ff 100%);
+    box-shadow: 0 4px 18px rgba(99, 102, 241, 0.05);
+}
+.factor-conclusion .section-num.conclusion-num {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
+}
+.factor-conclusion .section-num.conclusion-num svg {
+    stroke: #ffffff;
+}
+
+#scrollToAnalysisBtn {
+    background: linear-gradient(135deg, #6158a8 0%, #483d8b 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 10px 24px !important;
+    font-size: 14.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(97, 88, 168, 0.35) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#scrollToAnalysisBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(97, 88, 168, 0.45) !important;
+    opacity: 0.95;
+    color: #ffffff !important;
+}
+
+#scrollToAnalysisBtn:active {
+    transform: translateY(0);
+}
+
+.ai-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.section-num {
+    font-size: 13px;
+    font-weight: 800;
+    background: #6e56cf;
+    color: #ffffff;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-strength .section-num { background: #10b981; }
+.section-warning .section-num { background: #f59e0b; }
+.section-advice .section-num { background: #6e56cf; }
+
+.ai-section-title h4 {
+    font-size: 19px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+}
+
+.ai-section-content {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #2e2a3b;
+}
+
+.ai-section-content p {
+    margin: 0 0 12px;
+}
+
+.ai-section-content p:last-child {
+    margin-bottom: 0;
+}
+
+.ai-section-content ul, .ai-section-content ol {
+    margin: 10px 0 14px 20px;
+    padding: 0;
+}
+
+.ai-section-content li {
+    margin-bottom: 8px;
+}
+
+/* QUY TẮC TỬ VI KÍCH HOẠT */
+.couple-rules-section {
+    background: #ffffff;
+    border: 1px solid #ede8e2;
+    border-radius: 20px;
+    padding: 30px 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+}
+
+.rules-section-header {
+    margin-bottom: 24px;
+}
+
+.rules-section-header h3 {
+    font-size: 22px;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 4px 0 6px;
+}
+
+.rules-section-header p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+}
+
+.rules-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.rule-badge-card {
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e7eb;
+}
+
+.rule-cat-strength {
+    background: #f9fefb;
+    border-color: #d1fae5;
+}
+
+.rule-cat-challenge {
+    background: #fffcf5;
+    border-color: #fef3c7;
+}
+
+.rule-cat-neutral {
+    background: #fbfbfe;
+    border-color: #e5e7eb;
+}
+
+.rule-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.rule-badge-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.rule-cat-strength .rule-badge-tag {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.rule-cat-challenge .rule-badge-tag {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.rule-cat-neutral .rule-badge-tag {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.rule-weight-badge {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.rule-cat-strength .rule-weight-badge { color: #059669; }
+.rule-cat-challenge .rule-weight-badge { color: #d97706; }
+.rule-cat-neutral .rule-weight-badge { color: #4b5563; }
+
+.rule-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 8px;
+}
+
+.rule-card-desc {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #4b5563;
+    margin: 0 0 12px;
+    flex-grow: 1;
+}
+
+.rule-card-advice {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6366f1;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px dashed rgba(99, 102, 241, 0.3);
+}
+
+/* ==========================================================================
    DARK MODE CHO TƯƠNG HỢP CẶP ĐÔI
    ========================================================================== */
 
@@ -6529,6 +7100,76 @@ body.dark-mode .advice-content {
 body.dark-mode .pillar-score {
     background: #2c274b !important;
     color: #c4b5fd !important;
+}
+
+body.dark-mode .couple-subscores-dashboard,
+body.dark-mode .couple-ai-interpretation,
+body.dark-mode .couple-rules-section {
+    background: #1b192c !important;
+    border-color: #312d4d !important;
+}
+
+body.dark-mode .subscore-name {
+    color: #e5e3ff !important;
+}
+
+body.dark-mode .subscore-bar-bg {
+    background: #2a2542 !important;
+}
+
+body.dark-mode .ai-section-box {
+    background: #201d36 !important;
+    border-color: #383256 !important;
+}
+
+body.dark-mode .factor-emotional,
+body.dark-mode .factor-communication,
+body.dark-mode .factor-financial,
+body.dark-mode .factor-stability,
+body.dark-mode .factor-living,
+body.dark-mode .factor-conclusion {
+    background: #201d36 !important;
+}
+
+body.dark-mode .subscore-icon-wrap {
+    color: #b5b0d8 !important;
+}
+
+body.dark-mode #scrollToAnalysisBtn {
+    background: linear-gradient(135deg, #6158a8 0%, #483d8b 100%) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .factor-meta-desc {
+    color: #9d97c7 !important;
+}
+
+body.dark-mode .factor-score-pill {
+    background: #27233f !important;
+    border-color: #433c69 !important;
+    color: #dedbff !important;
+}
+
+body.dark-mode .ai-section-content {
+    color: #dedbff !important;
+}
+
+body.dark-mode .rule-badge-card {
+    background: #201d36 !important;
+    border-color: #383256 !important;
+}
+
+body.dark-mode .rule-card-title {
+    color: #f3f0ff !important;
+}
+
+body.dark-mode .rule-card-desc {
+    color: #b5b0d8 !important;
+}
+
+body.dark-mode .rule-card-advice {
+    background: #27233f !important;
+    color: #a5b4fc !important;
 }
 
 @media (max-width: 992px) {

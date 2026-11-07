@@ -534,6 +534,14 @@
         });
     }
 
+    // Auto-render markdown on compatibility & AI sections
+    document.querySelectorAll('[data-markdown-content]').forEach((el) => {
+        const raw = el.dataset.rawContent || el.textContent;
+        if (raw && raw.trim()) {
+            el.innerHTML = renderMarkdown(raw.trim());
+        }
+    });
+
     if (chatForm && chatMessages) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
