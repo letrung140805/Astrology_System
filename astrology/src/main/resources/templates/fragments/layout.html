@@ -10,6 +10,7 @@
     <nav class="main-nav" aria-label="Điều hướng chính">
         <a th:href="@{/}" th:classappend="${activePage == 'home'} ? 'active' : ''">Trang chủ</a>
         <a th:href="@{/tuong-hop}" th:classappend="${activePage == 'tuong-hop'} ? 'active' : ''">Tương hợp tình duyên</a>
+        <a th:href="@{/tuong-hop-ban-be}" th:classappend="${activePage == 'tuong-hop-ban-be'} ? 'active' : ''">Tương hợp bạn bè</a>
         <a th:href="@{/about}" th:classappend="${activePage == 'about'} ? 'active' : ''">Giới thiệu</a>
         <a th:href="@{/history}" th:classappend="${activePage == 'history' or activePage == 'result'} ? 'active' : ''">Lịch sử lá số</a>
     </nav>
@@ -65,7 +66,7 @@
                 <a th:href="@{/account}" aria-label="Quản lý tài khoản"><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></a>
             </div>
         </div>
-        <div><h3>Tính năng chính</h3><a th:href="@{/}">Lập lá số Tử Vi</a><a th:href="@{/tuong-hop}">Tương hợp tình duyên</a><a th:href="@{/about}">Giới thiệu dự án</a></div>
+        <div><h3>Tính năng chính</h3><a th:href="@{/}">Lập lá số Tử Vi</a><a th:href="@{/tuong-hop}">Tương hợp tình duyên</a><a th:href="@{/tuong-hop-ban-be}">Tương hợp bạn bè</a><a th:href="@{/about}">Giới thiệu dự án</a></div>
         <div><h3>Hệ thống luận giải</h3><a th:href="@{/}">Lịch âm Việt Nam GMT+7</a><a th:href="@{/}">Can Chi và Nạp Âm</a><a th:href="@{/}">12 Cung và Tinh bàn</a></div>
         <div><h3>Thông tin</h3><a th:href="@{/about}">Nguyên lý tính toán</a><a th:href="@{/about}">Hướng dẫn sử dụng</a><a th:href="@{/about}">Chính sách bảo mật</a></div>
     </div>

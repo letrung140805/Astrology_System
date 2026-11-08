@@ -25,6 +25,8 @@ public class SecurityConfig {
 								"/",
 								"/tuong-hop",
 								"/tuong-hop/**",
+								"/tuong-hop-ban-be",
+								"/tuong-hop-ban-be/**",
 								"/about",
 								"/login",
 								"/login/**",

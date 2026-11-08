@@ -1,0 +1,430 @@
+{
+  "version": "2.0",
+  "name": "Bộ Quy Tắc 5 Yếu Tố Tương Hợp Bạn Bè & Cộng Sự (Song Bàn Đồng Đạo)",
+  "description": "Chuẩn hóa quy tắc đối chiếu song bàn theo 5 phương diện cốt lõi: Khả năng làm bạn/cộng sự (Nô Bộc), Giao tiếp & tương tác xã hội (Thiên Di), Tầm nhìn & cách làm việc (Quan Lộc), Giá trị sống & nguyên tắc (Mệnh/Phúc Đức), Tiền bạc & lợi ích (Tài Bạch)",
+  "dimensions": [
+    {
+      "id": "FRIEND_PARTNER",
+      "name": "Khả năng làm bạn/cộng sự",
+      "weight": 25,
+      "description": "Đối chiếu Cung Nô Bộc, Cung Huynh Đệ và tương quan Mệnh - Nô chéo về mức độ tin cậy và tương trợ"
+    },
+    {
+      "id": "COMMUNICATION",
+      "name": "Giao tiếp & tương tác xã hội",
+      "weight": 20,
+      "description": "Đối chiếu Cung Thiên Di, sao Cự Môn, Xương Khúc, Thái Dương về phong thái đối thoại và ứng xử"
+    },
+    {
+      "id": "VISION_WORK",
+      "name": "Tầm nhìn & cách làm việc",
+      "weight": 20,
+      "description": "Đối chiếu Cung Quan Lộc, phong cách hành động của các bộ Tử Phủ Vũ Tướng, Sát Phá Tham, Cơ Nguyệt Đồng Lương"
+    },
+    {
+      "id": "VALUES_PRINCIPLES",
+      "name": "Giá trị sống & nguyên tắc",
+      "weight": 15,
+      "description": "Đối chiếu Cung Mệnh, Thân, Phúc Đức, ngũ hành nạp âm, can chi về nhân sinh quan và chữ Tín"
+    },
+    {
+      "id": "FINANCIAL_BENEFIT",
+      "name": "Tiền bạc & lợi ích",
+      "weight": 20,
+      "description": "Đối chiếu Cung Tài Bạch, tài tinh Vũ Khúc, Thiên Phủ, Lộc Tồn và nguy cơ hao tinh khi hợp tác kinh tế"
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE_FRIEND_NOBOC_ASSISTANT_STARS",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Cung Nô Bộc hội Tả Phụ - Hữu Bật",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "NO_BOC",
+      "stars": ["Tả Phụ", "Hữu Bật"],
+      "description": "Cung Nô Bộc có Tả Phụ hoặc Hữu Bật tọa thủ/hội chiếu. Đây là cách cục đắc lực bậc nhất: bạn bè, đồng nghiệp và cộng sự có lòng phò tá, trợ lực hết mình và chia sẻ gánh nặng trong mọi hoàn cảnh.",
+      "advice": "Hãy luôn ghi nhận công sức và trân trọng sự đóng góp của bạn bè để duy trì tình bạn son sắt."
+    },
+    {
+      "id": "RULE_FRIEND_NOBOC_KHOI_VIET",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Cung Nô Bộc hội Thiên Khôi - Thiên Việt",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "NO_BOC",
+      "stars": ["Thiên Khôi", "Thiên Việt"],
+      "description": "Cung Nô Bộc xuất hiện quý tinh Thiên Khôi hoặc Thiên Việt. Đối tác, cộng sự chính là quý nhân nâng đỡ, mang đến nhiều cơ hội phát triển vượt bậc và mở lối thăng tiến.",
+      "advice": "Học hỏi từ những điểm mạnh của đối phương, khiêm tốn tiếp thu các lời khuyên giá trị từ cộng sự."
+    },
+    {
+      "id": "RULE_FRIEND_NOBOC_QUANG_QUY",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Cung Nô Bộc có Ân Quang - Thiên Quý",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "NO_BOC",
+      "stars": ["Ân Quang", "Thiên Quý"],
+      "description": "Ân Quang, Thiên Quý tại Nô Bộc biểu trưng cho bạn hữu chí tình chí nghĩa, lấy đạo đức và ân nghĩa đối đãi nhau. Mối quan hệ trong sáng, chân thành và đáng tin cậy.",
+      "advice": "Đối xử với nhau bằng chữ Tâm và sự chân thành, giữ trọn chữ Tín trong mọi lời hứa."
+    },
+    {
+      "id": "RULE_FRIEND_NOBOC_HOA_QUYEN_KHOA",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Cộng sự tài năng & có thực lực (Hóa Quyền / Hóa Khoa)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "NO_BOC",
+      "stars": ["Hóa Quyền", "Hóa Khoa"],
+      "description": "Nô Bộc hội tụ Hóa Quyền hoặc Hóa Khoa cho thấy cộng sự là người có năng lực chuyên môn sắc bén, uy tín và tiếng nói trong giới, tạo ra sức bật mạnh mẽ cho các dự án hợp tác.",
+      "advice": "Giao phó đúng người đúng việc, tôn trọng chuyên môn và quyền hạn xử lý công việc của đối phương."
+    },
+    {
+      "id": "RULE_FRIEND_CROSS_MENH_NOBOC",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Tương dung Mệnh ↔ Nô Bộc song phương",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "CROSS_MENH_NOBOC",
+      "description": "Chính tinh Cung Mệnh của bạn tương ứng với hình mẫu cộng sự lý tưởng trong Cung Nô Bộc của đối phương. Hai bên tìm thấy ở nhau người bạn đồng hành đúng kỳ vọng.",
+      "advice": "Tự tin phát huy cá tính và sở trường riêng vì đó chính là điều thu hút và tạo niềm tin nơi đối tác."
+    },
+    {
+      "id": "RULE_FRIEND_HUYNHDE_RESPECT",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Cung Huynh Đệ cát hòa - Tri kỷ đồng hành",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "HUYNH_DE",
+      "stars": ["Thiên Phủ", "Thiên Tướng", "Thiên Đồng", "Thiên Lương", "Hóa Lộc"],
+      "description": "Cung Huynh Đệ an định cát tinh mang đến năng lượng gắn kết như anh em ruột thịt. Cả hai coi nhau như tri kỷ, sẵn sàng san sẻ hoạn nạn và chung vui khi thành công.",
+      "advice": "Dành thời gian giao lưu ngoài công việc để thắt chặt tình cảm anh em, bằng hữu gắn bó."
+    },
+    {
+      "id": "RULE_FRIEND_NOBOC_SAT_TINH",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Cung Nô Bộc hội tụ Kình Đà / Không Kiếp",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "NO_BOC",
+      "stars": ["Kình Dương", "Đà La", "Địa Không", "Địa Kiếp"],
+      "description": "Cung Nô Bộc xuất hiện sát tinh chủ về va chạm, tranh đoạt hoặc bạn bè cạnh tranh ngầm. Trong quá trình hợp tác có thể nảy sinh những xung khắc cá tính hoặc cảm giác thất vọng.",
+      "advice": "Ngay từ đầu cần thiết lập ranh giới rõ ràng, không để cảm tính xen vào các thỏa thuận hợp tác."
+    },
+    {
+      "id": "RULE_FRIEND_NOBOC_HOA_KY",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Hóa Kỵ nhập Cung Nô Bộc - Nghi kỵ & Bất an",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "NO_BOC",
+      "stars": ["Hóa Kỵ"],
+      "description": "Hóa Kỵ tại Nô Bộc cảnh báo nguy cơ hiểu lầm, hoài nghi hoặc có kẻ tiểu nhân gièm pha gây chia rẽ tình bằng hữu. Đôi bên dễ có những suy diễn tiêu cực nếu không trao đổi trực tiếp.",
+      "advice": "Khi có gút mắc cần thẳng thắn đối thoại một-một, tuyệt đối không nghe lời đồn đoán bên ngoài."
+    },
+    {
+      "id": "RULE_FRIEND_NOBOC_PHUC_BINH",
+      "dimension": "FRIEND_PARTNER",
+      "name": "Phục Binh / Kiếp Sát tại Nô Bộc - Đề phòng phản trắc",
+      "category": "WARNING",
+      "weight": -4,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "NO_BOC",
+      "stars": ["Phục Binh", "Kiếp Sát", "Thiên Thương"],
+      "description": "Cung Nô Bộc có ám tinh hoặc bại tinh. Đề phòng các tình huống thiếu trung thực, giữ bí mật không tốt hoặc tranh chấp lợi ích khi dự án gặp khó khăn.",
+      "advice": "Mọi thỏa thuận hợp tác đều phải có văn bản, biên bản cam kết rõ ràng để bảo vệ cả hai bên."
+    },
+
+    {
+      "id": "RULE_FRIEND_COMM_THIEN_DI_HARMONY",
+      "dimension": "COMMUNICATION",
+      "name": "Cung Thiên Di ngoại giao hanh thông",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "THIEN_DI",
+      "stars": ["Thái Dương", "Thiên Đồng", "Hóa Khoa", "Văn Xương", "Văn Khúc"],
+      "description": "Cung Thiên Di tương sinh, sáng sủa giúp hai bạn khi cùng bước ra xã hội hay gặp gỡ đối tác ngoại giao đều tạo dựng được phong thái lịch lãm, kết nối thuận hòa và uy tín.",
+      "advice": "Phát huy thế mạnh ngoại giao chung để cùng nhau mở rộng quan hệ đối ngoại và tìm kiếm dự án mới."
+    },
+    {
+      "id": "RULE_FRIEND_COMM_CU_MON_KHOA",
+      "dimension": "COMMUNICATION",
+      "name": "Cự Môn đắc cách hội Hóa Khoa / Tấu Thư",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "CU_MON_GOOD",
+      "description": "Sao Cự Môn được hóa giải bởi Hóa Khoa, Hóa Lộc, Tấu Thư biến khẩu khí thành nghệ thuật đàm phán sắc sảo, ngôn từ thuyết phục và khả năng phản biện xây dựng tuyệt vời.",
+      "advice": "Tận dụng tài hùng biện và phân tích logic để hỗ trợ giải quyết các bế tắc trong công việc chung."
+    },
+    {
+      "id": "RULE_FRIEND_COMM_XUONG_KHUC",
+      "dimension": "COMMUNICATION",
+      "name": "Văn Xương - Văn Khúc nhã nhặn & Tinh tế",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "MENH",
+      "stars": ["Văn Xương", "Văn Khúc"],
+      "description": "Xương Khúc mang đến văn phong đối thoại hòa nhã, lịch thiệp, tôn trọng quan điểm cá nhân và luôn biết đặt mình vào góc nhìn của đối phương để lắng nghe.",
+      "advice": "Duy trì văn hóa giao tiếp tôn trọng, dùng ngôn từ khích lệ thay vì chỉ trích nặng lời."
+    },
+    {
+      "id": "RULE_FRIEND_COMM_THAI_DUONG",
+      "dimension": "COMMUNICATION",
+      "name": "Thái Dương quang minh - Cởi mở & Bộc trực",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "MENH",
+      "stars": ["Thái Dương"],
+      "description": "Thái Dương đại diện cho sự thẳng thắn, hào sảng và năng lượng tích cực. Giao tiếp giữa hai bạn luôn rõ ràng, minh bạch, không giấu giếm hay mưu toan ngầm.",
+      "advice": "Sự bộc trực là điểm cộng lớn, chỉ cần chú ý chọn thời điểm phù hợp khi góp ý vấn đề nhạy cảm."
+    },
+    {
+      "id": "RULE_FRIEND_COMM_THIEN_CO",
+      "dimension": "COMMUNICATION",
+      "name": "Thiên Cơ linh hoạt - Thấu cảm ý tứ nhanh nhạy",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "MENH",
+      "stars": ["Thiên Cơ"],
+      "description": "Thiên Cơ mẫn tiệp, tư duy biến hóa nhanh giúp bạn bắt nhịp cực nhanh các ý tưởng của cộng sự, trao đổi công việc ngắn gọn nhưng đạt hiệu quả cao.",
+      "advice": "Chia sẻ ý tưởng thường xuyên bằng các buổi thảo luận ngắn (brainstorming) để cùng tối ưu kế hoạch."
+    },
+    {
+      "id": "RULE_FRIEND_COMM_CU_MON_CLASH",
+      "dimension": "COMMUNICATION",
+      "name": "Cự Môn ngộ sát tinh - Cảnh báo khẩu thiệt tranh cãi",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "CU_MON_CLASH",
+      "description": "Cự Môn gặp Kình Dương, Đà La hoặc Hóa Kỵ gây ra khẩu thiệt, lời qua tiếng lại gay gắt. Một câu nói vô ý có thể khiến đối phương tự ái hoặc làm rạn nứt lòng tin.",
+      "advice": "Khi có mâu thuẫn cần giữ bình tĩnh, tuyệt đối không buông lời lúc giận dữ; tạm hoãn cuộc họp nếu thấy căng thẳng."
+    },
+    {
+      "id": "RULE_FRIEND_COMM_THAI_TUE_STUBBORN",
+      "dimension": "COMMUNICATION",
+      "name": "Thái Tuế / Bạch Hổ bảo thủ quan điểm",
+      "category": "WARNING",
+      "weight": -4,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "MENH",
+      "stars": ["Thái Tuế", "Bạch Hổ", "Quan Phù"],
+      "description": "Cái tôi và chính kiến của cả hai đều rất mạnh mẽ, ai cũng tin vào lập luận của mình dẫn đến tình trạng tranh luận không có hồi kết, khó đạt được đồng thuận chung.",
+      "advice": "Tập thói quen lắng nghe trọn vẹn luận điểm của đối tác trước khi phản bác; lấy lợi ích chung làm trọng tài."
+    },
+
+    {
+      "id": "RULE_FRIEND_WORK_COMPLEMENT_CUONG_NHU",
+      "dimension": "VISION_WORK",
+      "name": "Bổ trợ Cương - Nhu hoàn hảo trong phong cách làm việc",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "MENH_POLARITY_COMPLEMENT",
+      "description": "Một người quyết đoán, dám chấp nhận thử thách (Cương) bắt tay cùng một người cẩn trọng, tỉ mỉ, có khả năng quản trị vận hành (Nhu). Đây là bộ đôi cộng sự vô cùng ăn ý trong thực chiến.",
+      "advice": "Phân định rõ người nắm chiến lược mở đường và người phụ trách hậu cần điều phối."
+    },
+    {
+      "id": "RULE_FRIEND_WORK_TU_PHU_VU_TUONG",
+      "dimension": "VISION_WORK",
+      "name": "Cung Quan Lộc thuộc bộ Tử Phủ Vũ Tướng - Quy củ & Vững vàng",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "QUAN_LOC",
+      "stars": ["Tử Vi", "Thiên Phủ", "Vũ Khúc", "Thiên Tướng"],
+      "description": "Phong cách làm việc có tổ chức, định hướng dài hạn, tôn trọng quy chuẩn và chuẩn mực quản lý. Dự án được triển khai với tính kỷ luật cao và kiểm soát rủi ro chắc chắn.",
+      "advice": "Phát huy năng lực xây dựng quy trình và tiêu chuẩn hóa hệ thống công việc chung."
+    },
+    {
+      "id": "RULE_FRIEND_WORK_SAT_PHA_THAM",
+      "dimension": "VISION_WORK",
+      "name": "Cung Quan Lộc thuộc bộ Sát Phá Tham - Tiên phong đột phá",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "QUAN_LOC",
+      "stars": ["Thất Sát", "Phá Quân", "Tham Lang"],
+      "description": "Khát vọng lớn, dám đổi mới, không ngại thử nghiệm cái mới và tốc độ thực thi nhanh như chớp. Khi bắt tay vào việc, hai bạn mang đến nguồn sinh khí dồi dào, mở ra thị trường mới.",
+      "advice": "Tận dụng tốc độ và sự nhạy bén thị trường, nhưng cần có kế hoạch dự phòng cho các biến cố bất ngờ."
+    },
+    {
+      "id": "RULE_FRIEND_WORK_CO_NGUYET_DONG_LUONG",
+      "dimension": "VISION_WORK",
+      "name": "Cung Quan Lộc bộ Cơ Nguyệt Đồng Lương - Tham mưu & Chiến lược",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "QUAN_LOC",
+      "stars": ["Thiên Cơ", "Thái Âm", "Thiên Đồng", "Thiên Lương"],
+      "description": "Tư duy phân tích chu đáo, giỏi hoạch định chi tiết và duy trì sự ổn định bền bỉ. Mối quan hệ cộng tác ít sóng gió, dựa trên sự chuẩn bị kỹ càng từ trước.",
+      "advice": "Khuyến khích đưa ra các sáng kiến đổi mới để tránh bị rơi vào lối mòn hoặc thiếu tính đột phá."
+    },
+    {
+      "id": "RULE_FRIEND_WORK_POWER_CLASH",
+      "dimension": "VISION_WORK",
+      "name": "Cuộc chiến cái tôi - Nguy cơ tranh giành quyền lãnh đạo",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "POWER_CLASH",
+      "description": "Cả hai đều có cá tính lãnh đạo cực mạnh (Thất Sát, Phá Quân hoặc Tử Vi độc tôn ở Mệnh/Quan). Ai cũng muốn là người quyết định cuối cùng, dễ dẫn đến xung đột thẩm quyền và triệt tiêu sức mạnh lẫn nhau.",
+      "advice": "Bắt buộc phải thỏa thuận rõ vai trò: ai là người đưa ra quyết định ở mảng nào; tôn trọng quyền hạn độc lập của nhau."
+    },
+    {
+      "id": "RULE_FRIEND_WORK_TUAN_TRIET",
+      "dimension": "VISION_WORK",
+      "name": "Cung Quan Lộc ngộ Tuần / Triệt - Khởi đầu nhiều trắc trở",
+      "category": "WARNING",
+      "weight": -4,
+      "conditionType": "PALACE_TUAN_TRIET",
+      "palace": "QUAN_LOC",
+      "description": "Tuần Triệt án ngữ Cung Quan Lộc báo hiệu giai đoạn khởi đầu dự án chung sẽ gặp không ít khó khăn, trở ngại bất ngờ hoặc thay đổi kế hoạch liên tục.",
+      "advice": "Kiên trì vượt qua giai đoạn thử thách ban đầu, chuẩn bị vốn và thời gian dư dả hơn dự kiến."
+    },
+
+    {
+      "id": "RULE_FRIEND_VALUES_THIEN_LUONG_PHU",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Thiên Lương - Thiên Phủ: Lấy chữ Tín làm trọng",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "MENH",
+      "stars": ["Thiên Lương", "Thiên Phủ", "Hóa Khoa"],
+      "description": "Mệnh hoặc Phúc Đức tọa thủ các phúc tinh thiện lương. Hai bạn cùng chia sẻ một nền tảng đạo đức cao thượng, trọng danh dự, coi chữ Tín quý hơn vàng và luôn giữ lời hứa.",
+      "advice": "Đây là tài sản vô giá của mối quan hệ, hãy luôn giữ sự quang minh chính đại trong mọi giao dịch."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_PHUC_DUC_CAT",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Cung Phúc Đức đồng điệu & Hội cát tinh",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "PHUC_DUC",
+      "stars": ["Tử Vi", "Thiên Phủ", "Thiên Đồng", "Phúc Đức", "Nguyệt Đức", "Giải Thần"],
+      "description": "Cung Phúc Đức tốt lành mang đến sự tương đồng sâu sắc về nhân sinh quan, quan niệm sống nhân văn và tấm lòng bao dung khi đối phương gặp khó khăn.",
+      "advice": "Cùng nhau tham gia các hoạt động thiện nguyện, chia sẻ giá trị tinh thần tích cực cho cộng đồng."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_MENH_SINH",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Ngũ hành bản mệnh tương sinh",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "TRADITIONAL_MENH_SINH",
+      "description": "Bản mệnh nạp âm của hai người ở thế tương sinh thuận hòa. Một bên là nguồn năng lượng nâng đỡ, tiếp sức và khích lệ người kia phát triển toàn diện.",
+      "advice": "Bên tương sinh hãy kiên nhẫn làm hậu phương hỗ trợ, bên được tương sinh biết trân trọng và đền đáp tấm lòng."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_CAN_HOP",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Thiên can ngũ hợp trời ban",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "TRADITIONAL_CAN_HOP",
+      "description": "Thiên can năm sinh thuộc cặp ngũ hợp đại cát. Hai bạn có sự đồng điệu bẩm sinh về mặt tư tưởng, tầm nhìn xa và sự gắn bó khắng khít trong các nguyên tắc cốt lõi.",
+      "advice": "Nuôi dưỡng chí hướng chung để cùng nhau kiến tạo những giá trị to lớn cho xã hội."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_CHI_HOP",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Địa chi Tam Hợp / Lục Hợp - Bằng hữu chí cốt",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "TRADITIONAL_CHI_HOP",
+      "description": "Địa chi hai bạn nằm trong vòng Tam Hợp hoặc Lục Hợp. Tình bằng hữu bền vững theo năm tháng, có duyên nợ tốt lành và sự thấu cảm tự nhiên.",
+      "advice": "Trân trọng duyên lành trời ban, luôn đồng hành cùng nhau qua các bước ngoặt cuộc đời."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_MENH_KHAC",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Ngũ hành nạp âm tương khắc - Khác biệt quan điểm",
+      "category": "WARNING",
+      "weight": -4,
+      "conditionType": "TRADITIONAL_MENH_KHAC",
+      "description": "Ngũ hành bản mệnh ở thế tương khắc. Khí chất và cách tiếp cận cuộc sống của hai người có phần đối nghịch, đòi hỏi sự kiên nhẫn thích nghi lớn hơn bình thường.",
+      "advice": "Tôn trọng sự khác biệt của nhau, không áp đặt quan điểm chủ quan lên người bạn đồng hành."
+    },
+
+    {
+      "id": "RULE_FRIEND_FINANCE_VU_KHUC_HOA_LOC",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Vũ Khúc - Hóa Lộc: Thần tài tương trợ, mở rộng nguồn thu",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "TAI_BACH",
+      "stars": ["Vũ Khúc", "Hóa Lộc"],
+      "description": "Cung Tài Bạch xuất hiện đệ nhất tài tinh Vũ Khúc hội Hóa Lộc. Khả năng phát hiện cơ hội kiếm tiền và tạo dòng tiền nhanh chóng, đưa sự nghiệp hợp tác lên nấc thang mới.",
+      "advice": "Mạnh dạn nắm bắt cơ hội kinh doanh nhưng cần duy trì minh bạch dòng tiền thu về."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_THIEN_PHU_LOC_TON",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Thiên Phủ - Lộc Tồn: Quản trị tài chính & Tích lũy vững bền",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "TAI_BACH",
+      "stars": ["Thiên Phủ", "Lộc Tồn"],
+      "description": "Thiên Phủ quản lý kho tiền cùng Lộc Tồn bảo toàn tài sản. Hai bạn kiểm soát ngân sách rất chặt chẽ, không bao giờ để tiền bạc bị thất thoát lãng phí.",
+      "advice": "Tích lũy quỹ dự phòng an toàn cho dự án, tái đầu tư lợi nhuận một cách bài bản."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_WIN_WIN",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Cộng hưởng tài chính Win - Win (Người kiếm tiền + Người giữ tiền)",
+      "category": "STRENGTH",
+      "weight": 5,
+      "conditionType": "FINANCE_WIN_WIN",
+      "description": "Sự phối hợp lý tưởng: một bên xông xáo mở rộng kinh doanh, đàm phán hợp đồng giá trị; một bên cẩn trọng thẩm định tài chính, quản lý dòng tiền chi tiêu.",
+      "advice": "Tôn trọng tuyệt đối vai trò của nhau, định kỳ họp tài chính minh bạch để phân bổ lợi nhuận công bằng."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_HAO_TINH",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Đại Hao - Tiểu Hao: Cảnh báo thất thoát chi phí",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "TAI_BACH",
+      "stars": ["Đại Hao", "Tiểu Hao"],
+      "description": "Hao tinh chiếu Tài Bạch báo hiệu chi phí vận hành có thể bị đội lên quá mức, hoặc chi tiêu ngoài kế hoạch khiến biên lợi nhuận bị bào mòn nghiêm trọng.",
+      "advice": "Lập kế hoạch ngân sách chi tiết từ đầu, mọi khoản chi tiêu lớn đều cần chữ ký đồng thuận của cả hai bên."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_KHONG_KIEP",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Địa Không - Địa Kiếp ngộ Tài: Rủi ro tài chính bất ngờ",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "TAI_BACH",
+      "stars": ["Địa Không", "Địa Kiếp"],
+      "description": "Không Kiếp tại Tài Bạch là dấu hiệu của những biến động dòng tiền thất thường, rủi ro đầu tư mạo hiểm hoặc mất mát tài sản bất khả kháng nếu sơ suất.",
+      "advice": "Tuyệt đối không tham gia các kênh đầu tư rủi ro cao hoặc đòn bẩy quá mức khi hợp tác chung."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_HOA_KY",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Hóa Kỵ nhập Tài Bạch: Tranh chấp phân chia lợi ích",
+      "category": "WARNING",
+      "weight": -5,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "TAI_BACH",
+      "stars": ["Hóa Kỵ"],
+      "description": "Hóa Kỵ tại Tài Bạch cảnh báo nguy cơ lớn nhất trong mối quan hệ làm ăn: mập mờ sổ sách tài chính, nghi ngờ lòng tham hoặc bất đồng tỷ lệ chia lợi nhuận.",
+      "advice": "Tách bạch rành mạch tài chính cá nhân và tài chính công việc; sử dụng phần mềm kế toán hoặc kiểm toán độc lập."
+    }
+  ]
+}

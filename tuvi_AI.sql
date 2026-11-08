@@ -246,6 +246,48 @@ CREATE TABLE IF NOT EXISTS couple_charts (
     INDEX idx_couple_charts_created (created_at)
 ) ENGINE=InnoDB;
 
+-- 9. FRIEND CHARTS (LÁ SỐ BẠN BÈ & CỘNG SỰ)
+CREATE TABLE IF NOT EXISTS friend_charts (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NULL,
+    name_1 VARCHAR(150) NOT NULL,
+    gender_1 VARCHAR(20) NOT NULL,
+    birth_date_1 DATE NOT NULL,
+    birth_time_1 TIME NULL,
+    birthplace_1 VARCHAR(150),
+    ban_menh_1 VARCHAR(100),
+    can_chi_1 VARCHAR(50),
+    name_2 VARCHAR(150) NOT NULL,
+    gender_2 VARCHAR(20) NOT NULL,
+    birth_date_2 DATE NOT NULL,
+    birth_time_2 TIME NULL,
+    birthplace_2 VARCHAR(150),
+    ban_menh_2 VARCHAR(100),
+    can_chi_2 VARCHAR(50),
+    total_score INT NOT NULL,
+    rating VARCHAR(100),
+    rating_color VARCHAR(50),
+    partner_score DOUBLE,
+    communication_score DOUBLE,
+    vision_score DOUBLE,
+    values_score DOUBLE,
+    money_score DOUBLE,
+    partner_interpretation TEXT,
+    communication_interpretation TEXT,
+    vision_interpretation TEXT,
+    values_interpretation TEXT,
+    money_interpretation TEXT,
+    conclusion TEXT,
+    advice TEXT,
+    access_token_hash VARCHAR(64),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_friend_charts_user
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    INDEX idx_friend_charts_user (user_id),
+    INDEX idx_friend_charts_created (created_at)
+) ENGINE=InnoDB;
+
 -- ============================================================
 -- UPGRADE PROCEDURE FOR EXISTING DATABASES (TỰ ĐỘNG NÂNG CẤP)
 -- ============================================================

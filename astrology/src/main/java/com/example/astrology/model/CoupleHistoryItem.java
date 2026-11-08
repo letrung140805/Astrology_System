@@ -1,4 +1,4 @@
-﻿package com.example.astrology.model;
+package com.example.astrology.model;
 
 import java.time.LocalDateTime;
 

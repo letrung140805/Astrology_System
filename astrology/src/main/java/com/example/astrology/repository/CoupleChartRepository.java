@@ -1,4 +1,4 @@
-﻿package com.example.astrology.repository;
+package com.example.astrology.repository;
 
 import java.util.List;
 import java.util.Optional;

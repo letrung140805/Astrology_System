@@ -7222,7 +7222,8 @@ body.dark-mode .rule-card-advice {
 }
 
 /* Thẻ lịch sử cặp đôi */
-.couple-history-timeline-section {
+.couple-history-timeline-section,
+.friend-history-timeline-section {
     margin-top: 40px;
     margin-bottom: 40px;
 }
@@ -7277,7 +7278,8 @@ body.dark-mode .rule-card-advice {
     line-height: 1.35;
 }
 
-.couple-history-names .couple-heart-icon {
+.couple-history-names .couple-heart-icon,
+.couple-history-names .friend-handshake-icon {
     color: #8c85b5;
     flex-shrink: 0;
 }

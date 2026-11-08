@@ -1,4 +1,4 @@
-﻿package com.example.astrology.service;
+package com.example.astrology.service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

@@ -33,6 +33,7 @@ import com.example.astrology.model.StoredBirthChartPageData;
 import com.example.astrology.service.BirthChartApplicationService;
 import com.example.astrology.service.BirthChartPersistenceService;
 import com.example.astrology.service.CoupleChartPersistenceService;
+import com.example.astrology.service.FriendChartPersistenceService;
 
 @Controller
 public class WebController {
@@ -40,12 +41,14 @@ public class WebController {
 	private static final Logger logger = LoggerFactory.getLogger(WebController.class);
 	private static final String GUEST_HISTORY_SESSION_KEY = "guestBirthChartHistory";
 	private static final String GUEST_COUPLE_HISTORY_SESSION_KEY = "guestCoupleChartHistory";
+	private static final String GUEST_FRIEND_HISTORY_SESSION_KEY = "guestFriendChartHistory";
 	private static final DateTimeFormatter BIRTH_DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private static final DateTimeFormatter BIRTH_TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
 	private final BirthChartApplicationService birthChartApplicationService;
 	private final BirthChartPersistenceService birthChartPersistenceService;
 	private final CoupleChartPersistenceService coupleChartPersistenceService;
+	private final FriendChartPersistenceService friendChartPersistenceService;
 	private final UserService userService;
 
 	@Autowired
@@ -53,17 +56,19 @@ public class WebController {
 			BirthChartApplicationService birthChartApplicationService,
 			BirthChartPersistenceService birthChartPersistenceService,
 			CoupleChartPersistenceService coupleChartPersistenceService,
+			FriendChartPersistenceService friendChartPersistenceService,
 			UserService userService) {
 		this.birthChartApplicationService = birthChartApplicationService;
 		this.birthChartPersistenceService = birthChartPersistenceService;
 		this.coupleChartPersistenceService = coupleChartPersistenceService;
+		this.friendChartPersistenceService = friendChartPersistenceService;
 		this.userService = userService;
 	}
 
 	public WebController(
 			BirthChartApplicationService birthChartApplicationService,
 			BirthChartPersistenceService birthChartPersistenceService) {
-		this(birthChartApplicationService, birthChartPersistenceService, null, null);
+		this(birthChartApplicationService, birthChartPersistenceService, null, null, null);
 	}
 
 	@GetMapping("/")
@@ -250,6 +255,12 @@ public class WebController {
 		} else {
 			model.addAttribute("coupleHistoryItems", List.of());
 		}
+		if (friendChartPersistenceService != null) {
+			model.addAttribute("friendHistoryItems", friendChartPersistenceService.history(
+					principalName, principalName == null ? guestFriendTokens(session) : List.of()));
+		} else {
+			model.addAttribute("friendHistoryItems", List.of());
+		}
 		model.addAttribute("guestHistory", principalName == null);
 		return "history";
 	}
@@ -266,6 +277,24 @@ public class WebController {
 					validTokens.add(UUID.fromString(value));
 				} catch (IllegalArgumentException exception) {
 					logger.warn("Ignoring malformed guest couple chart token in HTTP session.");
+				}
+			}
+		}
+		return List.copyOf(validTokens);
+	}
+
+	private static List<UUID> guestFriendTokens(HttpSession session) {
+		Object stored = session.getAttribute(GUEST_FRIEND_HISTORY_SESSION_KEY);
+		if (!(stored instanceof List<?> tokens)) {
+			return List.of();
+		}
+		List<UUID> validTokens = new ArrayList<>();
+		for (Object token : tokens) {
+			if (token instanceof String value) {
+				try {
+					validTokens.add(UUID.fromString(value));
+				} catch (IllegalArgumentException exception) {
+					logger.warn("Ignoring malformed guest friend chart token in HTTP session.");
 				}
 			}
 		}

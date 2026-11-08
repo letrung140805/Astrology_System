@@ -93,6 +93,54 @@
             </div>
         </div>
     </section>
+
+    <!-- SECTION: LỊCH SỬ LÁ SỐ TƯƠNG HỢP BẠN BÈ & CỘNG SỰ -->
+    <section class="timeline-section friend-history-timeline-section">
+        <div class="section-heading">
+            <span class="eyebrow">TƯƠNG HỢP BẠN BÈ &amp; CỘNG SỰ</span>
+            <h2>Lịch sử lá số tương hợp bạn bè</h2>
+            <p>Hồ sơ đối chiếu 2 lá số và bản luận giải chi tiết 5 yếu tố bạn bè &amp; đối tác.</p>
+        </div>
+
+        <!-- Danh sách khi đã có lá số bạn bè đã lưu -->
+        <div class="timeline-cards friend-timeline-cards" th:if="${friendHistoryItems != null and !friendHistoryItems.isEmpty()}">
+            <article class="card couple-history-card" th:each="fItem : ${friendHistoryItems}">
+                <div class="couple-card-top-meta">
+                    <small class="couple-history-date" th:text="${#temporals.format(fItem.createdAt, 'dd/MM/yyyy HH:mm')}">08/11/2026 10:30</small>
+                    <span class="couple-card-score-bold">
+                        <strong th:text="${fItem.totalScore + '/100'}">88/100</strong> · <strong th:text="${fItem.rating}">Cộng Sự Đắc Lực</strong>
+                    </span>
+                </div>
+                <div class="couple-card-title-row">
+                    <h3 class="couple-history-names">
+                        <span th:text="${fItem.name1}">Người 1</span>
+                        <svg class="outline-icon friend-handshake-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span th:text="${fItem.name2}">Người 2</span>
+                    </h3>
+                </div>
+                <div class="couple-card-pills-row">
+                    <span class="mini-score-tag">Làm bạn: <strong th:text="${#numbers.formatDecimal(fItem.partnerScore, 1, 1)}">8.0</strong></span>
+                    <span class="mini-score-tag">Giao tiếp: <strong th:text="${#numbers.formatDecimal(fItem.communicationScore, 1, 1)}">7.0</strong></span>
+                    <span class="mini-score-tag">Tầm nhìn: <strong th:text="${#numbers.formatDecimal(fItem.visionScore, 1, 1)}">7.5</strong></span>
+                    <span class="mini-score-tag">Giá trị: <strong th:text="${#numbers.formatDecimal(fItem.valuesScore, 1, 1)}">7.0</strong></span>
+                    <span class="mini-score-tag">Tiền bạc: <strong th:text="${#numbers.formatDecimal(fItem.moneyScore, 1, 1)}">7.5</strong></span>
+                </div>
+                <div class="history-card-buttons">
+                    <a class="button button-primary couple-open-saved-btn" th:href="${fItem.viewUrl}">
+                        <span>Xem lại 2 lá số &amp; luận giải</span>
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <!-- Khung hiển thị khi chưa có lá số bạn bè nào -->
+        <div class="card history-empty-card" th:if="${friendHistoryItems == null or friendHistoryItems.isEmpty()}">
+            <p>Chưa có lá số tương hợp bạn bè / cộng sự nào được lưu trong lịch sử.</p>
+            <div class="history-empty-actions">
+                <a class="button button-primary" th:href="@{/tuong-hop-ban-be}">Lập lá số bạn bè &amp; Xem tương hợp</a>
+            </div>
+        </div>
+    </section>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>
 </body>

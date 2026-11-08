@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tương hợp bạn bè · Lập lá số bạn bè &amp; cộng sự | Tử Vi AI</title>
+    <link rel="icon" type="image/jpeg" th:href="@{/images/logo.jpg}">
+    <link rel="stylesheet" th:href="@{/css/site.css(v='2.6')}">
+    <script th:src="@{/js/marked.min.js}"></script>
+    <script th:src="@{/js/html2pdf.bundle.min.js}" defer></script>
+    <script th:src="@{/js/site.js(v='2.6')}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header('tuong-hop-ban-be')}"></div>
+
+<main class="page-main couple-main">
+
+    <!-- HERO HEADER -->
+    <header class="couple-hero-header">
+        <div class="couple-hero-content">
+            <span class="eyebrow">CHIÊM TINH HỌC BẠN BÈ &amp; CỘNG SỰ</span>
+            <h1>Lập Lá Số Bạn Bè &amp; Cộng Sự</h1>
+            <p>Phân tích mức độ hòa hợp Nô Bộc, Quan Lộc, Tài Bạch, bản mệnh ngũ hành và định hướng hợp tác cùng phát triển.</p>
+        </div>
+    </header>
+
+    <!-- ALERT ERROR MESSAGE (NẾU CÓ) -->
+    <section class="card result-notice result-input-warning couple-notice" role="alert" th:if="${errorMessage != null}">
+        <p th:text="${errorMessage}">Vui lòng kiểm tra lại thông tin nhập của cả hai người.</p>
+    </section>
+
+    <!-- SECTION 1: FORM NHẬP THÔNG TIN 2 NGƯỜI (SIDE BY SIDE) -->
+    <section id="coupleFormSection" class="couple-form-section" th:classappend="${submitted} ? 'form-collapsed' : ''">
+        <form class="couple-form" th:action="@{/tuong-hop-ban-be}" method="post" id="coupleForm" th:data-authenticated="${#authorization.expression('isAuthenticated()')}">
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <div class="couple-form-grid">
+                <!-- NGƯỜI THỨ NHẤT (BẠN) -->
+                <article class="couple-form-card card">
+                    <div class="form-heading form-heading-centered">
+                        <h2>Nhập thông tin của bạn</h2>
+                    </div>
+
+                    <label for="fullName1">Họ và tên</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <input id="fullName1" name="name1" required placeholder="Ví dụ: Nguyễn Văn A hoặc Nguyễn Thị B" th:value="${formName1}">
+                    </div>
+
+                    <label>Giới tính sinh học (Âm Dương)</label>
+                    <div class="gender-options">
+                        <label class="gender-choice" th:classappend="${formGender1 == 'Nữ'} ? 'selected' : ''">
+                            <input type="radio" name="gender1" value="Nữ" th:checked="${formGender1 == 'Nữ'}">
+                            <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M12 15v7M9 19h6"></path></svg></span> Nữ (Âm Nữ)
+                        </label>
+                        <label class="gender-choice" th:classappend="${formGender1 == null or formGender1 == 'Nam'} ? 'selected' : ''">
+                            <input type="radio" name="gender1" value="Nam" th:checked="${formGender1 == null or formGender1 == 'Nam'}">
+                            <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><path d="M14.5 9.5L21 3M15 3h6v6"></path></svg></span> Nam (Dương Nam)
+                        </label>
+                    </div>
+
+                    <label>Ngày sinh (Dương lịch)</label>
+                    <div class="birth-dmy-group">
+                        <div class="dmy-col">
+                            <span class="dmy-label">Ngày</span>
+                            <div class="select-with-icon">
+                                <select id="birthDay1" name="birthDay1" required aria-label="Ngày sinh của bạn">
+                                    <option value="" disabled th:selected="${formBirthDay1 == null}">Ngày</option>
+                                    <option th:each="d : ${#numbers.sequence(1, 31)}" th:value="${d}" th:text="${d}" th:selected="${formBirthDay1 != null && formBirthDay1 == d}">1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="dmy-col">
+                            <span class="dmy-label">Tháng</span>
+                            <div class="select-with-icon">
+                                <select id="birthMonth1" name="birthMonth1" required aria-label="Tháng sinh của bạn">
+                                    <option value="" disabled th:selected="${formBirthMonth1 == null}">Tháng</option>
+                                    <option th:each="m : ${#numbers.sequence(1, 12)}" th:value="${m}" th:text="${'Tháng ' + m}" th:selected="${formBirthMonth1 != null && formBirthMonth1 == m}">Tháng 1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="dmy-col">
+                            <span class="dmy-label">Năm</span>
+                            <div class="select-with-icon">
+                                <select id="birthYear1" name="birthYear1" required aria-label="Năm sinh của bạn">
+                                    <option value="" disabled th:selected="${formBirthYear1 == null}">Năm</option>
+                                    <option th:each="y : ${#numbers.sequence(2026, 1930, -1)}" th:value="${y}" th:text="${y}" th:selected="${formBirthYear1 != null && formBirthYear1 == y}">2005</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="birthDate1" name="birthDate1">
+
+                    <label for="birthTime1">Giờ sinh</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                        <input id="birthTime1" name="birthTime1" type="time" required th:value="${formBirthTime1}">
+                    </div>
+
+                    <label for="birthplace1">Nơi ở hoặc nơi sinh quán</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+                        <input id="birthplace1" name="birthplace1" list="vietnamLocations" placeholder="Ví dụ: Hà Nội, Việt Nam" autocomplete="off" th:value="${formBirthplace1}">
+                    </div>
+                </article>
+
+                <!-- NGƯỜI THỨ HAI (BẠN BÈ / CỘNG SỰ) -->
+                <article class="couple-form-card card">
+                    <div class="form-heading form-heading-centered">
+                        <h2>Nhập thông tin bạn bè / cộng sự</h2>
+                    </div>
+
+                    <label for="fullName2">Họ và tên</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <input id="fullName2" name="name2" required placeholder="Ví dụ: Trần Văn B hoặc Lê Thị C" th:value="${formName2}">
+                    </div>
+
+                    <label>Giới tính sinh học (Âm Dương)</label>
+                    <div class="gender-options">
+                        <label class="gender-choice" th:classappend="${formGender2 == 'Nữ'} ? 'selected' : ''">
+                            <input type="radio" name="gender2" value="Nữ" th:checked="${formGender2 == 'Nữ'}">
+                            <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M12 15v7M9 19h6"></path></svg></span> Nữ (Âm Nữ)
+                        </label>
+                        <label class="gender-choice" th:classappend="${formGender2 == null or formGender2 == 'Nam'} ? 'selected' : ''">
+                            <input type="radio" name="gender2" value="Nam" th:checked="${formGender2 == null or formGender2 == 'Nam'}">
+                            <span><svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"></circle><path d="M14.5 9.5L21 3M15 3h6v6"></path></svg></span> Nam (Dương Nam)
+                        </label>
+                    </div>
+
+                    <label>Ngày sinh (Dương lịch)</label>
+                    <div class="birth-dmy-group">
+                        <div class="dmy-col">
+                            <span class="dmy-label">Ngày</span>
+                            <div class="select-with-icon">
+                                <select id="birthDay2" name="birthDay2" required aria-label="Ngày sinh bạn bè/cộng sự">
+                                    <option value="" disabled th:selected="${formBirthDay2 == null}">Ngày</option>
+                                    <option th:each="d : ${#numbers.sequence(1, 31)}" th:value="${d}" th:text="${d}" th:selected="${formBirthDay2 != null && formBirthDay2 == d}">1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="dmy-col">
+                            <span class="dmy-label">Tháng</span>
+                            <div class="select-with-icon">
+                                <select id="birthMonth2" name="birthMonth2" required aria-label="Tháng sinh bạn bè/cộng sự">
+                                    <option value="" disabled th:selected="${formBirthMonth2 == null}">Tháng</option>
+                                    <option th:each="m : ${#numbers.sequence(1, 12)}" th:value="${m}" th:text="${'Tháng ' + m}" th:selected="${formBirthMonth2 != null && formBirthMonth2 == m}">Tháng 1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="dmy-col">
+                            <span class="dmy-label">Năm</span>
+                            <div class="select-with-icon">
+                                <select id="birthYear2" name="birthYear2" required aria-label="Năm sinh bạn bè/cộng sự">
+                                    <option value="" disabled th:selected="${formBirthYear2 == null}">Năm</option>
+                                    <option th:each="y : ${#numbers.sequence(2026, 1930, -1)}" th:value="${y}" th:text="${y}" th:selected="${formBirthYear2 != null && formBirthYear2 == y}">2005</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="birthDate2" name="birthDate2">
+
+                    <label for="birthTime2">Giờ sinh</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                        <input id="birthTime2" name="birthTime2" type="time" required th:value="${formBirthTime2}">
+                    </div>
+
+                    <label for="birthplace2">Nơi ở hoặc nơi sinh quán</label>
+                    <div class="input-with-icon">
+                        <span class="field-icon"><svg class="outline-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+                        <input id="birthplace2" name="birthplace2" list="vietnamLocations" placeholder="Ví dụ: TP. Hồ Chí Minh, Việt Nam" autocomplete="off" th:value="${formBirthplace2}">
+                    </div>
+                </article>
+            </div>
+
+            <!-- Cảnh báo khi người dùng chưa đăng nhập -->
+            <div class="guest-auth-prompt couple-auth-prompt" sec:authorize="!isAuthenticated()">
+                <div class="guest-prompt-badge">
+                    <svg class="outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Yêu cầu đăng nhập</span>
+                </div>
+                <p>Khách có thể xem thông tin giới thiệu. Để lập và xem luận giải tương hợp lá số bạn bè &amp; cộng sự, vui lòng <a th:href="@{/login(required=true)}">đăng nhập tài khoản Gmail</a>.</p>
+            </div>
+
+            <!-- NÚT SUBMIT -->
+            <div class="couple-form-footer">
+                <button class="button button-primary couple-submit-btn" type="submit">Lập lá số bạn bè &amp; Xem tương hợp</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- SECTION 2: KẾT QUẢ 2 LÁ SỐ ĐẶT SONG SONG (SIDE BY SIDE) KHI ĐÃ SUBMIT -->
+    <section class="couple-result-section" th:if="${submitted == true}">
+        
+        <!-- SUMMARY BANNER CHỈ SỐ HÒA HỢP -->
+        <div class="couple-score-banner">
+            <div class="score-banner-left">
+                <div class="score-circle">
+                    <strong th:text="${compatibility.totalScore}">85</strong>
+                    <small>/100</small>
+                </div>
+                <div class="score-info">
+                    <div class="score-rating-row">
+                        <span class="badge" th:classappend="${compatibility.ratingColor}" th:text="${compatibility.rating}">Cộng Sự Đắc Lực</span>
+                        <span class="couple-names-tag">
+                            <span th:text="${person1.name}">Nguyễn Văn A</span>
+                            <svg class="outline-icon friend-handshake-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span th:text="${person2.name}">Trần Văn B</span>
+                        </span>
+                    </div>
+                    <p class="score-summary-text" th:text="${compatibility.summary}">Hai bạn có chỉ số tương hợp cộng sự cao, Nô Bộc và Quan Lộc có sự tương trợ tốt.</p>
+                </div>
+            </div>
+            <div class="score-banner-right">
+                <button type="button" class="button" id="scrollToAnalysisBtn">
+                    <span>Xem luận giải chi tiết</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- TIÊU ĐỀ KHUNG 2 LÁ SỐ -->
+        <div class="couple-charts-titlebar">
+            <div>
+                <span class="eyebrow">ĐỐI CHIẾU TINH BÀN SONG SONG</span>
+                <h2>Lá Số Tử Vi Bạn Bè &amp; Cộng Sự</h2>
+            </div>
+        </div>
+
+        <!-- KHUNG 2 LÁ SỐ ĐẶT SONG SONG -->
+        <div class="couple-dual-charts-frame" id="coupleChartsFrame">
+            <div class="couple-dual-charts-container">
+                <!-- CỘT 1: LÁ SỐ NGƯỜI THỨ NHẤT -->
+                <div class="couple-chart-col">
+                    <div class="couple-chart-header">
+                        <h3 th:text="${'Lá số của ' + person1.name}">Lá số của bạn</h3>
+                        <small class="chart-quick-meta" th:text="${person1.banMenhFull + ' · ' + person1.yearCanChi}">Bản mệnh</small>
+                    </div>
+                    <div class="couple-chart-embed">
+                        <div th:replace="~{fragments/chart :: astrologyChart(${person1}, 'chartPerson1')}"></div>
+                    </div>
+                </div>
+
+                <!-- CỘT 2: LÁ SỐ NGƯỜI THỨ HAI -->
+                <div class="couple-chart-col">
+                    <div class="couple-chart-header">
+                        <h3 th:text="${'Lá số của ' + person2.name}">Lá số của bạn bè / cộng sự</h3>
+                        <small class="chart-quick-meta" th:text="${person2.banMenhFull + ' · ' + person2.yearCanChi}">Bản mệnh</small>
+                    </div>
+                    <div class="couple-chart-embed">
+                        <div th:replace="~{fragments/chart :: astrologyChart(${person2}, 'chartPerson2')}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHÂN TÍCH TƯƠNG HỢP CHI TIẾT & BÀI LUẬN GIẢI TỬ VI AI -->
+        <div id="coupleAnalysisSection" class="couple-analysis-section">
+            <div class="section-heading centered">
+                <span class="eyebrow">ĐỐI CHIẾU SONG BÀN ĐỒNG ĐẠO</span>
+                <h2>Phân Tích 5 Trụ Cột Bạn Bè &amp; Luận Giải Tử Vi AI</h2>
+                <p>Khảo sát chuyên sâu 5 yếu tố cốt lõi: Khả năng làm bạn/cộng sự, Giao tiếp &amp; tương tác xã hội, Tầm nhìn &amp; cách làm việc, Giá trị sống &amp; nguyên tắc, Tiền bạc &amp; lợi ích dựa trên thuật Nô Bộc Tử Vi kết hợp luận giải AI.</p>
+            </div>
+
+            <!-- DASHBOARD 5 CHỈ SỐ TƯƠNG HỢP -->
+            <div class="couple-subscores-dashboard card">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-group">
+                        <span class="subscores-badge">5 TRỤ CỘT BẠN BÈ / CỘNG SỰ</span>
+                        <h3>Bản Đồ Năng Lượng Tương Hợp</h3>
+                    </div>
+                    <div class="dashboard-overall-pill">
+                        <span>Độ tương thích tổng thể:</span>
+                        <strong th:text="${compatibility.totalScore + '/100'}">85/100</strong>
+                    </div>
+                </div>
+
+                <div class="subscores-grid subscores-grid-5">
+                    <!-- 1. KHẢ NĂNG LÀM BẠN/CỘNG SỰ (25%) -->
+                    <div class="subscore-item">
+                        <div class="subscore-label-row">
+                            <span class="subscore-name">
+                                <span class="subscore-icon-wrap" aria-hidden="true">
+                                    <svg class="outline-icon subscore-outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                </span>
+                                Khả năng làm bạn/cộng sự
+                            </span>
+                            <strong class="subscore-val" th:text="${#numbers.formatDecimal(compatibility.partnerScore, 1, 1) + '/10'}">7.5/10</strong>
+                        </div>
+                        <div class="subscore-bar-bg">
+                            <div class="subscore-bar-fill fill-emotional" th:style="${'width: ' + (compatibility.partnerScore * 10) + '%;'}"></div>
+                        </div>
+                    </div>
+
+                    <!-- 2. GIAO TIẾP & TƯƠNG TÁC XÃ HỘI (20%) -->
+                    <div class="subscore-item">
+                        <div class="subscore-label-row">
+                            <span class="subscore-name">
+                                <span class="subscore-icon-wrap" aria-hidden="true">
+                                    <svg class="outline-icon subscore-outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                </span>
+                                Giao tiếp &amp; tương tác xã hội
+                            </span>
+                            <strong class="subscore-val" th:text="${#numbers.formatDecimal(compatibility.communicationScore, 1, 1) + '/10'}">7.0/10</strong>
+                        </div>
+                        <div class="subscore-bar-bg">
+                            <div class="subscore-bar-fill fill-communication" th:style="${'width: ' + (compatibility.communicationScore * 10) + '%;'}"></div>
+                        </div>
+                    </div>
+
+                    <!-- 3. TẦM NHÌN & CÁCH LÀM VIỆC (20%) -->
+                    <div class="subscore-item">
+                        <div class="subscore-label-row">
+                            <span class="subscore-name">
+                                <span class="subscore-icon-wrap" aria-hidden="true">
+                                    <svg class="outline-icon subscore-outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                                </span>
+                                Tầm nhìn &amp; cách làm việc
+                            </span>
+                            <strong class="subscore-val" th:text="${#numbers.formatDecimal(compatibility.visionScore, 1, 1) + '/10'}">7.0/10</strong>
+                        </div>
+                        <div class="subscore-bar-bg">
+                            <div class="subscore-bar-fill fill-stability" th:style="${'width: ' + (compatibility.visionScore * 10) + '%;'}"></div>
+                        </div>
+                    </div>
+
+                    <!-- 4. GIÁ TRỊ SỐNG & NGUYÊN TẮC (15%) -->
+                    <div class="subscore-item">
+                        <div class="subscore-label-row">
+                            <span class="subscore-name">
+                                <span class="subscore-icon-wrap" aria-hidden="true">
+                                    <svg class="outline-icon subscore-outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </span>
+                                Giá trị sống &amp; nguyên tắc
+                            </span>
+                            <strong class="subscore-val" th:text="${#numbers.formatDecimal(compatibility.valuesScore, 1, 1) + '/10'}">7.0/10</strong>
+                        </div>
+                        <div class="subscore-bar-bg">
+                            <div class="subscore-bar-fill fill-living" th:style="${'width: ' + (compatibility.valuesScore * 10) + '%;'}"></div>
+                        </div>
+                    </div>
+
+                    <!-- 5. TIỀN BẠC & LỢI ÍCH (20%) -->
+                    <div class="subscore-item">
+                        <div class="subscore-label-row">
+                            <span class="subscore-name">
+                                <span class="subscore-icon-wrap" aria-hidden="true">
+                                    <svg class="outline-icon subscore-outline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 6v2m0 8v2"></path></svg>
+                                </span>
+                                Tiền bạc &amp; lợi ích
+                            </span>
+                            <strong class="subscore-val" th:text="${#numbers.formatDecimal(compatibility.moneyScore, 1, 1) + '/10'}">7.0/10</strong>
+                        </div>
+                        <div class="subscore-bar-bg">
+                            <div class="subscore-bar-fill fill-financial" th:style="${'width: ' + (compatibility.moneyScore * 10) + '%;'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BÀI LUẬN GIẢI CHI TIẾT 5 YẾU TỐ -->
+            <div class="couple-ai-interpretation card">
+                <div class="ai-interpretation-header ai-header-clean">
+                    <div class="ai-header-left">
+                        <img class="ai-avatar-badge" th:src="@{/images/ai-avatar.jpg}" alt="Tử Vi AI" />
+                        <h3>Luận Giải Chi Tiết 5 Yếu Tố Bạn Bè &amp; Cộng Sự</h3>
+                    </div>
+                </div>
+
+                <div class="ai-interpretation-sections">
+                    <!-- YẾU TỐ 1: KHẢ NĂNG LÀM BẠN/CỘNG SỰ -->
+                    <article class="ai-section-box factor-card factor-emotional">
+                        <div class="ai-section-title">
+                            <div class="factor-title-left">
+                                <span class="section-num">01</span>
+                                <div>
+                                    <h4>Khả Năng Làm Bạn &amp; Cộng Sự</h4>
+                                    <small class="factor-meta-desc">Khảo sát Cung Nô Bộc, Cung Huynh Đệ, Cung Mệnh và các sao tương trợ Tả Hữu, Khôi Việt, Quang Quý</small>
+                                </div>
+                            </div>
+                            <div class="factor-score-pill">
+                                <span class="score-pill-label">Chỉ số:</span>
+                                <strong th:text="${#numbers.formatDecimal(compatibility.partnerScore, 1, 1) + '/10'}">7.5/10</strong>
+                            </div>
+                        </div>
+                        <div class="ai-section-content" data-markdown-content th:attr="data-raw-content=${compatibility.partnerInterpretation}" th:text="${compatibility.partnerInterpretation}">
+                            Diễn giải chi tiết khả năng làm bạn/cộng sự...
+                        </div>
+                    </article>
+
+                    <!-- YẾU TỐ 2: GIAO TIẾP & TƯƠNG TÁC XÃ HỘI -->
+                    <article class="ai-section-box factor-card factor-communication">
+                        <div class="ai-section-title">
+                            <div class="factor-title-left">
+                                <span class="section-num">02</span>
+                                <div>
+                                    <h4>Giao Tiếp &amp; Tương Tác Xã Hội</h4>
+                                    <small class="factor-meta-desc">Khảo sát ngoại giao và ứng xử qua Cung Thiên Di, Nô Bộc, sao Cự Môn, Văn Xương, Văn Khúc &amp; Thái Dương</small>
+                                </div>
+                            </div>
+                            <div class="factor-score-pill">
+                                <span class="score-pill-label">Chỉ số:</span>
+                                <strong th:text="${#numbers.formatDecimal(compatibility.communicationScore, 1, 1) + '/10'}">7.0/10</strong>
+                            </div>
+                        </div>
+                        <div class="ai-section-content" data-markdown-content th:attr="data-raw-content=${compatibility.communicationInterpretation}" th:text="${compatibility.communicationInterpretation}">
+                            Diễn giải chi tiết giao tiếp...
+                        </div>
+                    </article>
+
+                    <!-- YẾU TỐ 3: TẦM NHÌN & CÁCH LÀM VIỆC -->
+                    <article class="ai-section-box factor-card factor-stability">
+                        <div class="ai-section-title">
+                            <div class="factor-title-left">
+                                <span class="section-num">03</span>
+                                <div>
+                                    <h4>Tầm Nhìn &amp; Cách Làm Việc</h4>
+                                    <small class="factor-meta-desc">Khảo sát phong cách thực thi qua Cung Quan Lộc, các bộ sao Tử Phủ Vũ Tướng, Sát Phá Tham &amp; Cơ Nguyệt Đồng Lương</small>
+                                </div>
+                            </div>
+                            <div class="factor-score-pill">
+                                <span class="score-pill-label">Chỉ số:</span>
+                                <strong th:text="${#numbers.formatDecimal(compatibility.visionScore, 1, 1) + '/10'}">7.0/10</strong>
+                            </div>
+                        </div>
+                        <div class="ai-section-content" data-markdown-content th:attr="data-raw-content=${compatibility.visionInterpretation}" th:text="${compatibility.visionInterpretation}">
+                            Diễn giải chi tiết tầm nhìn &amp; cách làm việc...
+                        </div>
+                    </article>
+
+                    <!-- YẾU TỐ 4: GIÁ TRỊ SỐNG & NGUYÊN TẮC -->
+                    <article class="ai-section-box factor-card factor-living">
+                        <div class="ai-section-title">
+                            <div class="factor-title-left">
+                                <span class="section-num">04</span>
+                                <div>
+                                    <h4>Giá Trị Sống &amp; Nguyên Tắc</h4>
+                                    <small class="factor-meta-desc">Khảo sát nền tảng đạo đức, chữ Tín và nhân sinh quan qua Cung Mệnh/Thân, Cung Phúc Đức, Ngũ Hành &amp; Can Chi</small>
+                                </div>
+                            </div>
+                            <div class="factor-score-pill">
+                                <span class="score-pill-label">Chỉ số:</span>
+                                <strong th:text="${#numbers.formatDecimal(compatibility.valuesScore, 1, 1) + '/10'}">7.0/10</strong>
+                            </div>
+                        </div>
+                        <div class="ai-section-content" data-markdown-content th:attr="data-raw-content=${compatibility.valuesInterpretation}" th:text="${compatibility.valuesInterpretation}">
+                            Diễn giải chi tiết giá trị sống &amp; nguyên tắc...
+                        </div>
+                    </article>
+
+                    <!-- YẾU TỐ 5: TIỀN BẠC & LỢI ÍCH -->
+                    <article class="ai-section-box factor-card factor-financial">
+                        <div class="ai-section-title">
+                            <div class="factor-title-left">
+                                <span class="section-num">05</span>
+                                <div>
+                                    <h4>Tiền Bạc &amp; Lợi Ích Hợp Tác</h4>
+                                    <small class="factor-meta-desc">Khảo sát dòng tiền, phân chia quyền lợi và kiểm soát rủi ro tài chính qua Cung Tài Bạch &amp; các tài tinh</small>
+                                </div>
+                            </div>
+                            <div class="factor-score-pill">
+                                <span class="score-pill-label">Chỉ số:</span>
+                                <strong th:text="${#numbers.formatDecimal(compatibility.moneyScore, 1, 1) + '/10'}">7.0/10</strong>
+                            </div>
+                        </div>
+                        <div class="ai-section-content" data-markdown-content th:attr="data-raw-content=${compatibility.moneyInterpretation}" th:text="${compatibility.moneyInterpretation}">
+                            Diễn giải chi tiết tiền bạc &amp; lợi ích...
+                        </div>
+                    </article>
+
+                    <!-- BOX LỜI KẾT RIÊNG -->
+                    <article class="ai-section-box factor-card factor-conclusion">
+                        <div class="ai-section-title">
+                            <div class="factor-title-left">
+                                <div>
+                                    <h4>Lời Kết &amp; Định Hướng Hợp Tác</h4>
+                                    <small class="factor-meta-desc">Đúc kết mức độ tương hợp và định hướng xây dựng mối quan hệ cộng sự vững chắc</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-section-content" data-markdown-content th:attr="data-raw-content=${compatibility.conclusion}" th:text="${compatibility.conclusion}">
+                            Lời kết...
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- KIM CHỈ NAM HỢP TÁC BỀN VỮNG -->
+            <div class="couple-advice-box card">
+                <div class="advice-header">
+                    <h4>Kim Chỉ Nam Hợp Tác Bền Vững (Đồng Khí Tương Cầu)</h4>
+                </div>
+                <p class="advice-content" th:text="${compatibility.advice}">
+                    Trong quan hệ bằng hữu và hợp tác kinh doanh: <strong>'Đồng thanh tương ứng, đồng khí tương cầu'</strong>. Sự minh bạch về quyền lợi, tôn trọng thẩm quyền độc lập và giữ vững chữ Tín chính là chìa khóa kiến tạo thành công bền vững.
+                </p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<datalist id="vietnamLocations">
+    <option value="Hà Nội, Việt Nam"></option>
+    <option value="TP. Hồ Chí Minh, Việt Nam"></option>
+    <option value="Đà Nẵng, Việt Nam"></option>
+    <option value="Hải Phòng, Việt Nam"></option>
+    <option value="Cần Thơ, Việt Nam"></option>
+    <option value="An Giang, Việt Nam"></option>
+    <option value="Bà Rịa - Vũng Tàu, Việt Nam"></option>
+    <option value="Bắc Giang, Việt Nam"></option>
+    <option value="Bắc Kạn, Việt Nam"></option>
+    <option value="Bạc Liêu, Việt Nam"></option>
+    <option value="Bắc Ninh, Việt Nam"></option>
+    <option value="Bến Tre, Việt Nam"></option>
+    <option value="Bình Định, Việt Nam"></option>
+    <option value="Bình Dương, Việt Nam"></option>
+    <option value="Bình Phước, Việt Nam"></option>
+    <option value="Bình Thuận, Việt Nam"></option>
+    <option value="Cà Mau, Việt Nam"></option>
+    <option value="Cao Bằng, Việt Nam"></option>
+    <option value="Đắk Lắk, Việt Nam"></option>
+    <option value="Đắk Nông, Việt Nam"></option>
+    <option value="Điện Biên, Việt Nam"></option>
+    <option value="Đồng Nai, Việt Nam"></option>
+    <option value="Đồng Tháp, Việt Nam"></option>
+    <option value="Gia Lai, Việt Nam"></option>
+    <option value="Hà Giang, Việt Nam"></option>
+    <option value="Hà Nam, Việt Nam"></option>
+    <option value="Hà Tĩnh, Việt Nam"></option>
+    <option value="Hải Dương, Việt Nam"></option>
+    <option value="Hậu Giang, Việt Nam"></option>
+    <option value="Hòa Bình, Việt Nam"></option>
+    <option value="Hưng Yên, Việt Nam"></option>
+    <option value="Khánh Hòa, Việt Nam"></option>
+    <option value="Kiên Giang, Việt Nam"></option>
+    <option value="Kon Tum, Việt Nam"></option>
+    <option value="Lai Châu, Việt Nam"></option>
+    <option value="Lâm Đồng, Việt Nam"></option>
+    <option value="Lạng Sơn, Việt Nam"></option>
+    <option value="Lào Cai, Việt Nam"></option>
+    <option value="Long An, Việt Nam"></option>
+    <option value="Nam Định, Việt Nam"></option>
+    <option value="Nghệ An, Việt Nam"></option>
+    <option value="Ninh Bình, Việt Nam"></option>
+    <option value="Ninh Thuận, Việt Nam"></option>
+    <option value="Phú Thọ, Việt Nam"></option>
+    <option value="Phú Yên, Việt Nam"></option>
+    <option value="Quảng Bình, Việt Nam"></option>
+    <option value="Quảng Nam, Việt Nam"></option>
+    <option value="Quảng Ngãi, Việt Nam"></option>
+    <option value="Quảng Ninh, Việt Nam"></option>
+    <option value="Quảng Trị, Việt Nam"></option>
+    <option value="Sóc Trăng, Việt Nam"></option>
+    <option value="Sơn La, Việt Nam"></option>
+    <option value="Tây Ninh, Việt Nam"></option>
+    <option value="Thái Bình, Việt Nam"></option>
+    <option value="Thái Nguyên, Việt Nam"></option>
+    <option value="Thanh Hóa, Việt Nam"></option>
+    <option value="Thừa Thiên Huế, Việt Nam"></option>
+    <option value="Tiền Giang, Việt Nam"></option>
+    <option value="Trà Vinh, Việt Nam"></option>
+    <option value="Tuyên Quang, Việt Nam"></option>
+    <option value="Vĩnh Long, Việt Nam"></option>
+    <option value="Vĩnh Phúc, Việt Nam"></option>
+    <option value="Yên Bái, Việt Nam"></option>
+</datalist>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+</body>
+</html>

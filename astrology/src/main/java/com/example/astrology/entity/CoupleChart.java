@@ -1,4 +1,4 @@
-﻿package com.example.astrology.entity;
+package com.example.astrology.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
