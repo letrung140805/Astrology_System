@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +19,6 @@ import com.example.astrology.model.CoupleCompatibilityResult;
 import com.example.astrology.model.CoupleHistoryItem;
 import com.example.astrology.model.CouplePersonData;
 import com.example.astrology.repository.AppUserRepository;
-import com.example.astrology.repository.CoupleChartRepository;
 
 @DataJpaTest(properties = {
 		"spring.datasource.url=jdbc:h2:mem:astroai_couple;MODE=MySQL;DB_CLOSE_DELAY=-1",
@@ -37,9 +34,6 @@ class CoupleChartPersistenceServiceTests {
 
 	@Autowired
 	private AppUserRepository appUserRepository;
-
-	@Autowired
-	private CoupleChartRepository coupleChartRepository;
 
 	private AppUser testUser;
 

@@ -1,24 +1,15 @@
 package com.example.astrology.service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.astrology.entity.AppUser;
 import com.example.astrology.repository.AppUserRepository;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -159,30 +150,6 @@ public class UserService {
 		appUserRepository.save(user);
 		log.info(">>> Đã cập nhật thông tin hồ sơ cho tài khoản: email={}, fullName={}, username={}",
 				user.getEmail(), user.getFullName(), user.getUsername());
-	}
-
-	@Transactional
-	public AppUser findOrCreateGoogleUser(String email, String fullName) {
-		String normalizedEmail = email.trim().toLowerCase();
-		return appUserRepository.findByEmail(normalizedEmail).orElseGet(() -> {
-			AppUser newUser = new AppUser();
-			newUser.setEmail(normalizedEmail);
-			newUser.setUsername(generateUsernameFromNameOrEmail(fullName, normalizedEmail));
-			newUser.setFullName(fullName != null && !fullName.isBlank() ? fullName.trim() : normalizedEmail.split("@")[0]);
-			newUser.setPasswordHash(passwordEncoder.encode(UUID.randomUUID().toString()));
-			newUser.setRole("USER");
-			newUser.setEnabled(true);
-			return appUserRepository.save(newUser);
-		});
-	}
-
-	public void authenticateInSession(AppUser user, HttpServletRequest request) {
-		var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
-		var auth = new UsernamePasswordAuthenticationToken(user.getEmail(), null, authorities);
-		SecurityContext sc = SecurityContextHolder.getContext();
-		sc.setAuthentication(auth);
-		HttpSession session = request.getSession(true);
-		session.setAttribute("SPRING_SECURITY_CONTEXT", sc);
 	}
 
 	private String generateUsernameFromNameOrEmail(String fullName, String email) {

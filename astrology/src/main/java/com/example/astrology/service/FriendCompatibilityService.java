@@ -22,13 +22,6 @@ public class FriendCompatibilityService {
 			Set.of("Mậu", "Quý")
 	);
 
-	private static final Set<Set<String>> CAN_XUNG = Set.of(
-			Set.of("Giáp", "Canh"),
-			Set.of("Ất", "Tân"),
-			Set.of("Bính", "Nhâm"),
-			Set.of("Đinh", "Quý")
-	);
-
 	private static final Set<Set<String>> CHI_TAM_HOP = Set.of(
 			Set.of("Thân", "Tý", "Thìn"),
 			Set.of("Dần", "Ngọ", "Tuất"),
@@ -43,21 +36,6 @@ public class FriendCompatibilityService {
 			Set.of("Thìn", "Dậu"),
 			Set.of("Tỵ", "Thân"),
 			Set.of("Ngọ", "Mùi")
-	);
-
-	private static final Set<Set<String>> CHI_TU_XUNG = Set.of(
-			Set.of("Dần", "Thân", "Tỵ", "Hợi"),
-			Set.of("Tý", "Ngọ", "Mão", "Dậu"),
-			Set.of("Thìn", "Tuất", "Sửu", "Mùi")
-	);
-
-	private static final Set<Set<String>> CHI_LUC_HAI = Set.of(
-			Set.of("Tý", "Mùi"),
-			Set.of("Sửu", "Ngọ"),
-			Set.of("Dần", "Tỵ"),
-			Set.of("Mão", "Thìn"),
-			Set.of("Thân", "Hợi"),
-			Set.of("Dậu", "Tuất")
 	);
 
 	private final FriendRuleEvaluator ruleEvaluator;

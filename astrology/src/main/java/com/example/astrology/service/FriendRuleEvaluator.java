@@ -32,7 +32,6 @@ public class FriendRuleEvaluator {
 	private static final Set<String> SAT_PHA_THAM = Set.of("Thất Sát", "Phá Quân", "Tham Lang");
 	private static final Set<String> TU_PHU_VU_TUONG = Set.of("Tử Vi", "Thiên Phủ", "Vũ Khúc", "Thiên Tướng");
 	private static final Set<String> CO_NGUYET_DONG_LUONG = Set.of("Thiên Cơ", "Thái Âm", "Thiên Đồng", "Thiên Lương");
-	private static final Set<String> CU_NHAT = Set.of("Cự Môn", "Thái Dương");
 
 	private final ResourceLoader resourceLoader;
 	private final ObjectMapper objectMapper;

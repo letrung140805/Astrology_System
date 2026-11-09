@@ -46,9 +46,13 @@
     if (mainNavLinks.length > 0) {
         mainNavLinks.forEach((link) => {
             const href = link.getAttribute('href');
-            if (href === currentNavPath || (href !== '/' && currentNavPath.startsWith(href)) || (href === '/history' && currentNavPath.startsWith('/result'))) {
+            const isMatch = href === currentNavPath
+                || (href !== '/' && currentNavPath.startsWith(href + '/'))
+                || (href === '/history' && currentNavPath.startsWith('/result'));
+
+            if (isMatch) {
                 link.classList.add('active');
-            } else if (href === '/' && currentNavPath !== '/') {
+            } else {
                 link.classList.remove('active');
             }
         });
@@ -228,42 +232,11 @@
         });
     }
 
-    const editCoupleBtn = document.getElementById('editCoupleBtn');
-    if (editCoupleBtn) {
-        editCoupleBtn.addEventListener('click', () => {
-            const section = document.getElementById('coupleFormSection');
-            if (section) {
-                section.classList.remove('form-collapsed');
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    }
-
     const scrollToAnalysisBtn = document.getElementById('scrollToAnalysisBtn');
     if (scrollToAnalysisBtn) {
         scrollToAnalysisBtn.addEventListener('click', () => {
             const el = document.getElementById('coupleAnalysisSection');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
-        });
-    }
-
-    const downloadCouplePdfBtn = document.getElementById('downloadCouplePdfBtn');
-    if (downloadCouplePdfBtn) {
-        downloadCouplePdfBtn.addEventListener('click', () => {
-            if (typeof html2pdf === 'undefined') {
-                alert('Đang nạp công cụ tạo PDF, vui lòng thử lại sau giây lát.');
-                return;
-            }
-            const frame = document.getElementById('coupleChartsFrame');
-            if (!frame) return;
-            const opt = {
-                margin: [8, 6, 8, 6],
-                filename: 'la-so-tu-vi-cap-doi.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 1.8, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-            html2pdf().set(opt).from(frame).save();
         });
     }
 

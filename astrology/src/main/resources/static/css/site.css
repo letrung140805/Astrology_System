@@ -319,7 +319,15 @@ h1 { color: var(--ink); }
 
 .auth-intro { padding-top: 2px; }
 
-.auth-intro .eyebrow { margin-top: 68px; }
+.auth-intro .eyebrow {
+    margin-top: 68px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background: #efecff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
 
 .auth-intro h1 { margin: 13px 0 10px; font-size: clamp(36px, 4vw, 48px); line-height: 1.2; }
 
@@ -1870,6 +1878,19 @@ body.dark-mode .mandala-ring { border-color: #ffd166; background: #232038; box-s
 body.dark-mode .icon-tile.lilac, body.dark-mode .icon-tile.lavender, body.dark-mode .icon-tile.neutral, body.dark-mode .benefit-icon.purple { background: #403d56; color: #dedbff; }
 
 body.dark-mode .step-card small { display: inline-block; color: #c4b5fd; font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+
+body.dark-mode .hero-copy > .eyebrow {
+    background: #282346 !important;
+    color: #f1efff !important;
+    border: 1px solid #584c8e !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-mode .hero-copy > .eyebrow .outline-icon {
+    stroke: #c4b5fd !important;
+}
 
 body.dark-mode .social-links a { background: #403d56; color: var(--ink); }
 
@@ -5314,8 +5335,24 @@ body.dark-mode .account-intro p {
     color: #9e99ba !important;
 }
 
-body.dark-mode .account-intro .eyebrow {
-    color: #c4b5fd !important;
+body.dark-mode .account-intro .eyebrow,
+body.dark-mode .auth-intro .eyebrow {
+    background: #282346 !important;
+    color: #f1efff !important;
+    border: 1px solid #584c8e !important;
+    padding: 6px 12px !important;
+    border-radius: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-mode .account-intro .eyebrow .outline-icon,
+body.dark-mode .auth-intro .eyebrow .outline-icon {
+    stroke: #c4b5fd !important;
 }
 
 body.dark-mode .account-sidebar .sidebar-menu {
