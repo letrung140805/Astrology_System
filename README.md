@@ -184,23 +184,27 @@ Astrology_System/
         │   │   ├── config/                    # Cấu hình hệ thống (Security, PasswordEncoder, Advice, JSON)
         │   │   │   ├── SecurityConfig.java
         │   │   │   ├── PasswordEncoderConfig.java
-        │   │   │   ├── GlobalUserAdvice.java
+        │   │   │   ├── GlobalUserAdvice.java              # Cung cấp UserSummaryDto cho View, caching request
+        │   │   │   ├── GlobalExceptionHandler.java        # Xử lý ngoại lệ tập trung toàn cục (@ControllerAdvice)
         │   │   │   └── CalculationJsonConfiguration.java
         │   │   ├── controller/                # Tầng điều hướng Web MVC & REST endpoints
-        │   │   │   ├── WebController.java             # Trang chủ, xem lá số, lịch sử, trang tài khoản
+        │   │   │   ├── WebController.java             # Trang chủ, xem kết quả lá số, lịch sử, giới thiệu
+        │   │   │   ├── AccountController.java         # Quản lý tài khoản, cập nhật hồ sơ, đổi mật khẩu
         │   │   │   ├── AuthController.java            # Đăng nhập, đăng ký tài khoản
         │   │   │   ├── AstrologyChatController.java   # Đàm đạo AI, SSE Streaming, quản lý đa hội thoại
-        │   │   │   ├── CoupleController.java          # Tương hợp tình duyên & hôn nhân
-        │   │   │   └── FriendController.java          # Tương hợp bạn bè & cộng sự
+        │   │   │   ├── CoupleController.java          # Tương hợp tình duyên (sử dụng CoupleCalculationForm DTO)
+        │   │   │   └── FriendController.java          # Tương hợp bạn bè & cộng sự (sử dụng FriendCalculationForm DTO)
         │   │   ├── service/                   # Tầng nghiệp vụ ứng dụng & Tích hợp AI / RAG
-        │   │   │   ├── BirthChartApplicationService.java   # Điều phối tính toán lá số Tử Vi
-        │   │   │   ├── BirthChartPersistenceService.java   # Lưu trữ & tải lá số cá nhân từ DB
+        │   │   │   ├── BirthChartApplicationService.java   # Điều phối thuật toán an sao & tính toán lá số Tử Vi
+        │   │   │   ├── BirthChartDisplayService.java       # Chuẩn bị & định dạng dữ liệu tinh bàn hiển thị ra View
+        │   │   │   ├── BirthChartPersistenceService.java   # Lưu trữ & tải lá số cá nhân từ DB (tối ưu truy vấn N+1)
         │   │   │   ├── AstrologyChatService.java           # Điều phối hội thoại đàm đạo
         │   │   │   ├── AstrologyChatPersistenceService.java# Quản lý & lưu phiên chat AI
         │   │   │   ├── AstrologyRagService.java            # Tự động nạp & truy vấn tri thức RAG
         │   │   │   ├── AstrologyAnswerGenerator.java       # Interface giao tiếp AI LLM
         │   │   │   ├── OpenAiAstrologyAnswerGenerator.java # Triển khai AI Streaming qua Gemini / Spring AI
         │   │   │   ├── CoupleCompatibilityService.java     # Đánh giá & tính điểm tương hợp tình duyên
+        │   │   │   ├── AbstractCompatibilityRuleEvaluator.java # Lớp trừu tượng chia sẻ quy tắc và thuật toán tương hợp
         │   │   │   ├── CoupleRuleEvaluator.java            # Bộ thẩm định 24 quy tắc tình duyên 5 yếu tố
         │   │   │   ├── CoupleAiInterpretationService.java  # Luận giải tình duyên chuyên sâu từ AI
         │   │   │   ├── CoupleChartPersistenceService.java  # Lưu trữ hồ sơ tương hợp tình duyên
@@ -264,8 +268,11 @@ Astrology_System/
         │   │       ├── ChartHistoryItem.java
         │   │       ├── ChartPalaceDisplay.java, ChartStarDisplay.java
         │   │       ├── ConversationHistoryItem.java
+        │   │       ├── CoupleCalculationForm.java         # Form DTO đóng gói tham số tương hợp đôi lứa
         │   │       ├── CoupleCompatibilityResult.java, CouplePersonData.java, CoupleHistoryItem.java
+        │   │       ├── FriendCalculationForm.java         # Form DTO đóng gói tham số tương hợp bạn bè
         │   │       ├── FriendCompatibilityResult.java, FriendHistoryItem.java
+        │   │       ├── UserSummaryDto.java                # DTO thông tin người dùng cho View (ẩn passwordHash)
         │   │       └── TriggeredRule.java
         │   └── resources/
         │       ├── application.properties             # Cấu hình chính của ứng dụng

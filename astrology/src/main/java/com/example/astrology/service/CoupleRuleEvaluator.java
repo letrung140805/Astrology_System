@@ -1,64 +1,31 @@
 package com.example.astrology.service;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import com.example.astrology.calculation.chart.PalaceFunction;
 import com.example.astrology.model.ChartPalaceDisplay;
-import com.example.astrology.model.ChartStarDisplay;
 import com.example.astrology.model.CouplePersonData;
 import com.example.astrology.model.TriggeredRule;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
 
 @Component
-public class CoupleRuleEvaluator {
-
-	private static final Logger logger = LoggerFactory.getLogger(CoupleRuleEvaluator.class);
-
-	private static final Set<String> SAT_PHA_THAM = Set.of("Thất Sát", "Phá Quân", "Tham Lang");
-	private static final Set<String> TU_PHU_VU_TUONG = Set.of("Tử Vi", "Thiên Phủ", "Vũ Khúc", "Thiên Tướng");
-	private static final Set<String> CO_NGUYET_DONG_LUONG = Set.of("Thiên Cơ", "Thái Âm", "Thiên Đồng", "Thiên Lương");
-	private static final Set<String> CU_NHAT = Set.of("Cự Môn", "Thái Dương");
-
-	private final ResourceLoader resourceLoader;
-	private final ObjectMapper objectMapper;
-	private RulesetConfig rulesetConfig;
+public class CoupleRuleEvaluator extends AbstractCompatibilityRuleEvaluator {
 
 	public CoupleRuleEvaluator(ResourceLoader resourceLoader, ObjectMapper objectMapper) {
-		this.resourceLoader = resourceLoader;
-		this.objectMapper = objectMapper != null ? objectMapper : new ObjectMapper();
+		super(resourceLoader, objectMapper);
 	}
 
 	@PostConstruct
 	public void init() {
-		try {
-			Resource resource = resourceLoader.getResource("classpath:rules/couple_compatibility_rules.json");
-			if (resource.exists()) {
-				try (InputStream is = resource.getInputStream()) {
-					rulesetConfig = objectMapper.readValue(is, RulesetConfig.class);
-					logger.info("Loaded {} couple compatibility rules from 5-factor JSON ruleset",
-							rulesetConfig != null && rulesetConfig.rules != null ? rulesetConfig.rules.size() : 0);
-				}
-			} else {
-				logger.warn("couple_compatibility_rules.json not found on classpath");
-			}
-		} catch (Exception ex) {
-			logger.error("Failed to load couple compatibility rules JSON", ex);
-		}
+		loadRules("classpath:rules/couple_compatibility_rules.json", "couple compatibility");
 	}
 
 	public EvaluationResult evaluate(
@@ -144,17 +111,6 @@ public class CoupleRuleEvaluator {
 				livingTogether,
 				triggered
 		);
-	}
-
-	private double computeDimensionScore(List<TriggeredRule> rules, String dimension, double base) {
-		double sum = base;
-		for (TriggeredRule r : rules) {
-			if (dimension.equalsIgnoreCase(r.dimension())) {
-				sum += (r.weight() * 0.4);
-			}
-		}
-		sum = Math.max(3.0, Math.min(10.0, sum));
-		return Math.round(sum * 10.0) / 10.0;
 	}
 
 	private boolean matchRule(
@@ -257,49 +213,6 @@ public class CoupleRuleEvaluator {
 				|| containsAny(m2, targets) || containsAny(pt2, targets) || containsAny(pd2, targets);
 	}
 
-	private boolean containsAny(Set<String> source, Iterable<String> targets) {
-		if (source == null || targets == null) return false;
-		for (String target : targets) {
-			if (source.contains(target)) return true;
-		}
-		return false;
-	}
-
-	private boolean containsAny(Set<String> source, String... targets) {
-		if (source == null || targets == null) return false;
-		for (String target : targets) {
-			if (source.contains(target)) return true;
-		}
-		return false;
-	}
-
-	private Set<String> extractStarNames(CouplePersonData person, PalaceFunction func) {
-		ChartPalaceDisplay palace = findPalace(person, func);
-		if (palace == null || palace.stars() == null) return Collections.emptySet();
-		return palace.stars().stream()
-				.map(ChartStarDisplay::name)
-				.collect(Collectors.toSet());
-	}
-
-	private ChartPalaceDisplay findPalace(CouplePersonData person, PalaceFunction func) {
-		if (person.chartPalaces() == null) return null;
-		for (ChartPalaceDisplay p : person.chartPalaces()) {
-			if (p.function() == func) return p;
-		}
-		return null;
-	}
-
-	private PalaceFunction parsePalaceFunction(String name) {
-		try {
-			return PalaceFunction.valueOf(name);
-		} catch (Exception ex) {
-			for (PalaceFunction pf : PalaceFunction.values()) {
-				if (pf.vietnameseName().equalsIgnoreCase(name)) return pf;
-			}
-			return null;
-		}
-	}
-
 	public record EvaluationResult(
 			int totalScore,
 			double emotionalScore,
@@ -313,27 +226,5 @@ public class CoupleRuleEvaluator {
 		public double personalityScore() { return emotionalScore; }
 		public double partnerFitScore() { return emotionalScore; }
 		public double dailyLifeScore() { return livingTogetherScore; }
-	}
-
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class RulesetConfig {
-		public String version;
-		public String name;
-		public String description;
-		public List<RuleDefinition> rules;
-	}
-
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class RuleDefinition {
-		public String id;
-		public String dimension;
-		public String name;
-		public String category;
-		public int weight;
-		public String conditionType;
-		public String palace;
-		public List<String> stars;
-		public String description;
-		public String advice;
 	}
 }

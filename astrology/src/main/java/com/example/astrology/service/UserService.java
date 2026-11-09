@@ -40,6 +40,15 @@ public class UserService {
 		return appUserRepository.findByUsername(username.trim().toLowerCase());
 	}
 
+	public Optional<com.example.astrology.model.UserSummaryDto> findSummaryByPrincipal(String principalName) {
+		if (principalName == null || principalName.isBlank() || "anonymousUser".equals(principalName)) {
+			return Optional.empty();
+		}
+		return findByEmail(principalName)
+				.or(() -> findByUsername(principalName))
+				.map(com.example.astrology.model.UserSummaryDto::fromEntity);
+	}
+
 	public boolean existsByEmail(String email) {
 		if (email == null) {
 			return false;

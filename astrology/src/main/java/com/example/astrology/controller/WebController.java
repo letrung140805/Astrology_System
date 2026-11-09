@@ -49,26 +49,32 @@ public class WebController {
 	private final BirthChartPersistenceService birthChartPersistenceService;
 	private final CoupleChartPersistenceService coupleChartPersistenceService;
 	private final FriendChartPersistenceService friendChartPersistenceService;
-	private final UserService userService;
 
 	@Autowired
 	public WebController(
 			BirthChartApplicationService birthChartApplicationService,
 			BirthChartPersistenceService birthChartPersistenceService,
 			CoupleChartPersistenceService coupleChartPersistenceService,
-			FriendChartPersistenceService friendChartPersistenceService,
-			UserService userService) {
+			FriendChartPersistenceService friendChartPersistenceService) {
 		this.birthChartApplicationService = birthChartApplicationService;
 		this.birthChartPersistenceService = birthChartPersistenceService;
 		this.coupleChartPersistenceService = coupleChartPersistenceService;
 		this.friendChartPersistenceService = friendChartPersistenceService;
-		this.userService = userService;
+	}
+
+	public WebController(
+			BirthChartApplicationService birthChartApplicationService,
+			BirthChartPersistenceService birthChartPersistenceService,
+			CoupleChartPersistenceService coupleChartPersistenceService,
+			FriendChartPersistenceService friendChartPersistenceService,
+			UserService userService) {
+		this(birthChartApplicationService, birthChartPersistenceService, coupleChartPersistenceService, friendChartPersistenceService);
 	}
 
 	public WebController(
 			BirthChartApplicationService birthChartApplicationService,
 			BirthChartPersistenceService birthChartPersistenceService) {
-		this(birthChartApplicationService, birthChartPersistenceService, null, null, null);
+		this(birthChartApplicationService, birthChartPersistenceService, null, null);
 	}
 
 	@GetMapping("/")
@@ -341,73 +347,6 @@ public class WebController {
 			}
 		}
 		return List.copyOf(validTokens);
-	}
-
-	@GetMapping("/account")
-	public String account(
-			@RequestParam(required = false) String pwdSuccess,
-			@RequestParam(required = false) String pwdError,
-			@RequestParam(required = false) String profileSuccess,
-			@RequestParam(required = false) String profileError,
-			Principal principal,
-			Model model) {
-		if (pwdSuccess != null) {
-			model.addAttribute("pwdSuccessMessage", "Đổi mật khẩu thành công! Mật khẩu mới của bạn đã có hiệu lực.");
-		}
-		if (pwdError != null) {
-			model.addAttribute("pwdErrorMessage", pwdError);
-		}
-		if (profileSuccess != null) {
-			model.addAttribute("profileSuccessMessage", "Cập nhật thông tin tài khoản thành công!");
-		}
-		if (profileError != null) {
-			model.addAttribute("profileErrorMessage", profileError);
-		}
-		model.addAttribute("chartCount", birthChartPersistenceService.countCharts(principalName(principal)));
-		return "account";
-	}
-
-	@PostMapping("/account/update-profile")
-	public String updateProfile(
-			@RequestParam(required = false) String fullName,
-			@RequestParam(required = false) String username,
-			Principal principal) {
-		if (principal == null || principal.getName() == null) {
-			return "redirect:/login";
-		}
-		if (userService == null) {
-			return "redirect:/account?profileError=" + URLEncoder.encode("Dịch vụ người dùng chưa sẵn sàng.", StandardCharsets.UTF_8);
-		}
-		try {
-			userService.updateProfile(principal.getName(), fullName, username);
-			return "redirect:/account?profileSuccess=true";
-		} catch (IllegalArgumentException ex) {
-			return "redirect:/account?profileError=" + URLEncoder.encode(ex.getMessage(), StandardCharsets.UTF_8);
-		} catch (Exception ex) {
-			return "redirect:/account?profileError=" + URLEncoder.encode("Đã xảy ra lỗi khi cập nhật thông tin. Vui lòng thử lại sau.", StandardCharsets.UTF_8);
-		}
-	}
-
-	@PostMapping("/account/change-password")
-	public String changePassword(
-			@RequestParam String currentPassword,
-			@RequestParam String newPassword,
-			@RequestParam String confirmPassword,
-			Principal principal) {
-		if (principal == null || principal.getName() == null) {
-			return "redirect:/login";
-		}
-		if (userService == null) {
-			return "redirect:/account?pwdError=" + URLEncoder.encode("Dịch vụ người dùng chưa sẵn sàng.", StandardCharsets.UTF_8);
-		}
-		try {
-			userService.changePassword(principal.getName(), currentPassword, newPassword, confirmPassword);
-			return "redirect:/account?pwdSuccess=true";
-		} catch (IllegalArgumentException ex) {
-			return "redirect:/account?pwdError=" + URLEncoder.encode(ex.getMessage(), StandardCharsets.UTF_8);
-		} catch (Exception ex) {
-			return "redirect:/account?pwdError=" + URLEncoder.encode("Đã xảy ra lỗi khi đổi mật khẩu. Vui lòng thử lại sau.", StandardCharsets.UTF_8);
-		}
 	}
 
 	@GetMapping("/about")

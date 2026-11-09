@@ -43,6 +43,7 @@ class CoupleChartPersistenceServiceTests {
 		testUser.setEmail("tester@example.com");
 		testUser.setUsername("tester");
 		testUser.setFullName("Nguyễn Văn Test");
+		testUser.setPasswordHash("hashed_pw");
 		appUserRepository.saveAndFlush(testUser);
 	}
 
@@ -102,6 +103,7 @@ class CoupleChartPersistenceServiceTests {
 		anotherUser.setEmail("other@example.com");
 		anotherUser.setUsername("other");
 		anotherUser.setFullName("Trần Khác");
+		anotherUser.setPasswordHash("hashed_pw");
 		appUserRepository.saveAndFlush(anotherUser);
 
 		CouplePersonData person1 = new CouplePersonData(

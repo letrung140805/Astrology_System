@@ -9,4 +9,6 @@ import com.example.astrology.entity.AstrologyPalace;
 public interface AstrologyPalaceRepository extends JpaRepository<AstrologyPalace, Long> {
 
 	List<AstrologyPalace> findAllByChart_IdOrderByPalaceOrderAsc(Long chartId);
+
+	long countByChart_Id(Long chartId);
 }

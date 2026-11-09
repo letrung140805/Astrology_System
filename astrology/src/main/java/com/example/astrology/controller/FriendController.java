@@ -71,27 +71,20 @@ public class FriendController {
 				viewYear, () -> "testUser", model);
 	}
 
+	public String calculateFriend(
+			String name1, String gender1, LocalDate birthDate1, Integer birthDay1, Integer birthMonth1, Integer birthYear1, LocalTime birthTime1, String birthplace1,
+			String name2, String gender2, LocalDate birthDate2, Integer birthDay2, Integer birthMonth2, Integer birthYear2, LocalTime birthTime2, String birthplace2,
+			Integer viewYear, Principal principal, Model model) {
+		com.example.astrology.model.FriendCalculationForm form = new com.example.astrology.model.FriendCalculationForm(
+				name1, gender1, birthDate1, birthDay1, birthMonth1, birthYear1, birthTime1, birthplace1,
+				name2, gender2, birthDate2, birthDay2, birthMonth2, birthYear2, birthTime2, birthplace2,
+				viewYear);
+		return calculateFriend(form, principal, model);
+	}
+
 	@PostMapping
 	public String calculateFriend(
-			@RequestParam String name1,
-			@RequestParam(defaultValue = "Nam") String gender1,
-			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate1,
-			@RequestParam(required = false) Integer birthDay1,
-			@RequestParam(required = false) Integer birthMonth1,
-			@RequestParam(required = false) Integer birthYear1,
-			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime birthTime1,
-			@RequestParam(required = false) String birthplace1,
-
-			@RequestParam String name2,
-			@RequestParam(defaultValue = "Nam") String gender2,
-			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate2,
-			@RequestParam(required = false) Integer birthDay2,
-			@RequestParam(required = false) Integer birthMonth2,
-			@RequestParam(required = false) Integer birthYear2,
-			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime birthTime2,
-			@RequestParam(required = false) String birthplace2,
-
-			@RequestParam(required = false, defaultValue = "2026") Integer viewYear,
+			@org.springframework.web.bind.annotation.ModelAttribute com.example.astrology.model.FriendCalculationForm form,
 			Principal principal,
 			Model model) {
 
@@ -101,30 +94,44 @@ public class FriendController {
 
 		model.addAttribute("activePage", "tuong-hop-ban-be");
 
-		// Resolve birthDate1
-		if (birthDate1 == null && birthDay1 != null && birthMonth1 != null && birthYear1 != null) {
-			try {
-				birthDate1 = LocalDate.of(birthYear1, birthMonth1, birthDay1);
-			} catch (DateTimeException ex) {
-				model.addAttribute("errorMessage", "Ngày sinh của bạn không hợp lệ.");
-				model.addAttribute("submitted", false);
-				preserveFormInputs(model, name1, gender1, birthDay1, birthMonth1, birthYear1, birthTime1, birthplace1,
-						name2, gender2, birthDay2, birthMonth2, birthYear2, birthTime2, birthplace2, viewYear);
-				return "friend";
-			}
+		String name1 = form.getName1();
+		String gender1 = form.getGender1();
+		Integer birthDay1 = form.getBirthDay1();
+		Integer birthMonth1 = form.getBirthMonth1();
+		Integer birthYear1 = form.getBirthYear1();
+		LocalTime birthTime1 = form.getBirthTime1();
+		String birthplace1 = form.getBirthplace1();
+
+		String name2 = form.getName2();
+		String gender2 = form.getGender2();
+		Integer birthDay2 = form.getBirthDay2();
+		Integer birthMonth2 = form.getBirthMonth2();
+		Integer birthYear2 = form.getBirthYear2();
+		LocalTime birthTime2 = form.getBirthTime2();
+		String birthplace2 = form.getBirthplace2();
+
+		Integer viewYear = form.getViewYear();
+
+		LocalDate birthDate1;
+		try {
+			birthDate1 = form.resolveBirthDate1();
+		} catch (DateTimeException ex) {
+			model.addAttribute("errorMessage", "Ngày sinh của bạn không hợp lệ.");
+			model.addAttribute("submitted", false);
+			preserveFormInputs(model, name1, gender1, birthDay1, birthMonth1, birthYear1, birthTime1, birthplace1,
+					name2, gender2, birthDay2, birthMonth2, birthYear2, birthTime2, birthplace2, viewYear);
+			return "friend";
 		}
 
-		// Resolve birthDate2
-		if (birthDate2 == null && birthDay2 != null && birthMonth2 != null && birthYear2 != null) {
-			try {
-				birthDate2 = LocalDate.of(birthYear2, birthMonth2, birthDay2);
-			} catch (DateTimeException ex) {
-				model.addAttribute("errorMessage", "Ngày sinh của bạn bè/cộng sự không hợp lệ.");
-				model.addAttribute("submitted", false);
-				preserveFormInputs(model, name1, gender1, birthDay1, birthMonth1, birthYear1, birthTime1, birthplace1,
-						name2, gender2, birthDay2, birthMonth2, birthYear2, birthTime2, birthplace2, viewYear);
-				return "friend";
-			}
+		LocalDate birthDate2;
+		try {
+			birthDate2 = form.resolveBirthDate2();
+		} catch (DateTimeException ex) {
+			model.addAttribute("errorMessage", "Ngày sinh của bạn bè/cộng sự không hợp lệ.");
+			model.addAttribute("submitted", false);
+			preserveFormInputs(model, name1, gender1, birthDay1, birthMonth1, birthYear1, birthTime1, birthplace1,
+					name2, gender2, birthDay2, birthMonth2, birthYear2, birthTime2, birthplace2, viewYear);
+			return "friend";
 		}
 
 		if (birthDate1 == null || birthDate2 == null) {

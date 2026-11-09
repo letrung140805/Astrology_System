@@ -146,6 +146,12 @@ public class BirthChartPersistenceService {
 		savedChart.setAccessTokenHash(hashAccessToken(accessToken));
 		savedChart = birthChartRepository.saveAndFlush(savedChart);
 
+		// Nạp trước danh mục sao hiện có trong 1 query duy nhất để tránh lặp lại query trong vòng lặp 12 cung
+		Map<String, Star> existingStars = new HashMap<>();
+		for (Star s : starRepository.findAll()) {
+			existingStars.put(s.getCode(), s);
+		}
+
 		for (PalaceFunction function : PalaceFunction.values()) {
 			EarthlyBranch branch = chart.positions().palaces().positions().get(function);
 			if (branch == null) {
@@ -165,7 +171,7 @@ public class BirthChartPersistenceService {
 					continue;
 				}
 
-				Star star = findOrCreateStar(starId);
+				Star star = findOrCreateStar(starId, existingStars);
 				ChartPalaceStar chartPalaceStar = new ChartPalaceStar();
 				chartPalaceStar.setPalace(palace);
 				chartPalaceStar.setStar(star);
@@ -263,26 +269,37 @@ public class BirthChartPersistenceService {
 	private StoredBirthChartPageData toPageData(BirthChart savedChart, UUID accessToken) {
 		BirthProfile profile = savedChart.getBirthProfile();
 		TracuutuviChart chart = deserialize(savedChart.getRawCalculationData());
-		List<AstrologyPalace> palaces =
-				astrologyPalaceRepository.findAllByChart_IdOrderByPalaceOrderAsc(savedChart.getId());
-		if (palaces.size() != 12) {
+
+		long palaceCount = astrologyPalaceRepository.countByChart_Id(savedChart.getId());
+		if (palaceCount != 12) {
 			throw new IllegalStateException("Lá số đã lưu không có đủ 12 cung.");
 		}
 
-		List<ChartPalaceDisplay> displays = new ArrayList<>();
-		for (AstrologyPalace palace : palaces) {
-			PalaceFunction function = functionByVietnameseName(palace.getPalaceName());
-			EarthlyBranch branch;
-			try {
-				branch = EarthlyBranch.valueOf(palace.getEarthlyBranch());
-			} catch (IllegalArgumentException | NullPointerException exception) {
-				throw new IllegalStateException("Địa chi cung đã lưu không hợp lệ.", exception);
+		TuViDetailService.FullChartDetails fullDetails = null;
+		List<ChartPalaceDisplay> displays;
+
+		BirthSex birthSex = "MALE".equals(profile.getGender()) ? BirthSex.MALE : BirthSex.FEMALE;
+		if (tuViDetailService != null && chart != null) {
+			fullDetails = tuViDetailService.buildDetails(chart, profile.getBirthDate(), birthSex);
+			displays = fullDetails.gridPalaces();
+		} else {
+			List<AstrologyPalace> palaces =
+					astrologyPalaceRepository.findAllByChart_IdOrderByPalaceOrderAsc(savedChart.getId());
+			displays = new ArrayList<>();
+			for (AstrologyPalace palace : palaces) {
+				PalaceFunction function = functionByVietnameseName(palace.getPalaceName());
+				EarthlyBranch branch;
+				try {
+					branch = EarthlyBranch.valueOf(palace.getEarthlyBranch());
+				} catch (IllegalArgumentException | NullPointerException exception) {
+					throw new IllegalStateException("Địa chi cung đã lưu không hợp lệ.", exception);
+				}
+				List<ChartStarDisplay> stars = chartPalaceStarRepository
+						.findAllByPalace_IdOrderByStarOrderAsc(palace.getId()).stream()
+						.map(this::displayStar)
+						.toList();
+				displays.add(new ChartPalaceDisplay(function, branch, stars));
 			}
-			List<ChartStarDisplay> stars = chartPalaceStarRepository
-					.findAllByPalace_IdOrderByStarOrderAsc(palace.getId()).stream()
-					.map(this::displayStar)
-					.toList();
-			displays.add(new ChartPalaceDisplay(function, branch, stars));
 		}
 
 		AstrologyCalculationInput input = new AstrologyCalculationInput(
@@ -296,15 +313,6 @@ public class BirthChartPersistenceService {
 				CalculationGap.TIMEZONE_AND_LOCATION));
 		if (profile.getBirthCity() == null || profile.getBirthCity().isBlank()) {
 			gaps.add(CalculationGap.BIRTHPLACE);
-		}
-
-		TuViDetailService.FullChartDetails fullDetails = null;
-		if (tuViDetailService != null && chart != null) {
-			fullDetails = tuViDetailService.buildDetails(
-					chart,
-					profile.getBirthDate(),
-					"MALE".equals(profile.getGender()) ? BirthSex.MALE : BirthSex.FEMALE);
-			displays = fullDetails.gridPalaces();
 		}
 
 		return new StoredBirthChartPageData(
@@ -365,15 +373,27 @@ public class BirthChartPersistenceService {
 				.orElseThrow(BirthChartPersistenceService::notFound);
 	}
 
-	private Star findOrCreateStar(StarId starId) {
-		return starRepository.findByCode(starId.name()).orElseGet(() -> {
-			Star star = new Star();
-			star.setCode(starId.name());
-			star.setName(starId.vietnameseName());
-			star.setVietnameseName(starId.vietnameseName());
-			star.setStarType(MAIN_STARS.contains(starId) ? "CHINH_TINH" : "PHU_TINH");
-			return starRepository.saveAndFlush(star);
+	private Star findOrCreateStar(StarId starId, Map<String, Star> existingStars) {
+		Star existing = existingStars != null ? existingStars.get(starId.name()) : null;
+		if (existing != null) {
+			return existing;
+		}
+		Star star = starRepository.findByCode(starId.name()).orElseGet(() -> {
+			Star newStar = new Star();
+			newStar.setCode(starId.name());
+			newStar.setName(starId.vietnameseName());
+			newStar.setVietnameseName(starId.vietnameseName());
+			newStar.setStarType(MAIN_STARS.contains(starId) ? "CHINH_TINH" : "PHU_TINH");
+			return starRepository.saveAndFlush(newStar);
 		});
+		if (existingStars != null) {
+			existingStars.put(starId.name(), star);
+		}
+		return star;
+	}
+
+	private Star findOrCreateStar(StarId starId) {
+		return findOrCreateStar(starId, null);
 	}
 
 	static String hashAccessToken(UUID accessToken) {

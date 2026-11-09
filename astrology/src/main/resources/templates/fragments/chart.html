@@ -134,6 +134,10 @@
             </span>
           </li>
           <li>
+            <span class="info-label">Cung Mệnh:</span>
+            <span class="info-val" th:text="${person.chart != null ? 'Cung ' + person.chart.positions.mingPalace.vietnameseName : 'Cung Dần'}">Cung Dần</span>
+          </li>
+          <li>
             <span class="info-label">Thân cư:</span>
             <span class="info-val" th:text="${person.chart != null ? 'Cung ' + person.chart.positions.thanPalace.vietnameseName : 'Cung Tỵ'}">Cung Tỵ</span>
           </li>

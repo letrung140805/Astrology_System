@@ -10,7 +10,6 @@ import com.example.astrology.calculation.AstrologyCalculationInput;
 import com.example.astrology.calculation.AstrologyCalculationService;
 import com.example.astrology.calculation.CanLuongCalculator;
 import com.example.astrology.calculation.CalculationAssessment;
-import com.example.astrology.calculation.CalculationGap;
 import com.example.astrology.calculation.TuViDetailService;
 import com.example.astrology.calculation.calendar.HoNgocDucLunarCalendarProvider;
 import com.example.astrology.calculation.calendar.NayinElementCalculator;
@@ -23,21 +22,22 @@ import com.example.astrology.calculation.chart.TracuutuviChartCalculator;
 import com.example.astrology.model.BirthChartPageData;
 import com.example.astrology.model.ChartPalaceDisplay;
 
+/**
+ * Service điều phối tính toán lá số Tử Vi cốt lõi (Domain Calculation Orchestrator).
+ * Phụ trách kết hợp: chuẩn hóa ngày sinh, chuyển đổi âm lịch, tính Can Chi, Nạp Âm và an 12 cung + sao.
+ * Việc chuẩn bị dữ liệu view được ủy quyền cho BirthChartDisplayService.
+ */
 @Service
 public class BirthChartApplicationService {
 
 	private static final ZoneOffset VIETNAM_STANDARD_OFFSET = ZoneOffset.ofHours(7);
-	private static final List<String> CHART_LIMITATIONS = List.of(
-			"Can Chi 4 trụ năm tháng ngày giờ đã được chuẩn hóa theo lịch thiên văn Việt Nam.",
-			"Đã tính toán đầy đủ Bản Mệnh (60 hoa giáp), Cân lượng, Chủ Mệnh, Chủ Thân, Lai Nhân Cung.",
-			"Độ sáng chính tinh và các nhóm phụ tinh được an theo nguyên tắc cổ truyền.");
 
 	private final AstrologyCalculationService astrologyCalculationService;
 	private final TracuutuviChartCalculator chartCalculator;
 	private final HoNgocDucLunarCalendarProvider lunarCalendarProvider;
 	private final SexagenaryYearCalculator sexagenaryYearCalculator;
 	private final NayinElementCalculator nayinElementCalculator;
-	private final TuViDetailService tuViDetailService;
+	private final BirthChartDisplayService displayService;
 
 	@org.springframework.beans.factory.annotation.Autowired
 	public BirthChartApplicationService(
@@ -46,13 +46,25 @@ public class BirthChartApplicationService {
 			HoNgocDucLunarCalendarProvider lunarCalendarProvider,
 			SexagenaryYearCalculator sexagenaryYearCalculator,
 			NayinElementCalculator nayinElementCalculator,
-			TuViDetailService tuViDetailService) {
+			BirthChartDisplayService displayService) {
 		this.astrologyCalculationService = astrologyCalculationService;
 		this.chartCalculator = chartCalculator;
 		this.lunarCalendarProvider = lunarCalendarProvider;
 		this.sexagenaryYearCalculator = sexagenaryYearCalculator;
 		this.nayinElementCalculator = nayinElementCalculator;
-		this.tuViDetailService = tuViDetailService;
+		this.displayService = displayService;
+	}
+
+	public BirthChartApplicationService(
+			AstrologyCalculationService astrologyCalculationService,
+			TracuutuviChartCalculator chartCalculator,
+			HoNgocDucLunarCalendarProvider lunarCalendarProvider,
+			SexagenaryYearCalculator sexagenaryYearCalculator,
+			NayinElementCalculator nayinElementCalculator,
+			TuViDetailService tuViDetailService) {
+		this(astrologyCalculationService, chartCalculator, lunarCalendarProvider,
+				sexagenaryYearCalculator, nayinElementCalculator,
+				new BirthChartDisplayService(tuViDetailService));
 	}
 
 	public BirthChartApplicationService(
@@ -98,15 +110,17 @@ public class BirthChartApplicationService {
 						birthSex);
 				chart = chartCalculator.calculate(lunarInput);
 				if (chart != null) {
-					fullDetails = tuViDetailService.buildDetails(chart, input.birthDate(), birthSex);
-					displayPalaces = fullDetails.gridPalaces();
+					fullDetails = displayService.buildDetails(chart, input.birthDate(), birthSex);
+					if (fullDetails != null) {
+						displayPalaces = fullDetails.gridPalaces();
+					}
 				}
 			}
 		} catch (DateTimeException | IllegalArgumentException | IllegalStateException exception) {
 			chartInputMessage = exception.getMessage();
 		}
 
-		return new BirthChartPageData(
+		return displayService.createPageData(
 				assessment,
 				chart,
 				chartInputMessage,
@@ -115,27 +129,7 @@ public class BirthChartApplicationService {
 				lunarCalendarProvider.implementationVersion(),
 				yearCanChi,
 				yearNayinElement,
-				NayinElementCalculator.SOURCE_URL,
 				displayPalaces,
-				remainingGaps(assessment, chart, lunarDate, yearNayinElement),
-				CHART_LIMITATIONS,
 				fullDetails);
-	}
-
-	private List<CalculationGap> remainingGaps(
-			CalculationAssessment assessment,
-			TracuutuviChart chart,
-			VietnameseLunarCalendarProvider.LunarDate lunarDate,
-			String yearNayinElement) {
-		return assessment.gaps().stream()
-				.filter(gap -> chart == null
-						|| (gap != CalculationGap.MENH_AND_CUC
-								&& gap != CalculationGap.TWELVE_PALACES
-								&& gap != CalculationGap.STAR_PLACEMENT))
-				.filter(gap -> lunarDate == null
-						|| (gap != CalculationGap.LUNAR_CALENDAR
-								&& gap != CalculationGap.CAN_CHI_YEAR_BOUNDARY))
-				.filter(gap -> yearNayinElement != null || gap != CalculationGap.NATAL_ELEMENT)
-				.toList();
 	}
 }
