@@ -296,7 +296,7 @@
       "dimension": "VALUES_PRINCIPLES",
       "name": "Thiên Lương - Thiên Phủ: Lấy chữ Tín làm trọng",
       "category": "STRENGTH",
-      "weight": 5,
+      "weight": 3,
       "conditionType": "PALACE_GOOD_STARS",
       "palace": "MENH",
       "stars": ["Thiên Lương", "Thiên Phủ", "Hóa Khoa"],
@@ -308,10 +308,10 @@
       "dimension": "VALUES_PRINCIPLES",
       "name": "Cung Phúc Đức đồng điệu & Hội cát tinh",
       "category": "STRENGTH",
-      "weight": 5,
+      "weight": 3,
       "conditionType": "PALACE_GOOD_STARS",
       "palace": "PHUC_DUC",
-      "stars": ["Tử Vi", "Thiên Phủ", "Thiên Đồng", "Phúc Đức", "Nguyệt Đức", "Giải Thần"],
+      "stars": ["Tử Vi", "Thiên Phủ", "Thiên Lương", "Thiên Đồng", "Ân Quang", "Thiên Quý"],
       "description": "Cung Phúc Đức tốt lành mang đến sự tương đồng sâu sắc về nhân sinh quan, quan niệm sống nhân văn và tấm lòng bao dung khi đối phương gặp khó khăn.",
       "advice": "Cùng nhau tham gia các hoạt động thiện nguyện, chia sẻ giá trị tinh thần tích cực cho cộng đồng."
     },
@@ -320,7 +320,7 @@
       "dimension": "VALUES_PRINCIPLES",
       "name": "Ngũ hành bản mệnh tương sinh",
       "category": "STRENGTH",
-      "weight": 5,
+      "weight": 3,
       "conditionType": "TRADITIONAL_MENH_SINH",
       "description": "Bản mệnh nạp âm của hai người ở thế tương sinh thuận hòa. Một bên là nguồn năng lượng nâng đỡ, tiếp sức và khích lệ người kia phát triển toàn diện.",
       "advice": "Bên tương sinh hãy kiên nhẫn làm hậu phương hỗ trợ, bên được tương sinh biết trân trọng và đền đáp tấm lòng."
@@ -330,7 +330,7 @@
       "dimension": "VALUES_PRINCIPLES",
       "name": "Thiên can ngũ hợp trời ban",
       "category": "STRENGTH",
-      "weight": 5,
+      "weight": 4,
       "conditionType": "TRADITIONAL_CAN_HOP",
       "description": "Thiên can năm sinh thuộc cặp ngũ hợp đại cát. Hai bạn có sự đồng điệu bẩm sinh về mặt tư tưởng, tầm nhìn xa và sự gắn bó khắng khít trong các nguyên tắc cốt lõi.",
       "advice": "Nuôi dưỡng chí hướng chung để cùng nhau kiến tạo những giá trị to lớn cho xã hội."
@@ -340,7 +340,7 @@
       "dimension": "VALUES_PRINCIPLES",
       "name": "Địa chi Tam Hợp / Lục Hợp - Bằng hữu chí cốt",
       "category": "STRENGTH",
-      "weight": 5,
+      "weight": 4,
       "conditionType": "TRADITIONAL_CHI_HOP",
       "description": "Địa chi hai bạn nằm trong vòng Tam Hợp hoặc Lục Hợp. Tình bằng hữu bền vững theo năm tháng, có duyên nợ tốt lành và sự thấu cảm tự nhiên.",
       "advice": "Trân trọng duyên lành trời ban, luôn đồng hành cùng nhau qua các bước ngoặt cuộc đời."
@@ -350,10 +350,42 @@
       "dimension": "VALUES_PRINCIPLES",
       "name": "Ngũ hành nạp âm tương khắc - Khác biệt quan điểm",
       "category": "WARNING",
-      "weight": -4,
+      "weight": -3,
       "conditionType": "TRADITIONAL_MENH_KHAC",
       "description": "Ngũ hành bản mệnh ở thế tương khắc. Khí chất và cách tiếp cận cuộc sống của hai người có phần đối nghịch, đòi hỏi sự kiên nhẫn thích nghi lớn hơn bình thường.",
       "advice": "Tôn trọng sự khác biệt của nhau, không áp đặt quan điểm chủ quan lên người bạn đồng hành."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_CAN_XUNG",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Thiên can tương xung: Bất đồng tư tưởng cốt lõi",
+      "category": "WARNING",
+      "weight": -3,
+      "conditionType": "TRADITIONAL_CAN_XUNG",
+      "description": "Thiên can năm sinh ở thế tương xung. Hai bạn có góc nhìn và triết lý sống khác biệt, dễ tranh luận khi đưa ra các quyết định mang tính định hướng lâu dài.",
+      "advice": "Học cách lắng nghe và chấp nhận các góc nhìn đối lập, tìm kiếm điểm chung thay vì cố chấp tranh cãi."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_CHI_XUNG_HAI",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Địa chi Lục Xung / Lục Hại / Tự Hình: Va chạm cái tôi & Thiếu nhẫn nại",
+      "category": "WARNING",
+      "weight": -3,
+      "conditionType": "TRADITIONAL_CHI_XUNG",
+      "description": "Địa chi hai bạn rơi vào thế xung khắc, tương hại hoặc tự hình (cùng chi cố chấp). Đôi bên dễ có lòng tự ái cao, khó nhượng bộ khi xảy ra bất đồng ý kiến.",
+      "advice": "Hạ bớt cái tôi cá nhân, thẳng thắn trao đổi ôn hòa và tránh để mâu thuẫn âm ỉ kéo dài."
+    },
+    {
+      "id": "RULE_FRIEND_VALUES_PHUC_DUC_SAT",
+      "dimension": "VALUES_PRINCIPLES",
+      "name": "Cung Phúc Đức gặp Sát tinh / Hóa Kỵ: Nghi kỵ nội tâm & Bất an",
+      "category": "WARNING",
+      "weight": -4,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "PHUC_DUC",
+      "stars": ["Kình Dương", "Đà La", "Địa Không", "Địa Kiếp", "Hóa Kỵ"],
+      "description": "Cung Phúc Đức xuất hiện sát tinh hoặc Hóa Kỵ. Đôi bên có thể tồn tại những khoảng cách vô hình về niềm tin, dễ nảy sinh nghi ngờ khi gặp áp lực ngoại cảnh.",
+      "advice": "Xây dựng sự tin tưởng dựa trên hành động cụ thể và sự minh bạch, tránh phán đoán cảm tính về đối phương."
     },
 
     {
@@ -425,6 +457,53 @@
       "stars": ["Hóa Kỵ"],
       "description": "Hóa Kỵ tại Tài Bạch cảnh báo nguy cơ lớn nhất trong mối quan hệ làm ăn: mập mờ sổ sách tài chính, nghi ngờ lòng tham hoặc bất đồng tỷ lệ chia lợi nhuận.",
       "advice": "Tách bạch rành mạch tài chính cá nhân và tài chính công việc; sử dụng phần mềm kế toán hoặc kiểm toán độc lập."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_CAREER_DRIVE",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Cung Quan Lộc vững vàng: Hậu thuẫn tài chính & Mở rộng cơ hội làm ăn",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "QUAN_LOC",
+      "stars": ["Tử Vi", "Thiên Phủ", "Hóa Quyền", "Hóa Khoa", "Vũ Khúc"],
+      "description": "Cung Quan Lộc sở hữu các cát tinh và quyền tinh vững chãi. Hai bạn có năng lực chuyên môn và uy tín lớn, tương trợ nhau tạo ra các cơ hội kinh doanh và nguồn thu nhập đột phá.",
+      "advice": "Tận dụng thế mạnh sự nghiệp của nhau để mở rộng quy mô hợp tác và gia tăng lợi nhuận."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_MENH_TAI_TINH",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Bản Mệnh hội Tài tinh: Nhạy bén kinh tế & Thu hút nguồn vốn",
+      "category": "STRENGTH",
+      "weight": 4,
+      "conditionType": "PALACE_GOOD_STARS",
+      "palace": "MENH",
+      "stars": ["Vũ Khúc", "Thiên Phủ", "Hóa Lộc", "Lộc Tồn"],
+      "description": "Cung Mệnh có đắc tài tinh tọa thủ. Đôi bên sở hữu tư duy kinh doanh nhạy bén, biết cách nắm bắt thời cơ thị trường và vận hành đồng vốn thông minh.",
+      "advice": "Phát huy tư duy kinh tế của bạn đồng hành, tham vấn ý kiến trước khi đưa ra các quyết định phân bổ ngân sách."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_TUAN_TRIET",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Tuần/Triệt ngộ Tài Bạch: Cảnh báo chậm hoàn vốn & Cần dự phòng",
+      "category": "CHALLENGE",
+      "weight": -3,
+      "conditionType": "PALACE_TUAN_TRIET",
+      "palace": "TAI_BACH",
+      "description": "Cung Tài Bạch gặp Tuần hoặc Triệt án ngữ. Dòng tiền giai đoạn đầu có thể gặp thử thách hoặc chậm luân chuyển hơn kỳ vọng.",
+      "advice": "Lập quỹ dự phòng ít nhất 3-6 tháng vận hành, không nên nóng vội kỳ vọng lợi nhuận tức thì."
+    },
+    {
+      "id": "RULE_FRIEND_FINANCE_KINH_DA",
+      "dimension": "FINANCIAL_BENEFIT",
+      "name": "Kình Dương - Đà La nhập Tài: Cẩn trọng tranh chấp và hao hụt vốn",
+      "category": "WARNING",
+      "weight": -4,
+      "conditionType": "PALACE_STARS_CONTAIN",
+      "palace": "TAI_BACH",
+      "stars": ["Kình Dương", "Đà La"],
+      "description": "Kình Dương hoặc Đà La xuất hiện tại Cung Tài Bạch báo hiệu nguy cơ va chạm trong phân chia quyền lợi hoặc phát sinh công nợ ngoài kế hoạch.",
+      "advice": "Lập hợp đồng và biên bản thanh quyết toán minh bạch, định kỳ kiểm toán thu chi rõ ràng."
     }
   ]
 }

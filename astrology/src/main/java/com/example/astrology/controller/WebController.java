@@ -1,8 +1,5 @@
 package com.example.astrology.controller;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import com.example.astrology.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -60,15 +57,6 @@ public class WebController {
 		this.birthChartPersistenceService = birthChartPersistenceService;
 		this.coupleChartPersistenceService = coupleChartPersistenceService;
 		this.friendChartPersistenceService = friendChartPersistenceService;
-	}
-
-	public WebController(
-			BirthChartApplicationService birthChartApplicationService,
-			BirthChartPersistenceService birthChartPersistenceService,
-			CoupleChartPersistenceService coupleChartPersistenceService,
-			FriendChartPersistenceService friendChartPersistenceService,
-			UserService userService) {
-		this(birthChartApplicationService, birthChartPersistenceService, coupleChartPersistenceService, friendChartPersistenceService);
 	}
 
 	public WebController(

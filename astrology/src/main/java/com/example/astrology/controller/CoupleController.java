@@ -9,14 +9,12 @@ import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.astrology.calculation.AstrologyCalculationInput;
 import com.example.astrology.entity.CoupleChart;
@@ -164,13 +162,12 @@ public class CoupleController {
 
 			CoupleCompatibilityResult compatibility = coupleCompatibilityService.assess(person1, person2);
 
-			// Lưu kết quả 2 lá số và bài luận giải tương hợp vào database/lịch sử
+			// Lưu kết quả 2 lá số và bài luận giải tương hợp vào database/lịch sử và chuyển hướng (PRG pattern)
 			if (coupleChartPersistenceService != null && principalName(principal) != null) {
 				try {
 					CoupleChart savedChart = coupleChartPersistenceService.save(
 							person1, person2, compatibility, principalName(principal));
-					model.addAttribute("savedId", savedChart.getId());
-					model.addAttribute("savedSuccess", true);
+					return "redirect:/tuong-hop/id/" + savedChart.getId();
 				} catch (Exception ex) {
 					logger.warn("Could not save couple chart to history: {}", ex.getMessage());
 				}

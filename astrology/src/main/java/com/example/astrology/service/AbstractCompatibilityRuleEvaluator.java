@@ -66,14 +66,28 @@ public abstract class AbstractCompatibilityRuleEvaluator {
 	}
 
 	protected double computeDimensionScore(List<TriggeredRule> rules, String dimension, double base) {
-		return computeDimensionScore(rules, dimension, base, 0.4);
+		return computeDimensionScore(rules, base, 0.4, dimension);
 	}
 
 	protected double computeDimensionScore(List<TriggeredRule> rules, String dimension, double base, double weightMultiplier) {
+		return computeDimensionScore(rules, base, weightMultiplier, dimension);
+	}
+
+	protected double computeDimensionScore(List<TriggeredRule> rules, double base, String... dimensions) {
+		return computeDimensionScore(rules, base, 0.4, dimensions);
+	}
+
+	protected double computeDimensionScore(List<TriggeredRule> rules, double base, double weightMultiplier, String... dimensions) {
 		double sum = base;
-		for (TriggeredRule r : rules) {
-			if (dimension.equalsIgnoreCase(r.dimension())) {
-				sum += (r.weight() * weightMultiplier);
+		if (rules != null && dimensions != null) {
+			for (TriggeredRule r : rules) {
+				if (r == null || r.dimension() == null) continue;
+				for (String dim : dimensions) {
+					if (dim != null && dim.equalsIgnoreCase(r.dimension())) {
+						sum += (r.weight() * weightMultiplier);
+						break;
+					}
+				}
 			}
 		}
 		sum = Math.max(3.0, Math.min(10.0, sum));

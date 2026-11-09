@@ -1,5 +1,6 @@
 package com.example.astrology.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,7 @@ public interface FriendChartRepository extends JpaRepository<FriendChart, Long> 
 	Optional<FriendChart> findByAccessTokenHash(String accessTokenHash);
 
 	List<FriendChart> findAllByAccessTokenHashInAndUserIsNullOrderByCreatedAtDesc(List<String> accessTokenHashes);
+
+	Optional<FriendChart> findFirstByUser_IdAndName1AndBirthDate1AndName2AndBirthDate2OrderByCreatedAtDesc(
+			Long userId, String name1, LocalDate birthDate1, String name2, LocalDate birthDate2);
 }

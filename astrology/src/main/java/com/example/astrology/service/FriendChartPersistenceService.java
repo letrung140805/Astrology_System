@@ -57,8 +57,31 @@ public class FriendChartPersistenceService {
 		LocalDate birthDate2 = parseLocalDate(p2.birthDate(), p2.solarYear(), p2.solarMonth(), p2.solarDay());
 		LocalTime birthTime2 = parseLocalTime(p2.birthTime());
 
-		FriendChart chart = new FriendChart();
-		chart.setUser(owner);
+		// Chống trùng lặp: nếu người dùng vừa mới lưu hồ sơ cho cùng 2 người này trong vòng 5 phút (do click đúp hoặc F5), tái sử dụng bản ghi
+		FriendChart chart = null;
+		if (owner != null) {
+			java.util.Optional<FriendChart> recent = friendChartRepository
+					.findFirstByUser_IdAndName1AndBirthDate1AndName2AndBirthDate2OrderByCreatedAtDesc(
+							owner.getId(), p1.name(), birthDate1, p2.name(), birthDate2);
+			if (recent.isEmpty()) {
+				recent = friendChartRepository
+						.findFirstByUser_IdAndName1AndBirthDate1AndName2AndBirthDate2OrderByCreatedAtDesc(
+								owner.getId(), p2.name(), birthDate2, p1.name(), birthDate1);
+			}
+			if (recent.isPresent()) {
+				FriendChart existing = recent.get();
+				if (existing.getCreatedAt() != null &&
+						existing.getCreatedAt().isAfter(java.time.LocalDateTime.now().minusMinutes(5))) {
+					chart = existing;
+				}
+			}
+		}
+
+		if (chart == null) {
+			chart = new FriendChart();
+			chart.setUser(owner);
+			chart.setAccessTokenHash(hashAccessToken(accessToken));
+		}
 
 		// Person 1
 		chart.setName1(p1.name());

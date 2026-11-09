@@ -22,6 +22,13 @@ public class FriendCompatibilityService {
 			Set.of("Mậu", "Quý")
 	);
 
+	private static final Set<Set<String>> CAN_XUNG = Set.of(
+			Set.of("Giáp", "Canh"),
+			Set.of("Ất", "Tân"),
+			Set.of("Bính", "Nhâm"),
+			Set.of("Đinh", "Quý")
+	);
+
 	private static final Set<Set<String>> CHI_TAM_HOP = Set.of(
 			Set.of("Thân", "Tý", "Thìn"),
 			Set.of("Dần", "Ngọ", "Tuất"),
@@ -37,6 +44,26 @@ public class FriendCompatibilityService {
 			Set.of("Tỵ", "Thân"),
 			Set.of("Ngọ", "Mùi")
 	);
+
+	private static final Set<Set<String>> CHI_LUC_XUNG = Set.of(
+			Set.of("Tý", "Ngọ"),
+			Set.of("Sửu", "Mùi"),
+			Set.of("Dần", "Thân"),
+			Set.of("Mão", "Dậu"),
+			Set.of("Thìn", "Tuất"),
+			Set.of("Tỵ", "Hợi")
+	);
+
+	private static final Set<Set<String>> CHI_LUC_HAI = Set.of(
+			Set.of("Tý", "Mùi"),
+			Set.of("Sửu", "Ngọ"),
+			Set.of("Dần", "Tỵ"),
+			Set.of("Mão", "Thìn"),
+			Set.of("Thân", "Hợi"),
+			Set.of("Dậu", "Tuất")
+	);
+
+	private static final Set<String> CHI_TU_HINH = Set.of("Thìn", "Ngọ", "Dậu", "Hợi");
 
 	private final FriendRuleEvaluator ruleEvaluator;
 	private final FriendAiInterpretationService aiInterpretationService;
@@ -66,14 +93,16 @@ public class FriendCompatibilityService {
 		String can1 = extractStem(p1.yearCanChi());
 		String can2 = extractStem(p2.yearCanChi());
 		boolean isCanHopVal = isCanHop(can1, can2);
+		boolean isCanXungVal = isCanXung(can1, can2);
 
 		String chi1 = extractBranch(p1.yearCanChi());
 		String chi2 = extractBranch(p2.yearCanChi());
 		boolean isChiHopVal = isLucHop(chi1, chi2) || isTamHop(chi1, chi2);
+		boolean isChiXungVal = isChiXung(chi1, chi2);
 
 		// Rule Engine Evaluation (Chuẩn hóa từ JSON ruleset 5 yếu tố bạn bè / cộng sự)
 		FriendRuleEvaluator.EvaluationResult evalResult = ruleEvaluator.evaluate(
-				p1, p2, isMenhSinh, isMenhKhac, isCanHopVal, isChiHopVal);
+				p1, p2, isMenhSinh, isMenhKhac, isCanHopVal, isChiHopVal, isCanXungVal, isChiXungVal);
 
 		int totalScore = evalResult.totalScore();
 
@@ -169,13 +198,23 @@ public class FriendCompatibilityService {
 	}
 
 	private boolean isCanHop(String c1, String c2) {
+		if (c1 == null || c2 == null || c1.equalsIgnoreCase(c2)) return false;
 		for (Set<String> pair : CAN_HOP) {
 			if (pair.contains(c1) && pair.contains(c2)) return true;
 		}
 		return false;
 	}
 
+	private boolean isCanXung(String c1, String c2) {
+		if (c1 == null || c2 == null || c1.equalsIgnoreCase(c2)) return false;
+		for (Set<String> pair : CAN_XUNG) {
+			if (pair.contains(c1) && pair.contains(c2)) return true;
+		}
+		return false;
+	}
+
 	private boolean isLucHop(String b1, String b2) {
+		if (b1 == null || b2 == null || b1.equalsIgnoreCase(b2)) return false;
 		for (Set<String> pair : CHI_LUC_HOP) {
 			if (pair.contains(b1) && pair.contains(b2)) return true;
 		}
@@ -183,8 +222,23 @@ public class FriendCompatibilityService {
 	}
 
 	private boolean isTamHop(String b1, String b2) {
+		if (b1 == null || b2 == null || b1.equalsIgnoreCase(b2)) return false;
 		for (Set<String> triple : CHI_TAM_HOP) {
 			if (triple.contains(b1) && triple.contains(b2)) return true;
+		}
+		return false;
+	}
+
+	private boolean isChiXung(String b1, String b2) {
+		if (b1 == null || b2 == null) return false;
+		if (b1.equalsIgnoreCase(b2)) {
+			return CHI_TU_HINH.contains(b1);
+		}
+		for (Set<String> pair : CHI_LUC_XUNG) {
+			if (pair.contains(b1) && pair.contains(b2)) return true;
+		}
+		for (Set<String> pair : CHI_LUC_HAI) {
+			if (pair.contains(b1) && pair.contains(b2)) return true;
 		}
 		return false;
 	}

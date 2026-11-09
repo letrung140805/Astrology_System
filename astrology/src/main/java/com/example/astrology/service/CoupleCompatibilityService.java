@@ -295,6 +295,7 @@ public class CoupleCompatibilityService {
 	}
 
 	private boolean isCanHop(String c1, String c2) {
+		if (c1 == null || c2 == null || c1.equalsIgnoreCase(c2)) return false;
 		for (Set<String> pair : CAN_HOP) {
 			if (pair.contains(c1) && pair.contains(c2)) return true;
 		}
@@ -302,6 +303,7 @@ public class CoupleCompatibilityService {
 	}
 
 	private boolean isCanXung(String c1, String c2) {
+		if (c1 == null || c2 == null || c1.equalsIgnoreCase(c2)) return false;
 		for (Set<String> pair : CAN_XUNG) {
 			if (pair.contains(c1) && pair.contains(c2)) return true;
 		}
@@ -309,6 +311,7 @@ public class CoupleCompatibilityService {
 	}
 
 	private boolean isTamHop(String b1, String b2) {
+		if (b1 == null || b2 == null || b1.equalsIgnoreCase(b2)) return false;
 		for (Set<String> set : CHI_TAM_HOP) {
 			if (set.contains(b1) && set.contains(b2)) return true;
 		}
@@ -316,6 +319,7 @@ public class CoupleCompatibilityService {
 	}
 
 	private boolean isLucHop(String b1, String b2) {
+		if (b1 == null || b2 == null || b1.equalsIgnoreCase(b2)) return false;
 		for (Set<String> pair : CHI_LUC_HOP) {
 			if (pair.contains(b1) && pair.contains(b2)) return true;
 		}
@@ -323,6 +327,7 @@ public class CoupleCompatibilityService {
 	}
 
 	private boolean isLucHai(String b1, String b2) {
+		if (b1 == null || b2 == null || b1.equalsIgnoreCase(b2)) return false;
 		for (Set<String> pair : CHI_LUC_HAI) {
 			if (pair.contains(b1) && pair.contains(b2)) return true;
 		}
@@ -330,6 +335,7 @@ public class CoupleCompatibilityService {
 	}
 
 	private boolean isTuXung(String b1, String b2) {
+		if (b1 == null || b2 == null || b1.equalsIgnoreCase(b2)) return false;
 		for (Set<String> set : CHI_TU_XUNG) {
 			if (set.contains(b1) && set.contains(b2)) return true;
 		}

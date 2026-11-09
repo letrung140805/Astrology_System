@@ -126,4 +126,36 @@ class CoupleChartPersistenceServiceTests {
 		assertThrows(ResponseStatusException.class, () ->
 				persistenceService.loadOwned(saved.getId(), "tester@example.com"));
 	}
+
+	@Test
+	void reusesExistingChartWhenSavedRepeatedlyWithinFiveMinutes() {
+		CouplePersonData person1 = new CouplePersonData(
+				"Phạm Mạnh", "Nam", "15/08/1995", 1995, 8, 15, "09:30", "Hà Nội", "Tỵ",
+				null, List.of(), null, "Ất Hợi", "Sơn Đầu Hỏa", null);
+
+		CouplePersonData person2 = new CouplePersonData(
+				"Phạm Huyền Linh", "Nữ", "20/10/1997", 1997, 10, 20, "14:15", "Hải Phòng", "Thân",
+				null, List.of(), null, "Đinh Sửu", "Giản Hạ Thủy", null);
+
+		CoupleCompatibilityResult result = new CoupleCompatibilityResult(
+				82, "Hòa Hợp", "badge-success", "Hai bạn rất hòa hợp",
+				"Hỏa", 12, "Tương khắc nhẹ",
+				"Ất - Đinh", 18, "Tương sinh",
+				"Hợi - Sửu", 16, "Tam hợp",
+				"Cấn - Đoài", 18, "Diên Niên",
+				"Thái Âm - Thiên Phủ", "Đắc địa",
+				"Cần lắng nghe nhau nhiều hơn",
+				8.5, 7.5, 8.0, 9.0, 8.2,
+				"Tình cảm thắm thiết", "Giao tiếp cởi mở", "Tài chính ổn định",
+				"Vững vàng trước sóng gió", "Hòa hợp trong sinh hoạt",
+				"Lời kết: Mối nhân duyên tốt đẹp.",
+				"", List.of());
+
+		CoupleChart firstSave = persistenceService.save(person1, person2, result, "tester@example.com");
+		CoupleChart secondSave = persistenceService.save(person1, person2, result, "tester@example.com");
+
+		assertEquals(firstSave.getId(), secondSave.getId(), "Should reuse the existing record ID instead of creating a duplicate");
+		List<CoupleHistoryItem> history = persistenceService.history("tester@example.com", List.of());
+		assertEquals(1, history.size(), "History should only have 1 item");
+	}
 }

@@ -35,6 +35,18 @@ public class FriendRuleEvaluator extends AbstractCompatibilityRuleEvaluator {
 			boolean isMenhKhac,
 			boolean isCanHop,
 			boolean isChiHop) {
+		return evaluate(p1, p2, isMenhSinh, isMenhKhac, isCanHop, isChiHop, false, false);
+	}
+
+	public EvaluationResult evaluate(
+			CouplePersonData p1,
+			CouplePersonData p2,
+			boolean isMenhSinh,
+			boolean isMenhKhac,
+			boolean isCanHop,
+			boolean isChiHop,
+			boolean isCanXung,
+			boolean isChiXung) {
 
 		List<TriggeredRule> triggered = new ArrayList<>();
 
@@ -65,7 +77,7 @@ public class FriendRuleEvaluator extends AbstractCompatibilityRuleEvaluator {
 						menh1, menh2, noBoc1, noBoc2, huynhDe1, huynhDe2,
 						thienDi1, thienDi2, quanLoc1, quanLoc2, phucDuc1, phucDuc2,
 						taiBach1, taiBach2,
-						isMenhSinh, isMenhKhac, isCanHop, isChiHop);
+						isMenhSinh, isMenhKhac, isCanHop, isChiHop, isCanXung, isChiXung);
 				if (active) {
 					triggered.add(new TriggeredRule(
 							rule.id,
@@ -81,11 +93,11 @@ public class FriendRuleEvaluator extends AbstractCompatibilityRuleEvaluator {
 		}
 
 		// Calculate Sub-scores for 5 Core Factors (Base: 7.0 for each factor)
-		double partner = computeDimensionScore(triggered, "PARTNER_FIT", 7.0);
-		double communication = computeDimensionScore(triggered, "COMMUNICATION", 6.8);
-		double vision = computeDimensionScore(triggered, "VISION_ALIGNMENT", 7.0);
-		double values = computeDimensionScore(triggered, "CORE_VALUES", 6.5);
-		double money = computeDimensionScore(triggered, "FINANCIAL_BENEFIT", 6.8);
+		double partner = computeDimensionScore(triggered, 7.0, "FRIEND_PARTNER", "PARTNER_FIT");
+		double communication = computeDimensionScore(triggered, 6.8, "COMMUNICATION");
+		double vision = computeDimensionScore(triggered, 7.0, "VISION_WORK", "VISION_ALIGNMENT");
+		double values = computeDimensionScore(triggered, 6.8, "VALUES_PRINCIPLES", "CORE_VALUES");
+		double money = computeDimensionScore(triggered, 6.8, "FINANCIAL_BENEFIT", "FINANCIAL");
 
 		// Total score (weighted out of 100):
 		// 1. Friend/Partner: 25%
@@ -125,7 +137,8 @@ public class FriendRuleEvaluator extends AbstractCompatibilityRuleEvaluator {
 			Set<String> phucDuc1, Set<String> phucDuc2,
 			Set<String> taiBach1, Set<String> taiBach2,
 			boolean isMenhSinh, boolean isMenhKhac,
-			boolean isCanHop, boolean isChiHop) {
+			boolean isCanHop, boolean isChiHop,
+			boolean isCanXung, boolean isChiXung) {
 
 		String type = rule.conditionType != null ? rule.conditionType : "";
 		return switch (type) {
@@ -147,7 +160,9 @@ public class FriendRuleEvaluator extends AbstractCompatibilityRuleEvaluator {
 			case "TRADITIONAL_MENH_SINH" -> isMenhSinh;
 			case "TRADITIONAL_MENH_KHAC" -> isMenhKhac;
 			case "TRADITIONAL_CAN_HOP" -> isCanHop;
+			case "TRADITIONAL_CAN_XUNG" -> isCanXung;
 			case "TRADITIONAL_CHI_HOP" -> isChiHop;
+			case "TRADITIONAL_CHI_XUNG" -> isChiXung;
 			default -> false;
 		};
 	}
