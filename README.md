@@ -301,7 +301,39 @@ Astrology_System/
         │               ├── layout.html                # Header, Footer, Menu responsive
         │               └── chart.html                 # Khung tinh bàn 12 cung lá số Tử Vi
         └── test/                                      # Bộ kiểm thử tự động (Unit & Integration Tests)
-            └── java/com/example/astrology/            # 31 Test Classes kiểm thử toán học & nghiệp vụ
+            └── java/com/example/astrology/            # 31 Test Classes kiểm thử toán học & nghiệp vụ (122 tests)
 ```
 
 ---
+
+## Kiến trúc phân tầng & Chuẩn hóa MVC
+
+Hệ thống được thiết kế theo đúng chuẩn kiến trúc **Spring MVC phân tầng (Layered Architecture)**, áp dụng các nguyên lý **SOLID**, phân định rõ ràng trách nhiệm giữa các thành phần và tối ưu hóa hiệu năng:
+
+### 1. Tầng Controller (Web / Presentation Layer)
+- **Phân tách theo nghiệp vụ & phân hệ trang**:
+  - `WebController`: Chuyên trách trang chủ (`/`), điều phối tính toán & kết quả lá số (`/result/**`), lịch sử (`/history`), và giới thiệu (`/about`).
+  - `AccountController`: Quản lý thông tin tài khoản, cập nhật hồ sơ (`/account/update-profile`), đổi mật khẩu (`/account/change-password`).
+  - `AuthController`: Đăng nhập, đăng ký tài khoản với Spring Security.
+  - `AstrologyChatController`: Đàm đạo chuyên sâu với AI, xử lý SSE streaming thời gian thực và quản lý đa hội thoại.
+  - `CoupleController` & `FriendController`: Luận giải tương hợp đôi lứa và bạn bè.
+- **Form DTO Binding**: Các form tương hợp sử dụng `@ModelAttribute` liên kết với `CoupleCalculationForm` và `FriendCalculationForm`, đóng gói toàn bộ tham số nhập liệu có cấu trúc thay vì nhận danh sách dài 10–12 `@RequestParam` rời rạc.
+
+### 2. Tầng Service (Business Logic Layer)
+- **Phân định đơn nhiệm (Single Responsibility Principle)**:
+  - `BirthChartApplicationService`: Đóng vai trò điều phối các thuật toán cốt lõi (Can Chi, Nạp Âm, Cục, an 14 Chính Tinh & Phụ Tinh, Tứ Hóa...).
+  - `BirthChartDisplayService`: Tách riêng nhiệm vụ định dạng dữ liệu thô thành DTO tinh bàn 12 cung (`FullChartDetails`, `gridPalaces`, `BirthChartPageData`) sẵn sàng cho View hiển thị.
+- **Kế thừa & Trừu tượng hóa logic dùng chung**:
+  - `AbstractCompatibilityRuleEvaluator`: Lớp cha trừu tượng đảm nhiệm việc nạp file cấu hình JSON quy tắc 5 yếu tố, phân loại bộ sao phụ trợ (Đào Hoa, Quý Tinh, Tứ Trợ Tinh...), các thuật toán tìm kiếm vị trí sao (`findPalace`, `containsAny`) và tính điểm kích thước (`computeDimensionScore`).
+  - `CoupleRuleEvaluator` và `FriendRuleEvaluator`: Kế thừa lớp trừu tượng, loại bỏ hoàn toàn code trùng lặp mà vẫn đảm bảo tính độc lập cho bộ quy tắc và mô hình giải đoán riêng của từng dịch vụ.
+
+### 3. Tầng Xử lý lỗi & Tương tác View (Cross-Cutting Concerns)
+- **Xử lý ngoại lệ tập trung**:
+  - `GlobalExceptionHandler` (`@ControllerAdvice`): Tiếp nhận và phân loại lỗi hệ thống. Với các lỗi hợp lệ dự kiến (`IllegalArgumentException`), hiển thị thông báo lỗi thân thiện cho người dùng; với các lỗi hạ tầng (`DataAccessException`), ghi log ERROR chi tiết phục vụ điều tra và trả về thông báo an toàn, ngăn chặn việc rò rỉ chi tiết kỹ thuật của Database.
+- **Bảo mật dữ liệu View & Tối ưu Request**:
+  - `GlobalUserAdvice`: Chuyển đổi entity `AppUser` sang `UserSummaryDto`, bảo vệ tuyệt đối trường nhạy cảm `passwordHash` không bị truyền ra Thymeleaf. Đồng thời, lưu tạm thông tin người dùng trong `HttpServletRequest` attributes để loại bỏ các truy vấn lặp lại `findByEmail` trong cùng một HTTP request.
+
+### 4. Tối ưu hóa Cơ sở dữ liệu (Database & Query Optimization)
+- **Loại bỏ N+1 Queries**: Trong `BirthChartPersistenceService.save(...)`, thay vì thực hiện hàng trăm truy vấn `findByCode` lặp lại cho từng ngôi sao trong 12 cung, hệ thống nạp trước toàn bộ danh mục sao (`starRepository.findAll()`) vào `Map` trong bộ nhớ, tối ưu hóa tốc độ lưu trữ lá số.
+- **Toàn vẹn bảo mật**: Cấu hình bảo vệ CSRF đồng bộ giữa Spring Security và toàn bộ các form nhập liệu & kịch bản JavaScript.
+
