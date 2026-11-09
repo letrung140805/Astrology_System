@@ -2,7 +2,7 @@
 
 Ứng dụng web luận giải **Tử Vi Đẩu Số Việt Nam ứng dụng Trí Tuệ Nhân Tạo (AI)**, được phát triển trên nền tảng **Java Spring Boot, Spring Security, Spring AI, Thymeleaf và MySQL 8.0+**. 
 
-Hệ thống cho phép người dùng an sao, lập lá số Tử Vi chuẩn xác theo thuật toán lịch âm dương Việt Nam cổ truyền (múi giờ GMT+7), đồng thời kết hợp mô hình ngôn ngữ lớn (**Google Gemini** qua chuẩn OpenAI API) và kiến trúc **RAG (Retrieval-Augmented Generation)** để đàm đạo, phân tích và luận giải vận mệnh chuyên sâu theo thời gian thực.
+Hệ thống cho phép người dùng an sao, lập lá số Tử Vi chuẩn xác theo thuật toán lịch âm dương Việt Nam cổ truyền (múi giờ GMT+7), đồng thời kết hợp mô hình ngôn ngữ lớn (**Google Gemini** qua chuẩn OpenAI API) và kiến trúc **RAG (Retrieval-Augmented Generation)** để đàm đạo, phân tích và luận giải vận mệnh chuyên sâu theo thời gian thực. Ngoài ra, hệ thống còn cung cấp module đối chiếu **Tương hợp Tình Duyên** và **Tương hợp Bạn Bè & Cộng Sự** với bộ quy tắc thẩm định 5 yếu tố chuẩn xác.
 
 ---
 
@@ -12,8 +12,9 @@ Hệ thống cho phép người dùng an sao, lập lá số Tử Vi chuẩn xá
 | :--- | :--- |
 | **Backend** | Java 21, Spring Boot 4.1.1 (Spring MVC, Spring Data JPA, Spring Security, Spring AI, Validation) |
 | **Database** | MySQL 8.0+ |
-| **Frontend** | Thymeleaf, Bootstrap 5, Modern CSS, JavaScript (ES6) |
+| **Frontend** | Thymeleaf, Modern CSS, JavaScript (ES6) |
 | **AI / LLM** | Google Gemini (`gemini-3.5-flash-lite`) qua Spring AI OpenAI Client, RAG Architecture |
+| **Rule Engine** | Rule Engine tùy biến đọc cấu hình JSON thẩm định tương hợp 5 yếu tố |
 | **Libraries** | Lombok, Marked.js (Markdown parser), html2pdf.bundle.min.js (Xuất PDF) |
 | **Build Tool** | Apache Maven / Maven Wrapper (`mvnw`) |
 
@@ -164,83 +165,136 @@ Mở trình duyệt web bất kỳ và truy cập vào địa chỉ:
 ```
 http://localhost:8080/
 ```
+
 ---
 
 ## Cấu trúc thư mục dự án
 
 ```text
 Astrology_System/
-├── tuvi_AI.sql                                # Script khởi tạo Database schema & migration
-├── README.md                                  # Hướng dẫn dự án chi tiết
+├── tuvi_AI.sql                                # Script khởi tạo Database schema, bảng và procedures
+├── README.md                                  # Hướng dẫn dự án chi tiết & tài liệu kiến trúc
 └── astrology/                                 # Module Spring Boot chính
-    ├── mvnw, mvnw.cmd                         # Maven Wrapper (chạy không cần cài Maven)
-    ├── pom.xml                                # Quản lý dependency & plugins của dự án
+    ├── mvnw, mvnw.cmd                         # Maven Wrapper (chạy độc lập không cần cài Maven)
+    ├── pom.xml                                # Quản lý dependencies & plugins của dự án
     └── src/
         ├── main/
         │   ├── java/com/example/astrology/
-        │   │   ├── AstrologyApplication.java  # Điểm khởi chạy (Main Application Entry Point)
-        │   │   ├── config/                    # Cấu hình Security, PasswordEncoder, GlobalAdvice
+        │   │   ├── AstrologyApplication.java  # Điểm khởi chạy chính của ứng dụng Spring Boot
+        │   │   ├── config/                    # Cấu hình hệ thống (Security, PasswordEncoder, Advice, JSON)
         │   │   │   ├── SecurityConfig.java
         │   │   │   ├── PasswordEncoderConfig.java
-        │   │   │   └── GlobalUserAdvice.java
-        │   │   ├── controller/                # Bộ điều hướng Web MVC & REST endpoints
-        │   │   │   ├── WebController.java     # Trang chủ, xem lá số, lịch sử, tài khoản
-        │   │   │   ├── AuthController.java    # Đăng nhập, đăng ký tài khoản
-        │   │   │   └── AstrologyChatController.java # Chat AI, SSE Streaming, đa hội thoại
-        │   │   ├── service/                   # Nghiệp vụ ứng dụng
-        │   │   │   ├── BirthChartApplicationService.java
-        │   │   │   ├── BirthChartPersistenceService.java
-        │   │   │   ├── AstrologyChatService.java
-        │   │   │   ├── AstrologyRagService.java # Tự động seed & truy vấn tài liệu tri thức RAG
-        │   │   │   ├── AiPromptService.java     # Quản lý & nạp tệp cấu hình chỉ dẫn AI (Clean code)
-        │   │   │   ├── OpenAiAstrologyAnswerGenerator.java # Tương tác LLM qua Spring AI
-        │   │   │   ├── UserService.java
-        │   │   │   └── CustomUserDetailsService.java
-        │   │   ├── calculation/               # Bộ máy toán học an sao & tính toán Tử Vi
+        │   │   │   ├── GlobalUserAdvice.java
+        │   │   │   └── CalculationJsonConfiguration.java
+        │   │   ├── controller/                # Tầng điều hướng Web MVC & REST endpoints
+        │   │   │   ├── WebController.java             # Trang chủ, xem lá số, lịch sử, trang tài khoản
+        │   │   │   ├── AuthController.java            # Đăng nhập, đăng ký tài khoản
+        │   │   │   ├── AstrologyChatController.java   # Đàm đạo AI, SSE Streaming, quản lý đa hội thoại
+        │   │   │   ├── CoupleController.java          # Tương hợp tình duyên & hôn nhân
+        │   │   │   └── FriendController.java          # Tương hợp bạn bè & cộng sự
+        │   │   ├── service/                   # Tầng nghiệp vụ ứng dụng & Tích hợp AI / RAG
+        │   │   │   ├── BirthChartApplicationService.java   # Điều phối tính toán lá số Tử Vi
+        │   │   │   ├── BirthChartPersistenceService.java   # Lưu trữ & tải lá số cá nhân từ DB
+        │   │   │   ├── AstrologyChatService.java           # Điều phối hội thoại đàm đạo
+        │   │   │   ├── AstrologyChatPersistenceService.java# Quản lý & lưu phiên chat AI
+        │   │   │   ├── AstrologyRagService.java            # Tự động nạp & truy vấn tri thức RAG
+        │   │   │   ├── AstrologyAnswerGenerator.java       # Interface giao tiếp AI LLM
+        │   │   │   ├── OpenAiAstrologyAnswerGenerator.java # Triển khai AI Streaming qua Gemini / Spring AI
+        │   │   │   ├── CoupleCompatibilityService.java     # Đánh giá & tính điểm tương hợp tình duyên
+        │   │   │   ├── CoupleRuleEvaluator.java            # Bộ thẩm định 24 quy tắc tình duyên 5 yếu tố
+        │   │   │   ├── CoupleAiInterpretationService.java  # Luận giải tình duyên chuyên sâu từ AI
+        │   │   │   ├── CoupleChartPersistenceService.java  # Lưu trữ hồ sơ tương hợp tình duyên
+        │   │   │   ├── FriendCompatibilityService.java     # Đánh giá & tính điểm tương hợp bạn bè & cộng sự
+        │   │   │   ├── FriendRuleEvaluator.java            # Bộ thẩm định 34 quy tắc bạn bè 5 yếu tố
+        │   │   │   ├── FriendAiInterpretationService.java  # Luận giải bạn bè & cộng sự từ AI
+        │   │   │   ├── FriendChartPersistenceService.java  # Lưu trữ hồ sơ tương hợp bạn bè
+        │   │   │   ├── UserService.java                    # Quản lý tài khoản, mật khẩu, hồ sơ người dùng
+        │   │   │   └── CustomUserDetailsService.java       # Xác thực người dùng Spring Security
+        │   │   ├── calculation/               # Bộ máy toán học an sao & lịch pháp Tử Vi
+        │   │   │   ├── AstrologyCalculationService.java
+        │   │   │   ├── AstrologyCalculationInput.java
         │   │   │   ├── CanLuongCalculator.java
         │   │   │   ├── TuViDetailService.java
         │   │   │   ├── FiveElement.java
-        │   │   │   ├── calendar/              # Chuyển đổi Dương - Âm, Can Chi, Nạp Âm
-        │   │   │   │   ├── HoNgocDucLunarCalendar.java
-        │   │   │   │   ├── BirthInputNormalizer.java
-        │   │   │   │   └── NayinElementCalculator.java
-        │   │   │   └── chart/                 # An 12 cung, vòng Tràng Sinh, 14 chính tinh & phụ tinh
+        │   │   │   ├── CalculationAssessment.java, CalculationGap.java
+        │   │   │   ├── calendar/              # Chuyển đổi Dương - Âm, Can Chi, Nạp Âm (Lịch Hồ Ngọc Đức)
+        │   │   │   │   ├── VietnameseLunarCalendarProvider.java
+        │   │   │   │   ├── HoNgocDucLunarCalendarProvider.java
+        │   │   │   │   ├── BirthInputNormalizationService.java
+        │   │   │   │   ├── NayinElementCalculator.java
+        │   │   │   │   └── SexagenaryYearCalculator.java
+        │   │   │   └── chart/                 # An 12 cung, vòng Tràng Sinh, chính tinh, phụ tinh, tứ hóa
+        │   │   │       ├── TracuutuviChartCalculator.java
         │   │   │       ├── FiveElementsBureauCalculator.java
         │   │   │       ├── StarPlacementService.java
-        │   │   │       └── TracuutuviMajorStarsCalculator.java
-        │   │   ├── entity/                    # JPA Entities ánh xạ 100% với tuvi_AI.sql
-        │   │   │   ├── AppUser.java
-        │   │   │   ├── BirthProfile.java
-        │   │   │   ├── BirthChart.java
-        │   │   │   ├── AstrologyPalace.java
-        │   │   │   ├── Star.java
-        │   │   │   ├── ChartPalaceStar.java
-        │   │   │   ├── Conversation.java
-        │   │   │   ├── ChatMessage.java
-        │   │   │   ├── AstrologyKnowledge.java
-        │   │   │   └── KnowledgeChunk.java
-        │   │   ├── repository/                # Spring Data JPA Repositories
-        │   │   └── model/                     # View Models & DTO dữ liệu trang
+        │   │   │       ├── TracuutuviMajorStarsCalculator.java
+        │   │   │       ├── TracuutuviMonthHourStarsCalculator.java
+        │   │   │       ├── TracuutuviYearStarsCalculator.java
+        │   │   │       ├── TracuutuviPositionsCalculator.java
+        │   │   │       ├── TracuutuviChangShengCalculator.java
+        │   │   │       └── TracuutuviFourTransformationsCalculator.java
+        │   │   ├── entity/                    # Các thực thể JPA ánh xạ với cơ sở dữ liệu MySQL
+        │   │   │   ├── AppUser.java                   # Tài khoản người dùng
+        │   │   │   ├── BirthProfile.java              # Thông tin sinh cá nhân
+        │   │   │   ├── BirthChart.java                # Hồ sơ lá số Tử Vi
+        │   │   │   ├── AstrologyPalace.java           # 12 cung trong lá số
+        │   │   │   ├── Star.java                      # Danh mục các sao
+        │   │   │   ├── ChartPalaceStar.java           # Sao tọa thủ / chiếu tại cung
+        │   │   │   ├── Conversation.java              # Cuộc hội thoại đàm đạo
+        │   │   │   ├── ChatMessage.java               # Tin nhắn đàm đạo
+        │   │   │   ├── CoupleChart.java               # Hồ sơ lá số tương hợp tình duyên
+        │   │   │   ├── FriendChart.java               # Hồ sơ lá số tương hợp bạn bè & cộng sự
+        │   │   │   ├── AstrologyKnowledge.java        # Tài liệu tri thức Tử Vi RAG
+        │   │   │   └── KnowledgeChunk.java            # Phân mảnh tri thức RAG
+        │   │   ├── repository/                # Tầng truy xuất dữ liệu Spring Data JPA
+        │   │   │   ├── AppUserRepository.java
+        │   │   │   ├── BirthProfileRepository.java
+        │   │   │   ├── BirthChartRepository.java
+        │   │   │   ├── AstrologyPalaceRepository.java
+        │   │   │   ├── StarRepository.java
+        │   │   │   ├── ChartPalaceStarRepository.java
+        │   │   │   ├── ConversationRepository.java
+        │   │   │   ├── ChatMessageRepository.java
+        │   │   │   ├── CoupleChartRepository.java
+        │   │   │   ├── FriendChartRepository.java
+        │   │   │   ├── AstrologyKnowledgeRepository.java
+        │   │   │   └── KnowledgeChunkRepository.java
+        │   │   └── model/                     # Data Transfer Objects (DTO) & View Models
+        │   │       ├── BirthChartPageData.java
+        │   │       ├── ChartHistoryItem.java
+        │   │       ├── ChartPalaceDisplay.java, ChartStarDisplay.java
+        │   │       ├── ConversationHistoryItem.java
+        │   │       ├── CoupleCompatibilityResult.java, CouplePersonData.java, CoupleHistoryItem.java
+        │   │       ├── FriendCompatibilityResult.java, FriendHistoryItem.java
+        │   │       └── TriggeredRule.java
         │   └── resources/
-        │       ├── application.properties     # Cấu hình chính của ứng dụng
-        │       ├── application-example.properties # File cấu hình mẫu tham khảo
-        │       ├── ai/                        # Tệp cấu hình nội dung huấn luyện & chỉ dẫn AI (Clean code)
-        │       │   ├── system-instructions.md # Quy tắc xưng hô, ngôn ngữ, luận giải Tử Vi chuyên sâu
-        │       │   └── suggestions-prompt.md  # Quy tắc sinh 3 câu hỏi gợi ý tiếp theo
-        │       ├── static/                    # Tệp tĩnh: CSS, JavaScript, hình ảnh
-        │       │   ├── css/site.css
-        │       │   ├── js/site.js, marked.min.js, html2pdf.bundle.min.js
-        │       │   └── images/
-        │       └── templates/                 # Thymeleaf HTML Views
-        │           ├── home.html              # Trang chủ: Form nhập ngày giờ sinh
-        │           ├── result.html            # Đồ hình 12 Cung & Chi tiết lá số
-        │           ├── chat.html              # Giao diện Đàm đạo với AI Tử Vi (Streaming)
-        │           ├── history.html           # Lịch sử các lá số đã tạo
-        │           ├── login.html             # Đăng nhập & Đăng ký tài khoản
-        │           ├── account.html           # Quản lý tài khoản cá nhân & đổi mật khẩu
-        │           ├── about.html             # Giới thiệu hệ thống
-        │           └── fragments/layout.html  # Header, Footer, Thanh điều hướng dùng chung
-        └── test/                              # Bộ kiểm thử đơn vị & kiểm thử tích hợp
+        │       ├── application.properties             # Cấu hình chính của ứng dụng
+        │       ├── application-example.properties     # File cấu hình mẫu tham khảo
+        │       ├── rules/                             # Bộ quy tắc thẩm định tương hợp JSON
+        │       │   ├── couple_compatibility_rules.json# 24 quy tắc tương hợp tình duyên (5 yếu tố)
+        │       │   └── friend_compatibility_rules.json# 34 quy tắc tương hợp bạn bè & cộng sự (5 yếu tố)
+        │       ├── static/                            # Tài nguyên tĩnh phía Client
+        │       │   ├── css/site.css                   # Stylesheet giao diện hiện đại (Light & Dark Mode)
+        │       │   ├── js/
+        │       │   │   ├── site.js                    # Script điều hướng, đồng bộ ngày sinh, SSE streaming
+        │       │   │   ├── marked.min.js              # Thư viện Markdown parser
+        │       │   │   └── html2pdf.bundle.min.js     # Thư viện xuất tinh bàn lá số ra PDF
+        │       │   └── images/                        # Logo, avatar AI, hình ảnh bài viết
+        │       └── templates/                         # Giao diện Thymeleaf HTML
+        │           ├── home.html                      # Trang chủ: Nhập thông tin & khởi tạo lá số
+        │           ├── result.html                    # Hiển thị tinh bàn 12 cung & luận giải cá nhân
+        │           ├── chat.html                      # Giao diện đàm đạo Tử Vi với AI (hỗ trợ SSE)
+        │           ├── couple.html                    # Đối chiếu & luận giải tương hợp tình duyên
+        │           ├── friend.html                    # Đối chiếu & luận giải tương hợp bạn bè & cộng sự
+        │           ├── history.html                   # Lịch sử 3 phân hệ: Cá nhân, Tình duyên, Bạn bè
+        │           ├── account.html                   # Quản lý tài khoản, đổi tên & mật khẩu
+        │           ├── login.html                     # Đăng nhập & Đăng ký tài khoản
+        │           ├── about.html                     # Giới thiệu dự án, tôn chỉ & đội ngũ
+        │           └── fragments/                     # Các đoạn giao diện tái sử dụng
+        │               ├── layout.html                # Header, Footer, Menu responsive
+        │               └── chart.html                 # Khung tinh bàn 12 cung lá số Tử Vi
+        └── test/                                      # Bộ kiểm thử tự động (Unit & Integration Tests)
+            └── java/com/example/astrology/            # 31 Test Classes kiểm thử toán học & nghiệp vụ
 ```
 
 ---
