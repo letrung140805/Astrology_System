@@ -1283,19 +1283,19 @@ button[disabled] {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px 10vw;
+    padding: 18px 24px;
     background: radial-gradient(ellipse at 15% 30%, #eeeafd 0%, #f7f5f2 50%, #fdfbf9 100%);
     box-sizing: border-box;
 }
 
 .chat-window {
+    width: 70vw;
     max-width: 100%;
-    width: 100%;
-    min-height: 720px;
-    height: 840px;
-    max-height: calc(100vh - 64px);
+    min-height: 400px;
+    height: calc(100vh - 114px);
+    max-height: 780px;
     margin: 0 auto;
-    padding: 24px 28px;
+    padding: 16px 22px;
     display: flex;
     flex-direction: column;
     border-radius: 22px;
@@ -1310,15 +1310,15 @@ button[disabled] {
 .chat-header {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding-bottom: 16px;
+    gap: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #282454;
     flex-shrink: 0;
 }
 
 .chat-header-compass {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1343,7 +1343,9 @@ button[disabled] {
 .chat-header-info {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
 }
 
 .chat-title-row {
@@ -1356,7 +1358,8 @@ button[disabled] {
 .chat-title {
     margin: 0;
     color: #ffffff;
-    font-size: 18.5px;
+    font-size: 16.5px;
+    line-height: 1.25;
     font-weight: 700;
     font-family: 'Segoe UI', sans-serif;
     letter-spacing: -0.01em;
@@ -1366,12 +1369,12 @@ button[disabled] {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 3px 10px;
+    padding: 2px 8px;
     border-radius: 14px;
     background: rgba(16, 185, 129, 0.16);
     border: 1px solid rgba(52, 211, 153, 0.45);
     color: #6ee7b7;
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 600;
     font-family: 'Segoe UI', sans-serif;
     letter-spacing: 0.01em;
@@ -1393,8 +1396,8 @@ button[disabled] {
 .chat-subtitle {
     margin: 0;
     color: #dedaf5;
-    font-size: 11.5px;
-    line-height: 1.4;
+    font-size: 11px;
+    line-height: 1.3;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -1413,13 +1416,14 @@ button[disabled] {
     align-items: center;
     gap: 8px;
     margin-left: auto;
+    flex-shrink: 0;
 }
 
 .chat-action-btn {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 7px 14px;
+    padding: 5px 12px;
     border: 1px solid #363266;
     border-radius: 16px;
     background: #221f47;
@@ -1440,12 +1444,13 @@ button[disabled] {
 
 .chat-messages {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 18px 8px 14px 0;
-    margin-bottom: 10px;
+    gap: 14px;
+    padding: 12px 8px 8px 0;
+    margin-bottom: 4px;
     scroll-behavior: smooth;
 }
 
@@ -1524,7 +1529,7 @@ body.dark-mode .chat-avatar.chat-avatar-user {
 }
 
 .message > div {
-    max-width: 82%;
+    max-width: 88%;
     display: flex;
     flex-direction: column;
 }
@@ -1547,17 +1552,17 @@ body.dark-mode .chat-avatar.chat-avatar-user {
 
 .quick-prompts {
     margin-top: auto;
-    padding-top: 8px;
+    padding-top: 6px;
     flex-shrink: 0;
 }
 
 .quick-prompts-label {
     display: block;
     color: #c4c0e0;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -1572,8 +1577,8 @@ body.dark-mode .chat-avatar.chat-avatar-user {
     border-radius: 18px;
     background: #232049;
     color: #dedcee;
-    padding: 7px 14px;
-    font-size: 12px;
+    padding: 5px 12px;
+    font-size: 11.5px;
     font-weight: 500;
     font-family: 'Segoe UI', sans-serif;
     cursor: pointer;
@@ -1592,9 +1597,9 @@ body.dark-mode .chat-avatar.chat-avatar-user {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 14px;
-    padding: 5px 6px 5px 18px;
-    border-radius: 30px;
+    margin-top: 8px;
+    padding: 3px 5px 3px 16px;
+    border-radius: 24px;
     background: #ffffff;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     border: 1px solid #dedede;
@@ -1604,12 +1609,12 @@ body.dark-mode .chat-avatar.chat-avatar-user {
 .chat-form input {
     flex: 1;
     min-width: 0;
-    height: 42px;
+    height: 34px;
     border: 0;
     outline: none;
     background: transparent;
     color: #1e1b4b;
-    font-size: 13.5px;
+    font-size: 13px;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -1639,14 +1644,14 @@ body.dark-mode .chat-avatar.chat-avatar-user {
 }
 
 .chat-send-btn {
-    min-height: 42px;
-    padding: 0 20px;
+    min-height: 34px;
+    padding: 0 16px;
     border: 0;
-    border-radius: 20px;
+    border-radius: 18px;
     background: linear-gradient(135deg, #fcd89a, #f7c36a);
     color: #2c2007;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12.5px;
     font-family: 'Segoe UI', sans-serif;
     cursor: pointer;
     white-space: nowrap;
@@ -1662,18 +1667,6 @@ body.dark-mode .chat-avatar.chat-avatar-user {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(247, 195, 106, 0.5);
     background: linear-gradient(135deg, #ffe0a8, #f7cb77);
-}
-
-.chat-footnote {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-top: 12px;
-    color: #c5c0eb;
-    font-size: 11px;
-    font-family: 'Segoe UI', sans-serif;
-    flex-shrink: 0;
 }
 
 /* Pinned Floating Action Button on Result Page */
@@ -1926,10 +1919,6 @@ body.dark-mode .chat-subtitle strong { color: #ffd166; }
 
 body.dark-mode .chat-meta-tags { color: #c5c0eb; }
 
-body.dark-mode .chat-footnote { color: #c5c0eb; }
-
-body.dark-mode .chat-footnote svg { color: #ffd166; }
-
 body.dark-mode .quick-prompts-label { color: #dedaf5; }
 
 body.dark-mode .palace-result-heading { border-color: #444153; }
@@ -2014,8 +2003,8 @@ body.dark-mode .astrology-chart-center .chart-center-details dd.element-earth { 
     .insight-column { grid-template-columns: 1fr 1fr; }
     .timeline-cards { grid-template-columns: repeat(3, 1fr); row-gap: 20px; }
     .about-hero { padding-left: 30px; padding-right: 30px; }
-    .chat-page { padding: 40px 28px; }
-    .chat-window { min-height: 650px; }
+    .chat-page { padding: 14px 20px; }
+    .chat-window { width: 100%; min-height: 380px; height: calc(100vh - 106px); }
 }
 
 @media (max-width: 700px) {
@@ -2115,8 +2104,8 @@ body.dark-mode .astrology-chart-center .chart-center-details dd.element-earth { 
     .account-notice, .form-actions { grid-column: auto; }
     .form-actions { justify-content: stretch; }
     .form-actions .button { flex: 1; }
-    .chat-page { min-height: calc(100vh - 66px); padding: 15px 10px; }
-    .chat-window { min-height: calc(100vh - 96px); padding: 15px 12px; border-radius: 17px; }
+    .chat-page { min-height: calc(100vh - 66px); padding: 10px; }
+    .chat-window { width: 100%; min-height: 380px; height: calc(100vh - 88px); max-height: calc(100vh - 88px); padding: 14px 12px; border-radius: 17px; }
     .chat-header { align-items: flex-start; flex-wrap: wrap; }
     .chat-header h1 { font-size: 15px; }
     .chat-header p { line-height: 1.5; }
@@ -2129,7 +2118,6 @@ body.dark-mode .astrology-chart-center .chart-center-details dd.element-earth { 
     .chat-form { flex-wrap: wrap; }
     .chat-form input { flex-basis: 100%; }
     .chat-form .pin-button { margin-left: auto; }
-    .chat-footnote { flex-direction: column; }
 }
 
 @media print {
@@ -2541,12 +2529,6 @@ body.dark-mode .summary-sub {
 }
 
 .quick-prompts-list button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.chat-footnote span {
     display: inline-flex;
     align-items: center;
     gap: 6px;
