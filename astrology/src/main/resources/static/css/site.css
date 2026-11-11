@@ -7344,14 +7344,19 @@ body.dark-mode .rule-card-advice {
     font-weight: 600;
     font-size: 13.5px;
     border-radius: 10px;
-    background: linear-gradient(135deg, #50449a 0%, #3e337b 100%);
-    color: #ffffff !important;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(80, 68, 154, 0.25);
     transition: all 0.2s ease;
 }
 
-.couple-open-saved-btn:hover {
+.couple-open-saved-btn,
+.history-chat-btn {
+    background: linear-gradient(135deg, #50449a 0%, #3e337b 100%);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(80, 68, 154, 0.25);
+}
+
+.couple-open-saved-btn:hover,
+.history-chat-btn:hover {
     background: linear-gradient(135deg, #5e51b3 0%, #4a3d93 100%);
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(80, 68, 154, 0.35);
@@ -7483,7 +7488,8 @@ body.dark-mode .mini-score-tag strong {
     color: #ffffff !important;
 }
 
-body.dark-mode .couple-open-saved-btn {
+body.dark-mode .couple-open-saved-btn,
+body.dark-mode .history-chat-btn {
     background: linear-gradient(135deg, #6255b5 0%, #4a3e97 100%) !important;
     color: #ffffff !important;
 }
