@@ -43,7 +43,7 @@ public class OpenAiAstrologyAnswerGenerator implements AstrologyAnswerGenerator 
 			   - `### 1. Phân tích cung vị & Các sao tọa thủ`
 			   - `### 2. Ý nghĩa cách cục & Vận trình`
 			   - `### 3. Đánh giá thuận - nghịch`
-			   - `📍 Kim chỉ nam hành động từ lá số:`
+			   - `Kim chỉ nam hành động từ lá số:`
 			3. Dùng danh sách gạch đầu dòng (`- `) hoặc đánh số thứ tự (`1. `, `2. `) để làm rõ từng ý phân tích.
 			4. In đậm (`**...**`) các sao, cung, vị trí đắc/hãm và từ khóa trọng tâm để làm nổi bật thông tin.
 			5. Ngắt dòng đôi giữa các đoạn để người đọc dễ theo dõi, không gom thành một khối chữ dày đặc.
